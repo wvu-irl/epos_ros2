@@ -9,6 +9,6 @@
   <node pkg="epos" type="test_node" name="epos_motor_command" respawn="true" output="screen"/>
   <node pkg="epos" type="gogoRover" name="epos_input_conversion" respawn="true" output="screen"/>
 
-  <include file="$(find epos)/launch/joy/twist_joy.launch"/>
+  <include file="$(find epos)/launch/joy/local_twist_joy.launch"/>
 
 </launch>
