@@ -3,6 +3,8 @@ project(epos)
 
 add_compile_options(-std=c++11)
 
+set(EPOS_CMD_LIB_VER "6.6.1.0")
+
 find_package(catkin REQUIRED COMPONENTS
 roscpp
 std_msgs
@@ -111,11 +113,11 @@ catkin_package(
 ###########
 ## Build ##
 ###########
-set(ENV{EPOS_LIB_DIR} /opt/EposCmdLib_6.5.1.0/lib/x86_64)
+set(ENV{EPOS_LIB_DIR} /opt/EposCmdLib_${EPOS_CMD_LIB_VER}/lib/x86_64)
 link_directories($ENV{EPOS_LIB_DIR})
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(include ${catkin_INCLUDE_DIRS} /opt/EposCmdLib_6.5.1.0/include)
+include_directories(include ${catkin_INCLUDE_DIRS} /opt/EposCmdLib_${EPOS_CMD_LIB_VER}/include)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
