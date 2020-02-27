@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(epos)
+project(epos_ros)
 
 add_compile_options(-std=c++11)
 
@@ -48,7 +48,7 @@ geometry_msgs)
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   wheel_drive.msg
+   motor_command.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -70,7 +70,7 @@ geometry_msgs)
    DEPENDENCIES
    std_msgs  # Or other packages containing msgs
    geometry_msgs
-   epos
+   epos_ros
 
  )
 
@@ -142,13 +142,18 @@ include_directories(include ${catkin_INCLUDE_DIRS} /opt/EposCmdLib_${EPOS_CMD_LI
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/epos_node.cpp)
 
-
-
 add_executable(test_node $ENV{EPOS_LIB_DIR} src/EPOS_CMD/epos_test_node.cpp src/EPOS_CMD/epos_cmd.cpp)
+add_dependencies(test_node epos_ros_generate_messages_cpp)
+
 add_executable(epos_fsm_node $ENV{EPOS_LIB_DIR} src/EPOS_CMD/epos_FSM_node.cpp src/EPOS_CMD/epos_cmd.cpp)
+add_dependencies(epos_fsm_node epos_ros_generate_messages_cpp)
+
 add_executable(hc_test_node $ENV{EPOS_LIB_DIR} src/EPOS_CMD/epos_hardcode_test_node.cpp src/EPOS_CMD/epos_cmd.cpp)
+add_dependencies(hc_test_node epos_ros_generate_messages_cpp)
+
 add_executable(gogoRover $ENV{EPOS_LIB_DIR} src/roverKinematics/URC_drive_conversion_node.cpp)
-add_dependencies(gogoRover epos_generate_messages_cpp)
+add_dependencies(gogoRover epos_ros_generate_messages_cpp)
+
 #add_executable(motor_node $ENV{EPOS_LIB_DIR} src/motor_cmd_node.cpp)
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

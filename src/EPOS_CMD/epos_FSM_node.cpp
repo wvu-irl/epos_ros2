@@ -8,8 +8,8 @@
  */
 #include <ros/ros.h>
 #include <ros/console.h>
-#include <epos/epos_cmd.h>
-#include <epos/wheel_drive.h>
+#include <epos_ros/epos_cmd.h>
+#include <epos_ros/motor_command.h>
 #include <std_msgs/Int64MultiArray.h>
 
 #include <stdio.h>
@@ -20,7 +20,7 @@ std::vector<int> motorIDs;
 std::vector<long> cmd;
 std::string operationMode; //1 = velocity, 2 = torque, 3 = current, 4 = position, 5 = homing
 
-void motorCommandCallback(const epos::wheel_drive &msg)
+void motorCommandCallback(const epos_ros::motor_command &msg)
 {
 		for (int i = 0; i < msg.numberItems; ++i)
 		{

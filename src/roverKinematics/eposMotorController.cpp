@@ -3,7 +3,7 @@
 #include <geometry_msgs/Twist.h>
 #include <sensor_msgs/Joy.h>
 #include <math.h>
-#include <epos/wheel_drive.h>
+#include <epos_ros/motor_command.h>
 
 
 
@@ -214,9 +214,9 @@ int main(int argc, char** argv)
 
 	//ros::init(argc, argv, "talker");
 	//ros::NodeHandle n;
-	ros::Publisher chatter_pub = nh.advertise<epos::wheel_drive>("/velocities", 1000);
+	ros::Publisher chatter_pub = nh.advertise<epos_ros::motor_command>("/velocities", 1000);
 	ros::Rate rate(20);
-	epos::wheel_drive msg;
+	epos_ros::motor_command msg;
 	msg.motorIDs = {1,2,3,4};
 	while(ros::ok())
 	{

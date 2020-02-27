@@ -1,4 +1,4 @@
-# epos-ros
+# epos_ros
 ROS interface for the EPOS controllers/Maxon motors
 
 Expects EposCmdLib 6.6.1.0, this can be modified in CMakeLists

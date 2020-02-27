@@ -9,7 +9,7 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 #include <Definitions.h>
-#include <epos/epos_cmd.h>
+#include <epos_ros/epos_cmd.h>
 #include <geometry_msgs/Twist.h>
 
 #include <iostream>

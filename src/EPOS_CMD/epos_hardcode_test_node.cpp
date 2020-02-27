@@ -8,8 +8,8 @@
  */
 #include <ros/ros.h>
 #include <ros/console.h>
-#include <epos/epos_cmd.h>
-#include <epos/wheel_drive.h>
+#include <epos_ros/epos_cmd.h>
+#include <epos_ros/motor_command.h>
 #include <std_msgs/Int64MultiArray.h>
 //#include <geometry_msgs/Twist.h>
 
@@ -21,7 +21,7 @@
 std::vector<int> motorIDs;
 std::vector<long> vels;
 
-/**void motorCommandCallback(const epos::wheel_drive &msg)
+/**void motorCommandCallback(const epos_ros::motor_command &msg)
 {
 //std::cout << msg.numberItems;
 	for (int i = 0; i < msg.numberItems; ++i)
@@ -82,7 +82,7 @@ int main(int argc, char** argv)
             if ( check == 0 && motorController.prepareMotors(motorIDs) == 0)
             {
                 //ROS_INFO("GOTO");
-                  /**epos::wheel_drive command = *(ros::topic::waitForMessage<epos::wheel_drive>("/drive"));
+                  /**epos_ros::motor_command command = *(ros::topic::waitForMessage<epos_ros::motor_command>("/drive"));
                   for (int i = 0; i < motorIDs.size(); ++ i)
                   {
                     motors.push_back(command.motorIDs[i]);
