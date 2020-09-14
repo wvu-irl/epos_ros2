@@ -8,7 +8,7 @@
  */
 #include <ros/ros.h>
 #include <ros/console.h>
-#include <epos_ros/epos_cmd.h>
+#include <epos_ros/epos_command.h>
 #include <epos_ros/motor_command.h>
 #include <std_msgs/Int64MultiArray.h>
 //#include <geometry_msgs/Twist.h>
@@ -64,27 +64,27 @@ int main(int argc, char** argv)
 		std_msgs::Int64MultiArray motorCurrents;
 		for (int i = 0; i < motorIDs.size(); ++i)	motorPos.data.push_back(0);
 		for (int i = 0; i < motorIDs.size(); ++i)	motorPosPrev.data.push_back(1);
-		for (int i = 0; i < motorIDs.size(); ++i)	motorCurrents.data.push_back(0); 	
+		for (int i = 0; i < motorIDs.size(); ++i)	motorCurrents.data.push_back(0);
 		std::vector<long> stopVels = vels;
 		int baudrate = 1000000;
 		//std::cout << motorIDs[0] << "__" << motorIDs[1] << std::endl;
 
 		std::vector<int> positions;
-        std::vector<short> currents; 
+        std::vector<short> currents;
 
-		epos_cmd motorController(motorIDs, baudrate);
+		eposCommand motorController(motorIDs, baudrate);
 
 		if (!motorController.openDevices())
 		{
 				ROS_FATAL("Motor not opened");
 				return 1;
 		}
-		
-		try{    
-		        
+
+		try{
+
 				float iteration = 0;
-				motorController.setMode(motorIDs, epos_cmd::OMD_PROFILE_VELOCITY_MODE);
-				
+				motorController.setMode(motorIDs, eposCommand::OMD_PROFILE_VELOCITY_MODE);
+
 				int prepareCheck = motorController.prepareMotors(motorIDs);
 
 				ros::Rate rate(60);
@@ -100,9 +100,9 @@ int main(int argc, char** argv)
 						prepareCheck = motorController.prepareMotors(motorIDs);
 
 						motorController.goToVel(motorIDs, vels);
-						
+
 						positions.clear();
-						currents.clear(); 						
+						currents.clear();
 						motorController.getPosition(motorIDs, positions);
 
                         //std::cout << positions.size() << std::endl;
@@ -113,17 +113,17 @@ int main(int argc, char** argv)
 								//std::cout << "Umm..." << std::endl;
 								//std::cout << motorPos.data[i] << std::endl;
 						}
-						
-                        motorController.getCurrent(motorIDs, currents); 
+
+                        motorController.getCurrent(motorIDs, currents);
                         for (int i = 0; i < currents.size(); ++i)
 						{
 								motorCurrents.data[i] = currents[i];
 								//std::cout << "Umm..." << std::endl;
 								//std::cout << motorPos.data[i] << std::endl;
 						}
-						
+
 						pub.publish(motorPos);
-						pubCurrent.publish(motorCurrents); 
+						pubCurrent.publish(motorCurrents);
 
 						//++iteration;
 						rate.sleep();

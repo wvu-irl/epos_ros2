@@ -1,6 +1,6 @@
 /*
-   Maxon Motor Controller epos_cmd
-   epos_cmd.h
+   Maxon Motor Controller eposCommand
+   epos_command.h
    Purpose: Wrap EPOS commands and integrate with ROS for general purpose motor control
 
    @author Jared Beard
@@ -47,31 +47,31 @@ typedef int BOOL;
 	#define MMC_MAX_LOG_MSG_SIZE 512
 #endif
 
-class epos_cmd {
-void* keyHandle = 0;
-unsigned int errorCode = 0;
+class eposCommand {
+void* key_handle_ = 0;
+unsigned int error_code_ = 0;
 //unsigned short maxStrSize = 512;
 
-std::vector<unsigned short> nodeIDList;
+std::vector<unsigned short> node_id_list_;
 
-std::string deviceName;
-std::string protocolStackName;
-std::string interfaceName;
-std::string portName;
-int baudrate;
-int NumDevices;
-char* errorCodeChar;
+std::string device_name_;
+std::string protocol_stack_name_;
+std::string interface_name_;
+std::string port_name_;
+int baud_rate_;
+int num_devices_;
+char* error_code_char_;
 
 
 public:
 /***********************ENUMS*********************************/
-enum OpMode {
+enum OpMode_ {
 		OMD_PROFILE_POSITION_MODE = 1,
 		OMD_PROFILE_VELOCITY_MODE = 3,
 		OMD_HOMING_MODE = 6,
 		OMD_CURRENT_MODE = -3
 };
-enum DevState {
+enum DevState_ {
 		DISABLED = 0x0000,
 		ENABLED = 0x0001,
 		QUICKSTOP = 0x0002,
@@ -79,8 +79,8 @@ enum DevState {
 };
 
 /***********************VARIABLES*****************************/
-DevState current_state;
-OpMode current_mode;
+DevState current_state_;
+OpMode current_mode_;
 
 //Setup error codes to print intead of being accepted as input. Makes the output simpler...
 /***********************INTIALIZATION***************************/
@@ -88,34 +88,34 @@ int openDevices   ();
 int closeDevices  ();
 
 /***********************CONFIGURATION***************************/
-int setMode(std::vector<int> nodeIDs, OpMode mode);
+int setMode(std::vector<int> _node_ids, OpMode _mode);
 //void setModeCallback(const ; //NEED TO MAKE MESSAGE FOR THIS, need to make way to display/handle specific error
-int resetDevice(unsigned short nodeID);
-int setState(unsigned short nodeID, DevState state);
-int getState(unsigned short nodeID, DevState &state);
+int resetDevice(unsigned short _node_id);
+int setState(unsigned short _node_id, DevState _state);
+int getState(unsigned short _node_id, DevState &_state);
 
 /***********************OPERATION*******************************/
-int handleFault(int ID);
-int prepareMotors(std::vector<int> IDs);
-int goToVel(std::vector<int> IDs, std::vector<long> velocities);
+int handleFault(int _id);
+int enableMotors(std::vector<int> _ids);
+int goToVel(std::vector<int> _ids, std::vector<long> _velocities);
 //int stopVel(std::vector<int> IDs);
-int getPosition(std::vector<int> IDs, std::vector<int> &positions); //put in check that mode is correct
-int getCurrent(std::vector<int> IDs, std::vector<short> &currents); 
-int goToTorque(std::vector<int> IDs, std::vector<long> torques, double gr);
+int getPosition(std::vector<int> _ids, std::vector<int> &_positions); //put in check that mode is correct
+int getCurrent(std::vector<int> _ids, std::vector<short> &_currents);
+int goToTorque(std::vector<int> _ids, std::vector<long> _torques, double _gr);
 
 /***********************PRINT/DEBUGGING*************************/
-int getError(unsigned short errorCodeValue);   //NEED to convert error code to text
-void logError(std::string functionName);
-int checkNodeID(int ID);
-int addNodeIDs(std::vector<int> IDs);
+int getError(unsigned short _error_code_value);   //NEED to convert error code to text
+void logError(std::string _function_name);
+int checkNodeID(int _id);
+int addNodeIDs(std::vector<int> _ids);
 
 
 /***********************CONSTRUCTORS****************************/
-epos_cmd();   // Set motor type, sensor types, max following error, max velocity, max acc,
+eposCommand();   // Set motor type, sensor types, max following error, max velocity, max acc,
 // velocity units, default operation mode
-epos_cmd(std::vector<int> ids, int br);
+eposCommand(std::vector<int> _ids, int _br);
 //motor_cmd(); <- read input from launch
-~epos_cmd();
+~eposCommand();
 
 
 

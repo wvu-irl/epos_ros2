@@ -8,7 +8,7 @@
  */
 #include <ros/ros.h>
 #include <ros/console.h>
-#include <epos_ros/epos_cmd.h>
+#include <epos_ros/epos_command.h>
 #include <epos_ros/motor_command.h>
 #include <std_msgs/Int64MultiArray.h>
 //#include <geometry_msgs/Twist.h>
@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 		std::vector<int> positions;
 
 
-		epos_cmd motorController(motorIDs, baudrate);
+		eposCommand motorController(motorIDs, baudrate);
 
 		if (motorController.openDevices())
 		{
@@ -73,7 +73,7 @@ int main(int argc, char** argv)
 		}
 		try{
         float iteration = 0;
-        int check = motorController.setMode(motorIDs, epos_cmd::OMD_PROFILE_VELOCITY_MODE);
+        int check = motorController.setMode(motorIDs, eposCommand::OMD_PROFILE_VELOCITY_MODE);
 
 				ros::Rate rate(20);
         int num_counts =0;

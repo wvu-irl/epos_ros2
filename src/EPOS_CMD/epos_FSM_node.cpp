@@ -8,7 +8,7 @@
  */
 #include <ros/ros.h>
 #include <ros/console.h>
-#include <epos_ros/epos_cmd.h>
+#include <epos_ros/epos_command.h>
 #include <epos_ros/motor_command.h>
 #include <std_msgs/Int64MultiArray.h>
 
@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 		// ROS INITILIZATION ------------------------------------------------------------------------
 		ros::init(argc,argv,"subscriber");
 		ros::NodeHandle nh;
-		ros::Subscriber sub = nh.subscribe("/epos_cmd", 10, motorCommandCallback);
+		ros::Subscriber sub = nh.subscribe("/eposCommand", 10, motorCommandCallback);
 		ros::NodeHandle n;
 		ros::Publisher pub = n.advertise<std_msgs::Int64MultiArray>("/motor_positions", 1000);
 
@@ -54,7 +54,7 @@ int main(int argc, char** argv)
 		double countsPreRevShaft = countsPerRev*gearRatio;
 
 		// EPOS CONFIGURATION/PREPARATION------------------------------------------------------------
-		epos_cmd motorController(motorIDs, baudrate);
+		eposCommand motorController(motorIDs, baudrate);
 		if (!motorController.openDevices())
 		{
 				ROS_FATAL("Motor not opened");

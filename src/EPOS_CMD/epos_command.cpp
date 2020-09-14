@@ -1,6 +1,6 @@
 /*
-   Maxon Motor Controller epos_cmd
-   epos_cmd.cpp
+   Maxon Motor Controller eposCommand
+   epos_command.cpp
    Purpose: Wrap EPOS commands and integrate with ROS for general purpose motor control
 
    @author Jared Beard
@@ -9,7 +9,7 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 #include <Definitions.h>
-#include <epos_ros/epos_cmd.h>
+#include <epos_ros/epos_commmand.h>
 #include <geometry_msgs/Twist.h>
 
 #include <iostream>
@@ -34,39 +34,39 @@
 
     @return Success(0)/Failure(1) of commands
  */
-int epos_cmd::openDevices()
+int eposCommand::openDevices()
 {
 		//Success of code
 		int result = MMC_FAILED;
 		// Internal use of motor parameters
-		char* pDeviceName = new char[255];
-		char* pProtocolStackName = new char[255];
-		char* pInterfaceName = new char[255];
-		char* pPortName = new char[255];
+		char* device_name = new char[255];
+		char* protocol_stack_name = new char[255];
+		char* interface_name = new char[255];
+		char* port_name = new char[255];
 
-		strcpy(pDeviceName, deviceName.c_str());
-		strcpy(pProtocolStackName, protocolStackName.c_str());
-		strcpy(pInterfaceName, interfaceName.c_str());
-		strcpy(pPortName, portName.c_str());
+		strcpy(device_name, device_name_.c_str());
+		strcpy(protocol_stack_name, protocol_stack_name_.c_str());
+		strcpy(interface_name, interface_name_.c_str());
+		strcpy(port_name, port_name_.c_str());
 
-		//std::cout << "dev " << pDeviceName << "__Prot " << pProtocolStackName << "__Int " << pInterfaceName << "__Por" << pPortName << "__Code" << errorCode << std::endl;
+		//std::cout << "dev " << pDeviceName << "__Prot " << pProtocolStackName << "__Int " << pInterfaceName << "__Por" << pPortName << "__Code" << error_code_ << std::endl;
 
 		ROS_INFO("Open device...");
 		//Opens device
-		keyHandle = VCS_OpenDevice(pDeviceName, pProtocolStackName, pInterfaceName, pPortName, &errorCode);
+		key_handle_ = VCS_OpenDevice(device_name, protocol_stack_name, interface_name, port_name, &error_code_);
 		//checking device opened
-		if(keyHandle!=0 && errorCode == 0)
+		if(key_handle_!=0 && error_code_ == 0)
 		{
-				unsigned int lBaudrate = 0;
-				unsigned int lTimeout = 0;
+				unsigned int baud_rate = 0;
+				unsigned int timeout = 0;
 
-				if(VCS_GetProtocolStackSettings(keyHandle, &lBaudrate, &lTimeout, &errorCode))
+				if(VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code_))
 				{
-						if(VCS_SetProtocolStackSettings(keyHandle, baudrate, lTimeout, &errorCode))
+						if(VCS_SetProtocolStackSettings(key_handle_, baud_rate_, timeout, &error_code_))
 						{
-								if(VCS_GetProtocolStackSettings(keyHandle, &lBaudrate, &lTimeout, &errorCode))
+								if(VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code_))
 								{
-										if(baudrate==(int)lBaudrate)
+										if(baud_rate_==(int)baud_rate)
 										{
 												result = MMC_SUCCESS;
 												ROS_INFO("Device opened");
@@ -77,13 +77,13 @@ int epos_cmd::openDevices()
 		}
 		else
 		{
-				keyHandle = 0;
+				key_handle_ = 0;
 		}
 		// remove temporary device std::strings
-		delete []pDeviceName;
-		delete []pProtocolStackName;
-		delete []pInterfaceName;
-		delete []pPortName;
+		delete []device_name;
+		delete []protocol_stack_name;
+		delete []interface_name;
+		delete []port_name;
 
 		//Get initial device state here
 
@@ -95,13 +95,13 @@ int epos_cmd::openDevices()
 
     @return Success(0)/Failure(1) of command
  */
-int epos_cmd::closeDevices()
+int eposCommand::closeDevices()
 {
 		int result = MMC_FAILED;
-		errorCode = 0;
+		error_code_ = 0;
 		ROS_INFO("Close device");
 
-		if(VCS_CloseAllDevices(&errorCode) && errorCode == 0)
+		if(VCS_CloseAllDevices(&error_code_) && error_code_ == 0)
 		{
 				result = MMC_SUCCESS;
 		}
@@ -112,19 +112,19 @@ int epos_cmd::closeDevices()
 /***************************CONFIGURATION***************************/
 /////////////////////////////////////////////////////////////////////
 /**
-    Closes device and subdevices
+    Sets mode for select devices
 
-    @param nodeID node to have operation mode modified
-    @param mode operation mode to be set
+    @param _ids IDs for devices to set mode
+    @param _mode operation mode to be set
     @return Success(0)/Failure(1) of command
  */
-int epos_cmd::setMode(std::vector<int> IDs, OpMode mode)
+int eposCommand::setMode(std::vector<int> _ids, OpMode _mode)
 {
-		current_mode = mode;
-		for (int i = 0; i < IDs.size(); ++i)
+		current_mode_ = _mode;
+		for (int i = 0; i < _ids.size(); ++i)
 		{
 				//std::cout << IDs.size() << std::endl;
-				if(VCS_SetOperationMode(keyHandle, IDs[i], mode, &errorCode))
+				if(VCS_SetOperationMode(key_handle_, _ids[i], _mode, &_error_code_value))
 				{
 						ROS_INFO("Operation mode set");
 				} else
@@ -141,11 +141,11 @@ int epos_cmd::setMode(std::vector<int> IDs, OpMode mode)
 
     @param msg ROS msg of custom type:
  */
-/**void epos_cmd::setModeCallback(const )
+/**void eposCommand::setModeCallback(const )
    {
    for(int i = 0; i < msg.nodeID.size(); ++i)
    {
-    if (!setMode(msg.nodeID[i],msg.mode, errorCode))
+    if (!setMode(msg.nodeID[i],msg.mode, error_code_))
     {
       ROS_ERROR("FAILED TO SET MODE OF NODE %d", msg.nodeID[i]);
       break;
@@ -156,15 +156,15 @@ int epos_cmd::setMode(std::vector<int> IDs, OpMode mode)
    /**
     Resets device state machine
 
-    @param nodeID node to have operation mode modified
+    @param _node_id node to have operation mode modified
 
     @return Success(0)/Failure(1) of command
  */
-int epos_cmd::resetDevice(unsigned short nodeID)
+int eposCommand::resetDevice(unsigned short _node_id)
 {
 		int result = MMC_FAILED;
 
-		if (VCS_ResetDevice(keyHandle, nodeID, &errorCode))
+		if (VCS_ResetDevice(key_handle_, _node_id, &error_code_))
 		{
 				result = MMC_SUCCESS;
 		}
@@ -175,13 +175,13 @@ int epos_cmd::resetDevice(unsigned short nodeID)
 /**
     Sets Device State in state machine
 
-    @param nodeID node to have operation mode modified
-    @param state desried state of state machine
+    @param _node_id node to have operation mode modified
+    @param _state desried state of state machine
     @return Success(0)/Failure(1) of command
  */
-int epos_cmd::setState(unsigned short nodeID, DevState state)
+int eposCommand::setState(unsigned short _node_id, DevState _state)
 {
-		if( current_state == state || VCS_SetState(keyHandle,nodeID,state,&errorCode))
+		if( current_state == _state || VCS_SetState(key_handle_,_node_id,_state,&error_code_))
 		{
 				return MMC_SUCCESS;
 		} else
@@ -193,18 +193,18 @@ int epos_cmd::setState(unsigned short nodeID, DevState state)
 /**
     Gets Device State in state machine
 
-    @param nodeID node to have operation mode modified
-    @param state desried state of state machine
+    @param _node_id node to have operation mode modified
+    @param _state state of state machine
     @return Success(0)/Failure(1) of command
  */
-int epos_cmd::getState(unsigned short nodeID, DevState &state)
+int eposCommand::getState(unsigned short _node_id, DevState &_state)
 {
-		short unsigned int stateValue; // = getDevStateValue(state);
+		short unsigned int state_value; // = getDevStateValue(state);
 		ROS_DEBUG("Retrieving State");
-		if( VCS_GetState(keyHandle,nodeID,&stateValue,&errorCode))
+		if( VCS_GetState(key_handle_,_node_id,&state_value,&error_code_))
 		{
 				ROS_DEBUG("State Retrieved");
-				state = getDevState(stateValue);
+				_state = getDevState(state_value);
 				//std::cout << "Motor "<< nodeID << " is in state " << state << std::endl;
 				return MMC_SUCCESS;
 
@@ -220,20 +220,25 @@ int epos_cmd::getState(unsigned short nodeID, DevState &state)
 /***************************OPERATION*******************************/
 /////////////////////////////////////////////////////////////////////
 
+/**
+    Get short unsigned integer value for a state
 
-short unsigned int epos_cmd::getDevStateValue(DevState state){
+    @param _state state of interest
+    @return state integer value
+ */
+short unsigned int eposCommand::getDevStateValue(DevState _state){
 		short unsigned int disabled = 0x0000;
 		short unsigned int enabled = 0x0001;
 		short unsigned int quickstop = 0x0002;
 		short unsigned int fault = 0x0003;
 
-		if (state == DISABLED) {
+		if (_state == DISABLED) {
 				return disabled;
-		} else if (state == ENABLED) {
+		} else if (_state == ENABLED) {
 				return enabled;
-		} else if (state == QUICKSTOP) {
+		} else if (_state == QUICKSTOP) {
 				return quickstop;
-		} else if (state == FAULT) {
+		} else if (_state == FAULT) {
 				return fault;
 		} else {
 				std::cout << "Invalid DevState" << std::endl;
@@ -241,19 +246,25 @@ short unsigned int epos_cmd::getDevStateValue(DevState state){
 		}
 }
 
-int epos_cmd::getModeValue(OpMode mode){
+/**
+    Get integer value for a mode
+
+    @param _mode mode of interest
+    @return mode integer value
+ */
+int eposCommand::getModeValue(OpMode _mode){
 		int position = 1;
 		int velocity = 3;
 		int homing = 6;
 		int current = -3;
 
-		if (mode == position) {
+		if (_mode == position) {
 				return position;
-		} else if (mode == velocity) {
+		} else if (_mode == velocity) {
 				return velocity;
-		} else if (mode == homing) {
+		} else if (_mode == homing) {
 				return homing;
-		} else if (mode == current) {
+		} else if (_mode == current) {
 				return current;
 		} else {
 				std::cout << "Invalid OpMode" << std::endl;
@@ -261,20 +272,27 @@ int epos_cmd::getModeValue(OpMode mode){
 		}
 }
 
-enum epos_cmd::DevState epos_cmd::getDevState(short unsigned int state)
+
+/**
+    Get state for a state integer
+
+    @param _state state of interest
+    @return state enum value
+ */
+enum eposCommand::DevState eposCommand::getDevState(short unsigned int _state)
 {
 		short unsigned int disabled = 0x0000;
 		short unsigned int enabled = 0x0001;
 		short unsigned int quickstop = 0x0002;
 		short unsigned int fault = 0x0003;
 
-		if (state == disabled) {
+		if (_state == disabled) {
 				return DISABLED;
-		} else if (state == enabled) {
+		} else if (_state == enabled) {
 				return ENABLED;
-		} else if (state == quickstop) {
+		} else if (_state == quickstop) {
 				return QUICKSTOP;
-		} else if (state == fault) {
+		} else if (_state == fault) {
 				return FAULT;
 		} else {
 				ROS_WARN("Invalid DevStateValues");
@@ -282,18 +300,24 @@ enum epos_cmd::DevState epos_cmd::getDevState(short unsigned int state)
 		}
 }
 
-int epos_cmd::handleFault(int ID)
+/**
+    Clears fault for specified motor
+
+    @param _id motor id
+    @return Success(0)/Failure(1) of command
+ */
+int eposCommand::handleFault(int _id)
 {
-		BOOL isFault = 0;
+		BOOL is_fault = 0;
 		std::cout << "HF start" << std::endl;
-		if(VCS_GetFaultState(keyHandle, ID, &isFault, &errorCode ))
+		if(VCS_GetFaultState(key_handle_, _id, &is_fault, &error_code_ ))
 		{
-				if(isFault)
+				if(is_fault)
 				{
 						logError("VCS_GetFaultState");
-						if(VCS_ClearFault(keyHandle, ID, &errorCode) )
+						if(VCS_ClearFault(key_handle_, _id, &error_code_) )
 						{
-								ROS_INFO("Fault Cleared Motor: %b", ID);
+								ROS_INFO("Fault Cleared Motor: %b", _id);
 								return MMC_SUCCESS;
 						} else
 						{
@@ -311,42 +335,66 @@ int epos_cmd::handleFault(int ID)
 		}
 }
 
-int epos_cmd::prepareMotors(std::vector<int> IDs)
+/**
+    Enables Specified motors
+
+    @param _ids motor ids
+    @return Success(0)/Failure(1) of command
+ */
+int eposCommand::enableMotors(std::vector<int> _ids)
 {
 		DevState state;
-		for (int i = 0; i < IDs.size(); ++i)
+		for (int i = 0; i < _ids.size(); ++i)
 		{
 				//std::cout << "Prepare Motors "<< std::endl;
-				if (getState(IDs[i], state))
+				if (getState(_ids[i], state))
 				{
 						//std::cout << "State " << state << " ;P" << std::endl;
 						if (state == FAULT)
 						{
 								std::cout << "FAULT" << std::endl;
-								handleFault(IDs[i]);
-								std::cout << "Clear Fault " << IDs[i] << std::endl;
+								handleFault(_ids[i]);
+								std::cout << "Clear Fault " << _ids[i] << std::endl;
 						}
 						if (state != ENABLED)
 						{
-								setState(IDs[i], ENABLED);
+								setState(_ids[i], ENABLED);
 						}
 				} else
 				{
-						ROS_WARN("Get state failed: motor %d", IDs[i]);
+						ROS_WARN("Get state failed: motor %d", _ids[i]);
 				}
 		}
 		return MMC_SUCCESS;
 }
 
-int epos_cmd::goToVel(std::vector<int> IDs, std::vector<long> velocities)
-{
-		if (current_mode != OMD_PROFILE_VELOCITY_MODE) setMode(IDs, OMD_PROFILE_VELOCITY_MODE);
 
-		for (int i = 0; i < IDs.size(); ++i)
+
+/************
+
+
+NEED TO CHECK VELOCITY CONVERSION
+
+
+*************/
+/**
+    Sets velocity for a list of motors
+
+    @param _ids motor ids
+		@param _velocities angular velocities for each motor. If only one velocity listed, it will be applied to all motor ids provided.
+    @return Success(0)/Failure(1) of command
+ */
+int eposCommand::goToVel(std::vector<int> _ids, std::vector<long> _velocities)
+{
+		if (current_mode != OMD_PROFILE_VELOCITY_MODE) setMode(_ids, OMD_PROFILE_VELOCITY_MODE);
+
+		for (int i = 0; i < _ids.size(); ++i)
 		{
-				if (abs(velocities[i]) > 0)
+				if (_velocities.size() < _ids.size() && i > 0) _velocities.push_back(_velocities[0]);
+
+				if (abs(_velocities[i]) > 0)
 				{
-						if (!VCS_MoveWithVelocity(keyHandle, IDs[i], velocities[i],&errorCode))
+						if (!VCS_MoveWithVelocity(key_handle_, _ids[i], _velocities[i],&error_code_))
 						{
 								logError("VCS_MoveWithVelocity");
 								return MMC_FAILED;
@@ -355,7 +403,7 @@ int epos_cmd::goToVel(std::vector<int> IDs, std::vector<long> velocities)
 						}
 				} else
 				{
-						if (!VCS_HaltVelocityMovement(keyHandle, IDs[i],&errorCode))
+						if (!VCS_HaltVelocityMovement(key_handle_, _ids[i],&error_code_))
 						{
 								return MMC_FAILED;
 						}
@@ -364,19 +412,26 @@ int epos_cmd::goToVel(std::vector<int> IDs, std::vector<long> velocities)
 		return MMC_SUCCESS;
 }
 
-int epos_cmd::getPosition(std::vector<int> IDs, std::vector<int> &positions) //128 cts/turn
+/**
+    Gets position for a list of motors
+
+    @param _ids motor ids
+		@param _positions angular position for each motor
+    @return Success(0)/Failure(1) of command
+ */
+int eposCommand::getPosition(std::vector<int> _ids, std::vector<int> &_positions) //128 cts/turn
 {
 		int pos = 0;
 		//ROS_WARN("---------------------------------------------------%d", pos);
 		//*pos = 1;
 		//ROS_WARN("---------------------------------------------------%d", *pos);
-		for (int i = 0; i < IDs.size(); ++i)
+		for (int i = 0; i < _ids.size(); ++i)
 		{
-				ROS_WARN("pos %d",  IDs[i]);
-				if (VCS_GetPositionIs(keyHandle, IDs[i], &pos, &errorCode))
+				ROS_WARN("pos %d",  _ids[i]);
+				if (VCS_GetPositionIs(key_handle_, _ids[i], &pos, &error_code_))
 				{
 						ROS_WARN(" is %d", pos);
-						positions.push_back(pos);
+						_positions.push_back(pos);
 						std::cout << " is " << pos << std::endl;
 				}
 				else
@@ -389,19 +444,26 @@ int epos_cmd::getPosition(std::vector<int> IDs, std::vector<int> &positions) //1
 		return MMC_SUCCESS;
 }
 
-int epos_cmd::getCurrent(std::vector<int> IDs, std::vector<short> &currents)
+/**
+    Gets current for a list of motors
+
+    @param _ids motor ids
+		@param current current for each motor
+    @return Success(0)/Failure(1) of command
+ */
+int eposCommand::getCurrent(std::vector<int> _ids, std::vector<short> &_currents)
 {
     	short current = 0;
 		//ROS_WARN("---------------------------------------------------%d", pos);
 		//*pos = 1;
 		//ROS_WARN("---------------------------------------------------%d", *pos);
-		for (int i = 0; i < IDs.size(); ++i)
+		for (int i = 0; i < _ids.size(); ++i)
 		{
-				ROS_WARN("current %d",  IDs[i]);
-				if (VCS_GetCurrentIs(keyHandle, IDs[i], &current, &errorCode))
+				ROS_WARN("current %d",  _ids[i]);
+				if (VCS_GetCurrentIs(key_handle_, _ids[i], &current, &error_code_))
 				{
 						ROS_WARN(" is %d", current);
-						currents.push_back(current);
+						_currents.push_back(current);
 						std::cout << " is " << current << std::endl;
 				}
 				else
@@ -414,14 +476,14 @@ int epos_cmd::getCurrent(std::vector<int> IDs, std::vector<short> &currents)
 		return MMC_SUCCESS;
 }
 
-int epos_cmd::goToTorque(std::vector<int> IDs, std::vector<long> torques, double gr)
+int eposCommand::goToTorque(std::vector<int> _ids, std::vector<long> torques, double gr)
 {
-		if (current_mode != OMD_CURRENT_MODE) setMode(IDs, OMD_CURRENT_MODE);
+		if (current_mode != OMD_CURRENT_MODE) setMode(_ids, OMD_CURRENT_MODE);
 
-		for (int i = 0; i < IDs.size(); ++i)
+		for (int i = 0; i < _ids.size(); ++i)
 		{
 				short currentA = floor(torques[i]/(kT*gr));
-				if (VCS_SetCurrentMust(keyHandle, IDs[i], currentA,&errorCode))
+				if (VCS_SetCurrentMust(key_handle_, _ids[i], currentA,&error_code_))
 				{
 						ROS_INFO("Running Current");
 				} else {
@@ -440,15 +502,15 @@ int epos_cmd::goToTorque(std::vector<int> IDs, std::vector<long> torques, double
 /**
     Displays Error info for an executed function
 
-    @param ErrorCodeValue Error code number
+    @param error_code_Value Error code number
     @return Success(0)/Failure(1) of command
  */
-int epos_cmd::getError(unsigned short errorCodeValue)
+int eposCommand::getError(unsigned short _error_code_value)
 {
 		int result = MMC_FAILED;
-		if(VCS_GetErrorInfo(errorCodeValue, errorCodeChar, MMC_MAX_LOG_MSG_SIZE))
+		if(VCS_GetErrorInfo(_error_code_value, error_code_char_, MMC_MAX_LOG_MSG_SIZE))
 		{
-				ROS_ERROR("ERROR %u: %u\n", errorCodeValue, *errorCodeChar);
+				ROS_ERROR("ERROR %u: %u\n", _error_code_Value, *error_code_char_);
 				result = MMC_SUCCESS;
 		}
 
@@ -456,19 +518,19 @@ int epos_cmd::getError(unsigned short errorCodeValue)
 }
 
 
-void epos_cmd::logError(std::string functionName)
+void eposCommand::logError(std::string functionName)
 {
-		std::cerr << "EPOS COMMAND: " << functionName << " failed (errorCode=0x" << std::hex << errorCode << ")"<< std::endl;
+		std::cerr << "EPOS COMMAND: " << functionName << " failed (error_code_=0x" << std::hex << error_code_ << ")"<< std::endl;
 }
 
 
-int epos_cmd::checkNodeID(int ID)
+int eposCommand::checkNodeID(int _id)
 {
 		int result = MMC_FAILED;
 
-		for (int i = 0; i < nodeIDList.size(); ++i)
+		for (int i = 0; i < node_id_list_.size(); ++i)
 		{
-				if (ID == nodeIDList[i]) {
+				if (_id == node_id_list_[i]) {
 						result == MMC_SUCCESS;
 				}
 		}
@@ -480,8 +542,8 @@ int epos_cmd::checkNodeID(int ID)
 /**
     Default Constructor
  */
-epos_cmd::epos_cmd(){
-		nodeIDList.push_back(2);
+eposCommand::eposCommand(){
+		node_id_list_.push_back(2);
 		deviceName = "EPOS4";
 		protocolStackName = "MAXON SERIAL V2";
 		interfaceName = "USB";
@@ -498,9 +560,9 @@ epos_cmd::epos_cmd(){
     @param ids id number of motors to be used
     @param br baudrate for communications
  */
-epos_cmd::epos_cmd(std::vector<int> ids, int br){
-		for (int i = 0; i < ids.size(); ++i) {
-				nodeIDList.push_back( (unsigned short) ids[i]);
+eposCommand::eposCommand(std::vector<int> _ids, int br){
+		for (int i = 0; i < _ids.size(); ++i) {
+				node_id_list_.push_back( (unsigned short) _ids[i]);
 
 		}
 		deviceName = "EPOS4";
@@ -508,7 +570,7 @@ epos_cmd::epos_cmd(std::vector<int> ids, int br){
 		interfaceName = "USB";
 		portName = "USB0";
 		baudrate = br;
-		NumDevices = ids.size();
+		NumDevices = _ids.size();
 
 		ROS_INFO("EPOS COMMAND START");
 }
@@ -516,7 +578,7 @@ epos_cmd::epos_cmd(std::vector<int> ids, int br){
 /**
     Destructor closes all devices
  */
-epos_cmd::~epos_cmd()
+eposCommand::~eposCommand()
 {
 		int i = 0;
 		while(!closeDevices() && i < 5)
