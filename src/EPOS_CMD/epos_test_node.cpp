@@ -85,7 +85,7 @@ int main(int argc, char** argv)
 				float iteration = 0;
 				motorController.setMode(motorIDs, eposCommand::OMD_PROFILE_VELOCITY_MODE);
 
-				int prepareCheck = motorController.prepareMotors(motorIDs);
+				int prepareCheck = motorController.enableMotors(motorIDs);
 
 				ros::Rate rate(60);
 				while(ros::ok()) // && iteration < 500)
@@ -97,7 +97,7 @@ int main(int argc, char** argv)
 						for (int i = 0; i < vels.size(); ++i)if (vels[i] != 0)   moving = true;
 
 
-						prepareCheck = motorController.prepareMotors(motorIDs);
+						prepareCheck = motorController.enableMotors(motorIDs);
 
 						motorController.goToVel(motorIDs, vels);
 

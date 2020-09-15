@@ -79,7 +79,7 @@ int main(int argc, char** argv)
         int num_counts =0;
 				while(ros::ok() && num_counts < 2000*COUNTS_PER_REV)// && iteration < 500)
 				{
-            if ( check == 0 && motorController.prepareMotors(motorIDs) == 0)
+            if ( check == 0 && motorController.enableMotors(motorIDs) == 0)
             {
                 //ROS_INFO("GOTO");
                   /**epos_ros::motor_command command = *(ros::topic::waitForMessage<epos_ros::motor_command>("/drive"));

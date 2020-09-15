@@ -65,13 +65,13 @@ char* error_code_char_;
 
 public:
 /***********************ENUMS*********************************/
-enum OpMode_ {
+enum OpMode {
 		OMD_PROFILE_POSITION_MODE = 1,
 		OMD_PROFILE_VELOCITY_MODE = 3,
 		OMD_HOMING_MODE = 6,
 		OMD_CURRENT_MODE = -3
 };
-enum DevState_ {
+enum DevState {
 		DISABLED = 0x0000,
 		ENABLED = 0x0001,
 		QUICKSTOP = 0x0002,
@@ -142,7 +142,7 @@ eposCommand(std::vector<int> _ids, int _br);
 
 private:
 /***********************VARIABLES*****************************/
-double kT = 31.5; // mNm/A
+double kT_ = 31.5; // mNm/A
 /***********************OPERATION*****************************/
 short unsigned int getDevStateValue(DevState state);
 enum DevState getDevState(short unsigned int state);

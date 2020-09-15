@@ -61,14 +61,14 @@ int main(int argc, char** argv)
 				return 1;
 		}
 
-		motorController.prepareMotors(motorIDs);
+		motorController.enableMotors(motorIDs);
 		// FSM --------------------------------------------------------------------------------------
 		bool runMotors = true;
 		ros::Rate rate(20);
 		std::vector<int> positions;
 		while(ros::ok() && runMotors)
 		{
-				if(motorController.prepareMotors(motorIDs))
+				if(motorController.enableMotors(motorIDs))
 				{
 						// VELOCITY -----------------------------------------------------------------------------
 						if (operationMode == "velocity")
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 		    {
 
 		        ROS_INFO("FAULT TRIGGERED");
-		        prepareCheck = motorController.prepareMotors(motorIDs);
+		        prepareCheck = motorController.enableMotors(motorIDs);
 
 		    }
 

@@ -9,7 +9,7 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 #include <Definitions.h>
-#include <epos_ros/epos_commmand.h>
+#include <epos_ros/epos_command.h>
 #include <geometry_msgs/Twist.h>
 
 #include <iostream>
@@ -124,7 +124,7 @@ int eposCommand::setMode(std::vector<int> _ids, OpMode _mode)
 		for (int i = 0; i < _ids.size(); ++i)
 		{
 				//std::cout << IDs.size() << std::endl;
-				if(VCS_SetOperationMode(key_handle_, _ids[i], _mode, &_error_code_value))
+				if(VCS_SetOperationMode(key_handle_, _ids[i], _mode, &error_code_))
 				{
 						ROS_INFO("Operation mode set");
 				} else
@@ -181,7 +181,7 @@ int eposCommand::resetDevice(unsigned short _node_id)
  */
 int eposCommand::setState(unsigned short _node_id, DevState _state)
 {
-		if( current_state == _state || VCS_SetState(key_handle_,_node_id,_state,&error_code_))
+		if( current_state_ == _state || VCS_SetState(key_handle_,_node_id,_state,&error_code_))
 		{
 				return MMC_SUCCESS;
 		} else
@@ -386,7 +386,7 @@ NEED TO CHECK VELOCITY CONVERSION
  */
 int eposCommand::goToVel(std::vector<int> _ids, std::vector<long> _velocities)
 {
-		if (current_mode != OMD_PROFILE_VELOCITY_MODE) setMode(_ids, OMD_PROFILE_VELOCITY_MODE);
+		if (current_mode_ != OMD_PROFILE_VELOCITY_MODE) setMode(_ids, OMD_PROFILE_VELOCITY_MODE);
 
 		for (int i = 0; i < _ids.size(); ++i)
 		{
@@ -476,14 +476,14 @@ int eposCommand::getCurrent(std::vector<int> _ids, std::vector<short> &_currents
 		return MMC_SUCCESS;
 }
 
-int eposCommand::goToTorque(std::vector<int> _ids, std::vector<long> torques, double gr)
+int eposCommand::goToTorque(std::vector<int> _ids, std::vector<long> _torques, double _gr)
 {
-		if (current_mode != OMD_CURRENT_MODE) setMode(_ids, OMD_CURRENT_MODE);
+		if (current_mode_ != OMD_CURRENT_MODE) setMode(_ids, OMD_CURRENT_MODE);
 
 		for (int i = 0; i < _ids.size(); ++i)
 		{
-				short currentA = floor(torques[i]/(kT*gr));
-				if (VCS_SetCurrentMust(key_handle_, _ids[i], currentA,&error_code_))
+				short current_amps = floor(_torques[i]/(kT_*_gr));
+				if (VCS_SetCurrentMust(key_handle_, _ids[i], current_amps,&error_code_))
 				{
 						ROS_INFO("Running Current");
 				} else {
@@ -510,7 +510,7 @@ int eposCommand::getError(unsigned short _error_code_value)
 		int result = MMC_FAILED;
 		if(VCS_GetErrorInfo(_error_code_value, error_code_char_, MMC_MAX_LOG_MSG_SIZE))
 		{
-				ROS_ERROR("ERROR %u: %u\n", _error_code_Value, *error_code_char_);
+				ROS_ERROR("ERROR %u: %u\n", _error_code_value, *error_code_char_);
 				result = MMC_SUCCESS;
 		}
 
@@ -518,9 +518,9 @@ int eposCommand::getError(unsigned short _error_code_value)
 }
 
 
-void eposCommand::logError(std::string functionName)
+void eposCommand::logError(std::string _function_name)
 {
-		std::cerr << "EPOS COMMAND: " << functionName << " failed (error_code_=0x" << std::hex << error_code_ << ")"<< std::endl;
+		std::cerr << "EPOS COMMAND: " << _function_name << " failed (error_code_=0x" << std::hex << error_code_ << ")"<< std::endl;
 }
 
 
@@ -544,12 +544,12 @@ int eposCommand::checkNodeID(int _id)
  */
 eposCommand::eposCommand(){
 		node_id_list_.push_back(2);
-		deviceName = "EPOS4";
-		protocolStackName = "MAXON SERIAL V2";
-		interfaceName = "USB";
-		portName = "USB0";
-		baudrate = 1000000;
-		NumDevices = 1;
+		device_name_ = "EPOS4";
+		protocol_stack_name_ = "MAXON SERIAL V2";
+		interface_name_ = "USB";
+		port_name_ = "USB0";
+		baud_rate_ = 1000000;
+		num_devices_ = 1;
 
 		ROS_INFO("EPOS COMMAND START");
 }
@@ -560,17 +560,17 @@ eposCommand::eposCommand(){
     @param ids id number of motors to be used
     @param br baudrate for communications
  */
-eposCommand::eposCommand(std::vector<int> _ids, int br){
+eposCommand::eposCommand(std::vector<int> _ids, int _br){
 		for (int i = 0; i < _ids.size(); ++i) {
 				node_id_list_.push_back( (unsigned short) _ids[i]);
 
 		}
-		deviceName = "EPOS4";
-		protocolStackName = "MAXON SERIAL V2";
-		interfaceName = "USB";
-		portName = "USB0";
-		baudrate = br;
-		NumDevices = _ids.size();
+		device_name_ = "EPOS4";
+		protocol_stack_name_ = "MAXON SERIAL V2";
+		interface_name_ = "USB";
+		port_name_ = "USB0";
+		baud_rate_ = _br;
+		num_devices_ = _ids.size();
 
 		ROS_INFO("EPOS COMMAND START");
 }
