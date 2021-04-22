@@ -1,0 +1,28 @@
+motor_ids:
+  list: [1,2,4,5,8,9,16,31]
+  ankle:
+    fl: 5
+    fr: 2
+    bl: 8
+    br: 31
+  drive:
+    fl: 4
+    fr: 1
+    bl: 9
+    br: 16
+gear_ratio: 126.0
+counts_per_rev: 128.0
+baudrate: 1000000
+wheel_radius:
+  in: 11.8
+  cm: 30.0
+absolute_limits:
+  ang_vel_rpm: 8000.0
+  acc_rpm: 100.0
+  curr_stall_a: 46.3
+  curr_inst_a: 15.0
+user_limit:
+  ang_vel_rpm: 3000.0
+  acc_rpm: 10.0
+  curr_inst_a: 15.0
+  curr_cont_a: 2.0

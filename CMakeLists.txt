@@ -124,7 +124,7 @@ include_directories(include ${catkin_INCLUDE_DIRS} /opt/EposCmdLib_${EPOS_CMD_LI
 #   src/${PROJECT_NAME}/epos.cpp
 # )
  add_library(epos_cmd
-  src/EPOS_CMD/epos_command.cpp
+  src/epos_cmd/epos_command.cpp
  )
 #add_library(motor_cmd
 #  ${catkin_LIBRARIES}
@@ -141,21 +141,28 @@ include_directories(include ${catkin_INCLUDE_DIRS} /opt/EposCmdLib_${EPOS_CMD_LI
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/epos_node.cpp)
 
-add_executable(test_node $ENV{EPOS_LIB_DIR} src/EPOS_CMD/epos_test_node.cpp)
+add_executable(test_node $ENV{EPOS_LIB_DIR} src/epos_cmd/epos_test_node.cpp)
 add_dependencies(test_node epos_ros_generate_messages_cpp)
 target_link_libraries(test_node
   ${catkin_LIBRARIES}
   epos_cmd
 )
 
-add_executable(epos_fsm_node $ENV{EPOS_LIB_DIR} src/EPOS_CMD/epos_FSM_node.cpp)
+add_executable(epos_fsm_node $ENV{EPOS_LIB_DIR} src/epos_cmd/epos_FSM_node.cpp)
 add_dependencies(epos_fsm_node epos_ros_generate_messages_cpp)
 target_link_libraries(epos_fsm_node
   ${catkin_LIBRARIES}
   epos_cmd
 )
 
-add_executable(hc_test_node $ENV{EPOS_LIB_DIR} src/EPOS_CMD/epos_hardcode_test_node.cpp)
+add_executable(ft_test_control_node $ENV{EPOS_LIB_DIR} src/direct_control/ft_test_control.cpp)
+add_dependencies(ft_test_control_node epos_ros_generate_messages_cpp)
+target_link_libraries(ft_test_control_node
+  ${catkin_LIBRARIES}
+  epos_cmd
+)
+
+add_executable(hc_test_node $ENV{EPOS_LIB_DIR} src/epos_cmd/epos_hardcode_test_node.cpp)
 add_dependencies(hc_test_node epos_ros_generate_messages_cpp)
 target_link_libraries(hc_test_node
   ${catkin_LIBRARIES}

@@ -41,14 +41,14 @@ int main(int argc, char** argv)
 		ros::Publisher pub = n.advertise<std_msgs::Int64MultiArray>("/motor_positions", 1000);
 
 		// IMPORT CONFIGURATION ---------------------------------------------------------------------
-		nh.param("motors_ids", motorIDs, {1,2,3,4});
+		nh.param("motors_ids/list", motorIDs);
 		int baudrate;
 		nh.param("baudrate", baudrate, 1000000);
 
 		for (int i = 0; i < motorIDs.size(); ++i) cmd.push_back(0);
 
 		double gearRatio, countsPerRev;
-		nh.param("gear_ratio", gearRatio, 74.0);
+		nh.param("gear_ratio", gearRatio, 126.0);
 		nh.param("counts_per_rev", countsPerRev, 128.0);
 
 		double countsPreRevShaft = countsPerRev*gearRatio;

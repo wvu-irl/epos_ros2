@@ -47,14 +47,22 @@ int main(int argc, char** argv)
 
 		motorIDs.push_back(1);
 		motorIDs.push_back(2);
-		motorIDs.push_back(3);
 		motorIDs.push_back(4);
+		motorIDs.push_back(5);
+		motorIDs.push_back(8);
+		motorIDs.push_back(9);
+		motorIDs.push_back(16);
+		motorIDs.push_back(31);
 		//std::vector<unsigned short> motorIDshort;
 		//motorIDshort.push_back(1);
 		//motorIDshort.push_back(2);
 		//motorIDs.push_back(3);
 		//motorIDs.push_back(4);
 
+		vels.push_back(0);
+		vels.push_back(0);
+		vels.push_back(0);
+		vels.push_back(0);
 		vels.push_back(0);
 		vels.push_back(0);
 		vels.push_back(0);
