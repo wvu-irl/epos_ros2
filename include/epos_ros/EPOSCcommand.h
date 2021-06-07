@@ -47,7 +47,7 @@ typedef int BOOL;
 	#define MMC_MAX_LOG_MSG_SIZE 512
 #endif
 
-class eposCommand {
+class EPOSCommand {
 void* key_handle_ = 0;
 unsigned int error_code_ = 0;
 //unsigned short maxStrSize = 512;

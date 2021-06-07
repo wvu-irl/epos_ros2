@@ -4,140 +4,131 @@
    Purpose: Deployable EPOS code for most projects un epos commands and test behavior
 
    @author Jared Beard
-   @version 1.0 3/4/19
+   @version 1.0 6/4/21
  */
-#include <ros/ros.h>
-#include <ros/console.h>
-#include <epos_ros/epos_command.h>
-#include <epos_ros/motor_command.h>
-#include <std_msgs/Int64MultiArray.h>
+
+
+#include <rclcpp/rclcpp.hpp>
+
+//#include <epos_ros/msg/EPOSCommand.h>
+#include <epos_ros/msg/MotorCommands.h>
+#include <std_msgs/msg/Int64MultiArray.h>
 
 #include <stdio.h>
 #include <cmath>
 #include <string>
+#include <memory>
 
-std::vector<int> motorIDs;
-std::vector<long> cmd;
-std::string operationMode; //1 = velocity, 2 = torque, 3 = current, 4 = position, 5 = homing
 
-void motorCommandCallback(const epos_ros::motor_command &msg)
-{
-		for (int i = 0; i < msg.numberItems; ++i)
-		{
-				motorIDs[msg.motorIDs[i]-1] = msg.motorIDs[i];
-				cmd[msg.motorIDs[i]-1] = msg.command[i];
-		}
-		operationMode = msg.driveMode;
-}
 
 
 int main(int argc, char** argv)
 {
 		// ROS INITILIZATION ------------------------------------------------------------------------
-		ros::init(argc,argv,"subscriber");
-		ros::NodeHandle nh;
-		ros::Subscriber sub = nh.subscribe("/eposCommand", 10, motorCommandCallback);
-		ros::NodeHandle n;
-		ros::Publisher pub = n.advertise<std_msgs::Int64MultiArray>("/motor_positions", 1000);
+		rclcpp::init(argc,argv);
+		MotorInterface interface("epos_fsm_node");
+				
 
 		// IMPORT CONFIGURATION ---------------------------------------------------------------------
-		nh.param("motors_ids/list", motorIDs);
-		int baudrate;
-		nh.param("baudrate", baudrate, 1000000);
+		// nh.param("motors_ids/list", motorIDs);
+		// int baudrate;
+		// nh.param("baudrate", baudrate, 1000000);
 
-		for (int i = 0; i < motorIDs.size(); ++i) cmd.push_back(0);
+		// for (int i = 0; i < motorIDs.size(); ++i) cmd.push_back(0);
 
-		double gearRatio, countsPerRev;
-		nh.param("gear_ratio", gearRatio, 126.0);
-		nh.param("counts_per_rev", countsPerRev, 128.0);
+		// double gearRatio, countsPerRev;
+		// nh.param("gear_ratio", gearRatio, 126.0);
+		// nh.param("counts_per_rev", countsPerRev, 128.0);
 
-		double countsPreRevShaft = countsPerRev*gearRatio;
+		// double countsPreRevShaft = countsPerRev*gearRatio;
 
-		// EPOS CONFIGURATION/PREPARATION------------------------------------------------------------
-		eposCommand motorController(motorIDs, baudrate);
-		if (!motorController.openDevices())
-		{
-				ROS_FATAL("Motor not opened");
-				return 1;
-		}
+		// // EPOS CONFIGURATION/PREPARATION------------------------------------------------------------
+		// EPOSCommand motorController(motorIDs, baudrate);
+		// if (!motorController.openDevices())
+		// {
+		// 		ROS_FATAL("Motor not opened");
+		// 		return 1;
+		// }
 
-		motorController.enableMotors(motorIDs);
-		// FSM --------------------------------------------------------------------------------------
-		bool runMotors = true;
-		ros::Rate rate(20);
-		std::vector<int> positions;
-		while(ros::ok() && runMotors)
-		{
-				if(motorController.enableMotors(motorIDs))
-				{
-						// VELOCITY -----------------------------------------------------------------------------
-						if (operationMode == "velocity")
-						{
-								motorController.goToVel(motorIDs, cmd);
+		// motorController.enableMotors(motorIDs);
+		// // FSM --------------------------------------------------------------------------------------
+		// bool runMotors = true;
+		// ros::Rate rate(20);
+		// std::vector<int> positions;
+		// while(rclcpp::ok() && runMotors)
+		// {
+		// 		if(motorController.enableMotors(motorIDs))
+		// 		{
+		// 				// VELOCITY -----------------------------------------------------------------------------
+		// 				if (operationMode == "velocity")
+		// 				{
+		// 						motorController.goToVel(motorIDs, cmd);
 
-								// VELOCITY -----------------------------------------------------------------------------
-						} else if (operationMode == "torque")
-						{
-								motorController.goToTorque(motorIDs, cmd, gearRatio);
+		// 						// VELOCITY -----------------------------------------------------------------------------
+		// 				} else if (operationMode == "torque")
+		// 				{
+		// 						motorController.goToTorque(motorIDs, cmd, gearRatio);
 
-								// CURRENT ------------------------------------------------------------------------------
-						} else if (operationMode == "current")
-						{
+		// 						// CURRENT ------------------------------------------------------------------------------
+		// 				} else if (operationMode == "current")
+		// 				{
 
-								// POSITION -----------------------------------------------------------------------------
-						} else if (operationMode == "position")
-						{
+		// 						// POSITION -----------------------------------------------------------------------------
+		// 				} else if (operationMode == "position")
+		// 				{
 
-								// HOMING -------------------------------------------------------------------------------
-						} else if (operationMode == "homing")
-						{
+		// 						// HOMING -------------------------------------------------------------------------------
+		// 				} else if (operationMode == "homing")
+		// 				{
 
-								// FAILED -------------------------------------------------------------------------------
-						} else
-						{
-								ROS_WARN("Invalid/missing operation mode");
-						}
+		// 						// FAILED -------------------------------------------------------------------------------
+		// 				} else
+		// 				{
+		// 						ROS_WARN("Invalid/missing operation mode");
+		// 				}
 
-						motorController.getPosition(motorIDs, positions);
-						std_msgs::Int64MultiArray motorPos;
-						for (int i = 0; i < positions.size(); ++i) motorPos.data[i] = positions[i];
-						//motorPosPrev.data[i] = motorPos.data[i];
-						pub.publish(motorPos);
-				}
+		// 				motorController.getPosition(motorIDs, positions);
+		// 				std_msgs::Int64MultiArray motorPos;
+		// 				for (int i = 0; i < positions.size(); ++i) motorPos.data[i] = positions[i];
+		// 				//motorPosPrev.data[i] = motorPos.data[i];
+		// 				pub.publish(motorPos);
+		// 		}
 
-				rate.sleep();
-				ros::spinOnce();
-		}
+		// 		rate.sleep();
+		// 		ros::spinOnce();
+		// }
 
-		/**std_msgs::Int64MultiArray motorPosPrev;
+		// /**std_msgs::Int64MultiArray motorPosPrev;
 
-		   for (int i = 0; i < motorIDs.size(); ++i) motorPosPrev.data.push_back(0);
-		   for (int i = 0; i < motorIDs.size(); ++i) motorPosPrev.data.push_back(1);
+		//    for (int i = 0; i < motorIDs.size(); ++i) motorPosPrev.data.push_back(0);
+		//    for (int i = 0; i < motorIDs.size(); ++i) motorPosPrev.data.push_back(1);
 
-		   while(ros::ok())     // && iteration < 500)
-		   {
-		    // I suspect these changes may need to be made on a per motor basis to get desired behavior
-		    bool moving = false;
-		    bool fault = false;
-		    for (int i = 0; i < vels.size(); ++i) if (vels[i] != 0) moving = true;
-		    for (int i = 0; i < motorIDs.size(); ++i) if (motorPosPrev.data[i] == motorPos.data[i]) fault = true;
-		    if (!( moving && !fault))
-		    {
+		//    while(ros::ok())     // && iteration < 500)
+		//    {
+		//     // I suspect these changes may need to be made on a per motor basis to get desired behavior
+		//     bool moving = false;
+		//     bool fault = false;
+		//     for (int i = 0; i < vels.size(); ++i) if (vels[i] != 0) moving = true;
+		//     for (int i = 0; i < motorIDs.size(); ++i) if (motorPosPrev.data[i] == motorPos.data[i]) fault = true;
+		//     if (!( moving && !fault))
+		//     {
 
-		        ROS_INFO("FAULT TRIGGERED");
-		        prepareCheck = motorController.enableMotors(motorIDs);
+		//         ROS_INFO("FAULT TRIGGERED");
+		//         prepareCheck = motorController.enableMotors(motorIDs);
 
-		    }
+		//     }
 
 
-		    //++iteration;
-		   }		 */
+		//     //++iteration;
+		//    }		 */
 
-		// STOP AND CLOSE MOTORS---------------------------------------------------------------------
-		std::vector<long> stopVels;
-		for (int i = 0; motorIDs.size(); ++i) stopVels.push_back(0);
-		motorController.goToVel(motorIDs,stopVels);
-		motorController.closeDevices();
+		// // STOP AND CLOSE MOTORS---------------------------------------------------------------------
+		// std::vector<long> stopVels;
+		// for (int i = 0; motorIDs.size(); ++i) stopVels.push_back(0);
+		// motorController.goToVel(motorIDs,stopVels);
+		// motorController.closeDevices();
+
+		rclcpp::shutdown();
 		return 0;
 
 }
