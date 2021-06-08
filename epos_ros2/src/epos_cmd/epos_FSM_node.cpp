@@ -11,8 +11,8 @@
 #include <rclcpp/rclcpp.hpp>
 
 //#include <epos_ros/msg/EPOSCommand.h>
-#include <epos_ros/msg/MotorCommands.h>
-#include <std_msgs/msg/Int64MultiArray.h>
+#include <epos_ros2_msgs/msg/motor_command.hpp>
+#include <std_msgs/msg/Int64MultiArray.hpp> // make a msg to wrap around this so we can specify motor
 
 #include <stdio.h>
 #include <cmath>
