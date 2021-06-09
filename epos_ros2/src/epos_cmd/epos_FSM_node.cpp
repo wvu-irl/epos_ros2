@@ -10,9 +10,13 @@
 
 #include <rclcpp/rclcpp.hpp>
 
+#include <std_msgs/msg/int64_multi_array.hpp> // make a msg to wrap around this so we can specify motor
+
 //#include <epos_ros/msg/EPOSCommand.h>
 #include <epos_ros2_msgs/msg/motor_command.hpp>
-#include <std_msgs/msg/Int64MultiArray.hpp> // make a msg to wrap around this so we can specify motor
+#include <epos_ros2_msgs/msg/motor_commands.hpp>
+
+#include <epos_ros2/MotorInterface.hpp>
 
 #include <stdio.h>
 #include <cmath>
