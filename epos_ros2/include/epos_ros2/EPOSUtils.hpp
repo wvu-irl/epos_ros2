@@ -1,6 +1,6 @@
 /*
-   ROS Interface for EPOS nodes
-   MotorInterface.hpp
+   Utilities to interface with ROS
+   EPOSUtils.hpp
    Purpose: Allow EPOS nodes to communicate with ROS
 
    @author Jared Beard

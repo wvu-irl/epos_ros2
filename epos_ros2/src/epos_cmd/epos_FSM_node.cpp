@@ -31,6 +31,14 @@ int main(int argc, char** argv)
 		// ROS INITILIZATION ------------------------------------------------------------------------
 		rclcpp::init(argc,argv);
 		MotorInterface interface("epos_fsm_node");
+
+		
+
+		while(rclcpp::ok())
+		{
+			RCLCPP_INFO(interface.get_logger(),"Yeet");
+
+		}
 				
 
 		// IMPORT CONFIGURATION ---------------------------------------------------------------------
