@@ -1,4 +1,5 @@
 motor_ids:
+  names: ['fr_drive', 'fr_ankle', 'fl_drive', 'fl_ankle', 'bl_ankle', 'bl_drive', 'br_drive', 'br_ankle']
   list: [1,2,4,5,8,9,16,31]
   ankle:
     fl: 5

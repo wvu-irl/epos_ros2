@@ -37,6 +37,7 @@ int main(int argc, char** argv)
 		while(rclcpp::ok())
 		{
 			RCLCPP_INFO(interface.get_logger(),"Yeet");
+			//rclcpp::spin_once(std::make_shared<MotorInterface>());
 
 		}
 				

@@ -44,11 +44,11 @@ if(BUILD_TESTING)
 endif()
 
 # Generate custom messages
-rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/MotorCommand.msg"
-  #"msg/MotorCommands.msg"
-  DEPENDENCIES builtin_interfaces std_msgs
-)
+# rosidl_generate_interfaces(${PROJECT_NAME}
+#   "msg/MotorCommand.msg"
+#   "msg/MotorCommands.msg"
+#   DEPENDENCIES builtin_interfaces std_msgs
+# )
 
 
 #add_library(epos_cmd
@@ -72,10 +72,15 @@ ament_target_dependencies(epos_fsm_node
   std_msgs 
   epos_ros2_msgs
 )
-rosidl_target_interfaces(epos_fsm_node
-     ${PROJECT_NAME} "rosidl_typesupport_cpp")
+#rosidl_target_interfaces(epos_fsm_node
+#     ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-
+add_executable(epos_parameters src/utils/epos_param_server.cpp)
+target_link_libraries(epos_parameters ${rclcpp_LIBRARIES})
+#add_dependencies(epos_parameters ${PROJECT_NAME})
+ament_target_dependencies(epos_parameters 
+  rclcpp 
+)
 
 #add_dependencies(epos_fsm_node epos_ros_generate_messages_cpp)
 #target_link_libraries(epos_fsm_node
@@ -85,6 +90,10 @@ rosidl_target_interfaces(epos_fsm_node
 
 install (TARGETS
   epos_fsm_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+install (TARGETS
+  epos_parameters
   DESTINATION lib/${PROJECT_NAME}
 )
 
