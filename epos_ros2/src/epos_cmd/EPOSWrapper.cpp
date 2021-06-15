@@ -1,6 +1,6 @@
 /*
-   Maxon Motor Controller eposCommand
-   epos_command.cpp
+   Maxon Motor Controller EPOSWrapper
+   EPOSWrapper.cpp
    Purpose: Wrap EPOS commands and integrate with ROS for general purpose motor control
 
    @author Jared Beard
@@ -9,7 +9,7 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 #include <Definitions.h>
-#include <epos_ros/EPOSCommand.h>
+#include <epos_ros2/EPOSWrapper.hpp>
 #include <geometry_msgs/Twist.h>
 
 #include <iostream>
@@ -34,7 +34,7 @@
 
     @return Success(0)/Failure(1) of commands
  */
-int eposCommand::openDevices()
+int EPOSWrapper::openDevices()
 {
 		//Success of code
 		int result = MMC_FAILED;
@@ -95,7 +95,7 @@ int eposCommand::openDevices()
 
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::closeDevices()
+int EPOSWrapper::closeDevices()
 {
 		int result = MMC_FAILED;
 		error_code_ = 0;
@@ -118,7 +118,7 @@ int eposCommand::closeDevices()
     @param _mode operation mode to be set
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::setMode(std::vector<int> _ids, OpMode _mode)
+int EPOSWrapper::setMode(std::vector<int> _ids, OpMode _mode)
 {
 		current_mode_ = _mode;
 		for (int i = 0; i < _ids.size(); ++i)
@@ -141,7 +141,7 @@ int eposCommand::setMode(std::vector<int> _ids, OpMode _mode)
 
     @param msg ROS msg of custom type:
  */
-/**void eposCommand::setModeCallback(const )
+/**void EPOSWrapper::setModeCallback(const )
    {
    for(int i = 0; i < msg.nodeID.size(); ++i)
    {
@@ -160,7 +160,7 @@ int eposCommand::setMode(std::vector<int> _ids, OpMode _mode)
 
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::resetDevice(unsigned short _node_id)
+int EPOSWrapper::resetDevice(unsigned short _node_id)
 {
 		int result = MMC_FAILED;
 
@@ -179,7 +179,7 @@ int eposCommand::resetDevice(unsigned short _node_id)
     @param _state desried state of state machine
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::setState(unsigned short _node_id, DevState _state)
+int EPOSWrapper::setState(unsigned short _node_id, DevState _state)
 {
 		if( current_state_ == _state || VCS_SetState(key_handle_,_node_id,_state,&error_code_))
 		{
@@ -197,7 +197,7 @@ int eposCommand::setState(unsigned short _node_id, DevState _state)
     @param _state state of state machine
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::getState(unsigned short _node_id, DevState &_state)
+int EPOSWrapper::getState(unsigned short _node_id, DevState &_state)
 {
 		short unsigned int state_value; // = getDevStateValue(state);
 		ROS_DEBUG("Retrieving State");
@@ -226,7 +226,7 @@ int eposCommand::getState(unsigned short _node_id, DevState &_state)
     @param _state state of interest
     @return state integer value
  */
-short unsigned int eposCommand::getDevStateValue(DevState _state){
+short unsigned int EPOSWrapper::getDevStateValue(DevState _state){
 		short unsigned int disabled = 0x0000;
 		short unsigned int enabled = 0x0001;
 		short unsigned int quickstop = 0x0002;
@@ -252,7 +252,7 @@ short unsigned int eposCommand::getDevStateValue(DevState _state){
     @param _mode mode of interest
     @return mode integer value
  */
-int eposCommand::getModeValue(OpMode _mode){
+int EPOSWrapper::getModeValue(OpMode _mode){
 		int position = 1;
 		int velocity = 3;
 		int homing = 6;
@@ -279,7 +279,7 @@ int eposCommand::getModeValue(OpMode _mode){
     @param _state state of interest
     @return state enum value
  */
-enum eposCommand::DevState eposCommand::getDevState(short unsigned int _state)
+enum EPOSWrapper::DevState EPOSWrapper::getDevState(short unsigned int _state)
 {
 		short unsigned int disabled = 0x0000;
 		short unsigned int enabled = 0x0001;
@@ -306,7 +306,7 @@ enum eposCommand::DevState eposCommand::getDevState(short unsigned int _state)
     @param _id motor id
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::handleFault(int _id)
+int EPOSWrapper::handleFault(int _id)
 {
 		BOOL is_fault = 0;
 		std::cout << "HF start" << std::endl;
@@ -341,7 +341,7 @@ int eposCommand::handleFault(int _id)
     @param _ids motor ids
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::enableMotors(std::vector<int> _ids)
+int EPOSWrapper::enableMotors(std::vector<int> _ids)
 {
 		DevState state;
 		for (int i = 0; i < _ids.size(); ++i)
@@ -384,7 +384,7 @@ NEED TO CHECK VELOCITY CONVERSION
 		@param _velocities angular velocities for each motor. If only one velocity listed, it will be applied to all motor ids provided.
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::goToVel(std::vector<int> _ids, std::vector<long> _velocities)
+int EPOSWrapper::goToVel(std::vector<int> _ids, std::vector<long> _velocities)
 {
 		if (current_mode_ != OMD_PROFILE_VELOCITY_MODE) setMode(_ids, OMD_PROFILE_VELOCITY_MODE);
 
@@ -419,7 +419,7 @@ int eposCommand::goToVel(std::vector<int> _ids, std::vector<long> _velocities)
 		@param _positions angular position for each motor
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::getPosition(std::vector<int> _ids, std::vector<int> &_positions) //128 cts/turn
+int EPOSWrapper::getPosition(std::vector<int> _ids, std::vector<int> &_positions) //128 cts/turn
 {
 		int pos = 0;
 		//ROS_WARN("---------------------------------------------------%d", pos);
@@ -451,7 +451,7 @@ int eposCommand::getPosition(std::vector<int> _ids, std::vector<int> &_positions
 		@param current current for each motor
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::getCurrent(std::vector<int> _ids, std::vector<short> &_currents)
+int EPOSWrapper::getCurrent(std::vector<int> _ids, std::vector<short> &_currents)
 {
     	short current = 0;
 		//ROS_WARN("---------------------------------------------------%d", pos);
@@ -476,7 +476,7 @@ int eposCommand::getCurrent(std::vector<int> _ids, std::vector<short> &_currents
 		return MMC_SUCCESS;
 }
 
-int eposCommand::goToTorque(std::vector<int> _ids, std::vector<long> _torques, double _gr)
+int EPOSWrapper::goToTorque(std::vector<int> _ids, std::vector<long> _torques, double _gr)
 {
 		if (current_mode_ != OMD_CURRENT_MODE) setMode(_ids, OMD_CURRENT_MODE);
 
@@ -505,7 +505,7 @@ int eposCommand::goToTorque(std::vector<int> _ids, std::vector<long> _torques, d
     @param error_code_Value Error code number
     @return Success(0)/Failure(1) of command
  */
-int eposCommand::getError(unsigned short _error_code_value)
+int EPOSWrapper::getError(unsigned short _error_code_value)
 {
 		int result = MMC_FAILED;
 		if(VCS_GetErrorInfo(_error_code_value, error_code_char_, MMC_MAX_LOG_MSG_SIZE))
@@ -518,13 +518,13 @@ int eposCommand::getError(unsigned short _error_code_value)
 }
 
 
-void eposCommand::logError(std::string _function_name)
+void EPOSWrapper::logError(std::string _function_name)
 {
 		std::cerr << "EPOS COMMAND: " << _function_name << " failed (error_code_=0x" << std::hex << error_code_ << ")"<< std::endl;
 }
 
 
-int eposCommand::checkNodeID(int _id)
+int EPOSWrapper::checkNodeID(int _id)
 {
 		int result = MMC_FAILED;
 
@@ -542,7 +542,7 @@ int eposCommand::checkNodeID(int _id)
 /**
     Default Constructor
  */
-eposCommand::eposCommand(){
+EPOSWrapper::EPOSWrapper(){
 		node_id_list_.push_back(2);
 		device_name_ = "EPOS4";
 		protocol_stack_name_ = "MAXON SERIAL V2";
@@ -560,7 +560,7 @@ eposCommand::eposCommand(){
     @param ids id number of motors to be used
     @param br baudrate for communications
  */
-eposCommand::eposCommand(std::vector<int> _ids, int _br){
+EPOSWrapper::EPOSWrapper(std::vector<int> _ids, int _br){
 		for (int i = 0; i < _ids.size(); ++i) {
 				node_id_list_.push_back( (unsigned short) _ids[i]);
 
@@ -578,7 +578,7 @@ eposCommand::eposCommand(std::vector<int> _ids, int _br){
 /**
     Destructor closes all devices
  */
-eposCommand::~eposCommand()
+EPOSWrapper::~EPOSWrapper()
 {
 		int i = 0;
 		while(!closeDevices() && i < 5)

@@ -6,8 +6,8 @@
    @author Jared Beard
    @version 1.0 11/13/18
  */
-#ifndef MOTOR_CMD_H
-#define MOTOR_CMD_H
+#ifndef EPOS_WRAPPER_HPP
+#define EPOS_WRAPPER_HPP
 
 	#ifndef MMC_SUCCESS
 	 #define MMC_SUCCESS 1
@@ -47,7 +47,7 @@ typedef int BOOL;
 	#define MMC_MAX_LOG_MSG_SIZE 512
 #endif
 
-class EPOSCommand {
+class EPOSWrapper {
 void* key_handle_ = 0;
 unsigned int error_code_ = 0;
 //unsigned short maxStrSize = 512;
@@ -95,6 +95,7 @@ int setState(unsigned short _node_id, DevState _state);
 int getState(unsigned short _node_id, DevState &_state);
 
 /***********************OPERATION*******************************/
+virtual bool checkFault();
 int handleFault(int _id);
 int enableMotors(std::vector<int> _ids);
 int goToVel(std::vector<int> _ids, std::vector<long> _velocities);
