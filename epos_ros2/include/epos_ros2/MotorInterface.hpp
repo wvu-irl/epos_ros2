@@ -36,6 +36,8 @@ private:
 	void motor_callback(const sensor_msgs::msg::JointState::SharedPtr msg);
 	void main_callback();
 
+	epos2::EPOSParams get_params();
+
 };
 
 #endif

@@ -23,6 +23,7 @@ namespace epos2
     OMD_HOMING_MODE = 6,
     OMD_CURRENT_MODE = -3
   };
+
   enum DevState
   {
     DISABLED = 0x0000,
@@ -33,15 +34,26 @@ namespace epos2
 
   struct EPOSParams
   {
-    std::vector<int> ids{1};
-    int baudrate = 1000000;
+    // Motors
+    std::map<std::string, int> motor_name_map;
+    std::map<int, int> motor_ind_map;
+    std::vector<int> motor_inds;
+    double gear_ratio;
+    int counts_per_rev;
+    double wheel_radius;                // cm
+    double ang_vel_limit;               // RPM
+    double acc_limit;                   // RPM
+    double stall_current;               // A
+    double instantaneous_current_limit; // A
+    double continuous_current_limit;    // A
+    double kT = 31.5;                   // mNm/A
+
+    // EPOS Modules
+    int baud_rate = 1000000;
     std::string device_name = "EPOS4";
     std::string protocol_stack_name = "MAXON SERIAL V2";
     std::string interface_name = "USB";
     std::string port_name = "USB0";
-    int num_devices = 1;
-
-    double kT_ = 31.5; // mNm/A
   };
 
 }

@@ -1,0 +1,13 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from epos_ros2_msgs/msg/MotorCommands.msg
+// generated code does not contain a copyright notice
+
+#include "epos_ros2_msgs/msg/MotorCommand.idl"
+
+module epos_ros2_msgs {
+  module msg {
+    struct MotorCommands {
+      sequence<epos_ros2_msgs::msg::MotorCommand> commands;
+    };
+  };
+};

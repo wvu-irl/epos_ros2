@@ -1,0 +1,7 @@
+{
+  "package_name": "epos_ros2_msgs",
+  "non_idl_tuples": [
+    "/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2_msgs:msg/MotorCommand.msg",
+    "/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2_msgs:msg/MotorCommands.msg"
+  ]
+}

@@ -1,0 +1,55 @@
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:[m[K In function ‘[01m[Kepos2::EPOSParams get_params()[m[K’:
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:48:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   48 |  [01;31m[Kthis[m[K->get_parameter("motors/names", motors);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:50:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   50 |  [01;31m[Kthis[m[K->get_parameter("motors/ids", motors);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:51:20:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<std::__cxx11::basic_string<char> >::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K-Wsign-compare[m[K]
+   51 |  for (int i = 0; [01;35m[Ki < motors.size()[m[K; ++i)
+      |                  [01;35m[K~~^~~~~~~~~~~~~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:56:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   56 |  [01;31m[Kthis[m[K->get_parameter("motors/gear_ratio", params.gear_ratio);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:57:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   57 |  [01;31m[Kthis[m[K->get_parameter("motors/counts_per_rev", params.counts_per_rev);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:58:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   58 |  [01;31m[Kthis[m[K->get_parameter("motors/wheel_radius/cm", params.wheel_radius);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:59:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   59 |  [01;31m[Kthis[m[K->get_parameter("motors/kT", params.kT);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:60:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   60 |  [01;31m[Kthis[m[K->get_parameter("motors/user_limits/ang_vel_rpm", params.ang_vel_limit);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:61:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   61 |  [01;31m[Kthis[m[K->get_parameter("motors/user_limits/acc_rpm", params.acc_limit);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:62:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   62 |  [01;31m[Kthis[m[K->get_parameter("motors/absolute_limits/curr_stall_a", params.stall_current);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:63:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   63 |  [01;31m[Kthis[m[K->get_parameter("motors/user_limits/curr_inst_a", params.instantaneous_current_limit);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:64:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   64 |  [01;31m[Kthis[m[K->get_parameter("motors/user_limits/curr_cont_a", params.continuous_current_limit);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:67:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   67 |  [01;31m[Kthis[m[K->get_parameter("epos_modules/device", params.device_name);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:68:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   68 |  [01;31m[Kthis[m[K->get_parameter("epos_modules/protocol", params.protocol_stack_name);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:69:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   69 |  [01;31m[Kthis[m[K->get_parameter("epos_modules/com_interface", params.interface_name);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:70:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   70 |  [01;31m[Kthis[m[K->get_parameter("epos_modules/port", params.port_name);
+      |  [01;31m[K^~~~[m[K
+[01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:71:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+   71 |  [01;31m[Kthis[m[K->get_parameter("epos_modules/baud_rate", params.baud_rate);
+      |  [01;31m[K^~~~[m[K
+make[2]: *** [CMakeFiles/motor_interface_lib.dir/build.make:63: CMakeFiles/motor_interface_lib.dir/src/MotorInterface.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:110: CMakeFiles/motor_interface_lib.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

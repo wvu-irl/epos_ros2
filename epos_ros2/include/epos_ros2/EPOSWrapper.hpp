@@ -9,16 +9,16 @@
 #ifndef EPOS_WRAPPER_HPP
 #define EPOS_WRAPPER_HPP
 
-#ifndef MMC_SUCCESS
-#define MMC_SUCCESS 1
+#ifndef RETURN_SUCCESS
+#define RETURN_SUCCESS 1
 #endif
 
-#ifndef MMC_FAILED
-#define MMC_FAILED 0
+#ifndef RETURN_FAILED
+#define RETURN_FAILED 0
 #endif
 
-#ifndef MMC_MAX_LOG_MSG_SIZE
-#define MMC_MAX_LOG_MSG_SIZE 512
+#ifndef MAX_LOG_MSG_SIZE
+#define MAX_LOG_MSG_SIZE 512
 #endif
 
 #define assertm(exp, msg) assert(((void)msg, exp))
@@ -50,29 +50,29 @@
 typedef void *HANDLE;
 typedef int BOOL;
 
+
 namespace epos2
 {
 
 	class EPOSWrapper
 	{
 
-		// void *key_handle_ = 0;
-		// unsigned int error_code_ = 0;
-		// //unsigned short maxStrSize = 512;
-		// std::vector<unsigned short> node_id_list_;
-		// char *error_code_char_;
+		void *key_handle_ = 0;
+		unsigned int error_code_ = 0;
+		//unsigned short maxStrSize = 512;
+		char *error_code_char_;
 
 	public:
 		/***********************VARIABLES*****************************/
-		DevState current_state_;
-		OpMode current_mode_;
+		std::vector<int> current_state_;
+		std::vector<int> current_mode_;
 		//ROSNodeParams node_params_;
 		EPOSParams epos_params_;
 
 		//Setup error codes to print intead of being accepted as input. Makes the output simpler...
 		/***********************INTIALIZATION***************************/
-		// int openDevices   ();
-		// int closeDevices  ();
+		int open_devices();
+		int close_devices  ();
 
 		// /***********************CONFIGURATION***************************/
 		// int setMode(std::vector<int> _node_ids, OpMode _mode);
@@ -102,7 +102,7 @@ namespace epos2
 		// velocity units, default operation mode
 		EPOSWrapper(EPOSParams _epos_params);//, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params);
 		//motor_cmd(); <- read input from launch
-		// ~EPOSWrapper();
+		~EPOSWrapper();
 
 		/**   // get
    int   setPosProfile();

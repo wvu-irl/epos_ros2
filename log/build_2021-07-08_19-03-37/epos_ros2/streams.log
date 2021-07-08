@@ -1,0 +1,117 @@
+[0.051s] Invoking command in '/media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2': AMENT_PREFIX_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs:/opt/ros/galactic:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib:/opt/ros/galactic/opt/yaml_cpp_vendor/lib:/opt/ros/galactic/opt/rviz_ogre_vendor/lib:/opt/ros/galactic/lib/x86_64-linux-gnu:/opt/ros/galactic/lib:/opt/ros/noetic/lib:/usr/local/cuda-9.0/lib64 PYTHONPATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2 -DCMAKE_INSTALL_PREFIX=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2
+[0.214s] -- The C compiler identification is GNU 9.3.0
+[0.597s] -- The CXX compiler identification is GNU 9.3.0
+[0.626s] -- Check for working C compiler: /usr/bin/cc
+[0.865s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.866s] -- Detecting C compiler ABI info
+[1.136s] -- Detecting C compiler ABI info - done
+[1.159s] -- Detecting C compile features
+[1.159s] -- Detecting C compile features - done
+[1.177s] -- Check for working CXX compiler: /usr/bin/c++
+[1.449s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[1.452s] -- Detecting CXX compiler ABI info
+[1.676s] -- Detecting CXX compiler ABI info - done
+[1.724s] -- Detecting CXX compile features
+[1.728s] -- Detecting CXX compile features - done
+[1.776s] -- Found ament_cmake: 1.1.4 (/opt/ros/galactic/share/ament_cmake/cmake)
+[1.857s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.5", minimum required is "3") 
+[1.857s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[2.044s] -- Found rclcpp: 9.1.0 (/opt/ros/galactic/share/rclcpp/cmake)
+[2.167s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.189s] -- Found rosidl_adapter: 2.2.1 (/opt/ros/galactic/share/rosidl_adapter/cmake)
+[2.401s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[2.452s] -- Found FastRTPS: /opt/ros/galactic/include  
+[2.700s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.825s] -- Found rmw_implementation_cmake: 3.3.1 (/opt/ros/galactic/share/rmw_implementation_cmake/cmake)
+[2.835s] -- Found rmw_cyclonedds_cpp: 0.22.2 (/opt/ros/galactic/share/rmw_cyclonedds_cpp/cmake)
+[2.871s] -- Using RMW implementation 'rmw_cyclonedds_cpp' as default
+[2.879s] -- Looking for pthread.h
+[3.128s] -- Looking for pthread.h - found
+[3.132s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[3.374s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[3.376s] -- Looking for pthread_create in pthreads
+[3.604s] -- Looking for pthread_create in pthreads - not found
+[3.605s] -- Looking for pthread_create in pthread
+[3.861s] -- Looking for pthread_create in pthread - found
+[3.867s] -- Found Threads: TRUE  
+[4.130s] -- Found rosidl_default_generators: 1.1.1 (/opt/ros/galactic/share/rosidl_default_generators/cmake)
+[4.163s] -- Found epos_ros2_msgs: 0.0.0 (/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake)
+[4.211s] -- Found sensor_msgs: 2.2.3 (/opt/ros/galactic/share/sensor_msgs/cmake)
+[4.499s] -- Found ament_lint_auto: 0.10.6 (/opt/ros/galactic/share/ament_lint_auto/cmake)
+[4.763s] -- Added test 'copyright' to check source files copyright and LICENSE
+[4.837s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[4.840s] -- Configured cppcheck include dirs: /media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/include
+[4.841s] -- Configured cppcheck exclude dirs and/or files: 
+[4.916s] -- Added test 'cpplint' to check C / C++ code against the Google style
+[4.916s] -- Configured cpplint exclude dirs and/or files: 
+[4.960s] -- Added test 'lint_cmake' to check CMake code style
+[5.040s] -- Added test 'uncrustify' to check C / C++ code style
+[5.041s] -- Configured uncrustify additional arguments: 
+[5.056s] -- Added test 'xmllint' to check XML markup files
+[5.104s] -- Configuring done
+[5.316s] -- Generating done
+[5.347s] -- Build files have been written to: /media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2
+[5.363s] Invoked command in '/media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2' returned '0': AMENT_PREFIX_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs:/opt/ros/galactic:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib:/opt/ros/galactic/opt/yaml_cpp_vendor/lib:/opt/ros/galactic/opt/rviz_ogre_vendor/lib:/opt/ros/galactic/lib/x86_64-linux-gnu:/opt/ros/galactic/lib:/opt/ros/noetic/lib:/usr/local/cuda-9.0/lib64 PYTHONPATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2 -DCMAKE_INSTALL_PREFIX=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2
+[5.369s] Invoking command in '/media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2': AMENT_PREFIX_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs:/opt/ros/galactic:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib:/opt/ros/galactic/opt/yaml_cpp_vendor/lib:/opt/ros/galactic/opt/rviz_ogre_vendor/lib:/opt/ros/galactic/lib/x86_64-linux-gnu:/opt/ros/galactic/lib:/opt/ros/noetic/lib:/usr/local/cuda-9.0/lib64 PYTHONPATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2 -- -j4 -l4
+[5.580s] [35m[1mScanning dependencies of target epos_wrapper_lib[0m
+[5.975s] [ 16%] [32mBuilding CXX object CMakeFiles/epos_wrapper_lib.dir/src/EPOSWrapper.cpp.o[0m
+[9.643s] [ 33%] [32m[1mLinking CXX static library libepos_wrapper_lib.a[0m
+[9.791s] [ 33%] Built target epos_wrapper_lib
+[9.833s] [35m[1mScanning dependencies of target motor_interface_lib[0m
+[10.273s] [ 50%] [32mBuilding CXX object CMakeFiles/motor_interface_lib.dir/src/MotorInterface.cpp.o[0m
+[13.358s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:[m[K In function ‘[01m[Kepos2::EPOSParams get_params()[m[K’:
+[13.359s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:48:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.359s]    48 |  [01;31m[Kthis[m[K->get_parameter("motors/names", motors);
+[13.359s]       |  [01;31m[K^~~~[m[K
+[13.360s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:50:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.360s]    50 |  [01;31m[Kthis[m[K->get_parameter("motors/ids", motors);
+[13.361s]       |  [01;31m[K^~~~[m[K
+[13.361s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:51:20:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Kstd::vector<std::__cxx11::basic_string<char> >::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K-Wsign-compare[m[K]
+[13.362s]    51 |  for (int i = 0; [01;35m[Ki < motors.size()[m[K; ++i)
+[13.362s]       |                  [01;35m[K~~^~~~~~~~~~~~~~~[m[K
+[13.394s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:56:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.397s]    56 |  [01;31m[Kthis[m[K->get_parameter("motors/gear_ratio", params.gear_ratio);
+[13.401s]       |  [01;31m[K^~~~[m[K
+[13.402s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:57:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.402s]    57 |  [01;31m[Kthis[m[K->get_parameter("motors/counts_per_rev", params.counts_per_rev);
+[13.402s]       |  [01;31m[K^~~~[m[K
+[13.403s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:58:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.404s]    58 |  [01;31m[Kthis[m[K->get_parameter("motors/wheel_radius/cm", params.wheel_radius);
+[13.404s]       |  [01;31m[K^~~~[m[K
+[13.405s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:59:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.405s]    59 |  [01;31m[Kthis[m[K->get_parameter("motors/kT", params.kT);
+[13.406s]       |  [01;31m[K^~~~[m[K
+[13.407s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:60:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.407s]    60 |  [01;31m[Kthis[m[K->get_parameter("motors/user_limits/ang_vel_rpm", params.ang_vel_limit);
+[13.408s]       |  [01;31m[K^~~~[m[K
+[13.408s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:61:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.408s]    61 |  [01;31m[Kthis[m[K->get_parameter("motors/user_limits/acc_rpm", params.acc_limit);
+[13.409s]       |  [01;31m[K^~~~[m[K
+[13.409s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:62:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.410s]    62 |  [01;31m[Kthis[m[K->get_parameter("motors/absolute_limits/curr_stall_a", params.stall_current);
+[13.410s]       |  [01;31m[K^~~~[m[K
+[13.410s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:63:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.411s]    63 |  [01;31m[Kthis[m[K->get_parameter("motors/user_limits/curr_inst_a", params.instantaneous_current_limit);
+[13.411s]       |  [01;31m[K^~~~[m[K
+[13.412s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:64:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.412s]    64 |  [01;31m[Kthis[m[K->get_parameter("motors/user_limits/curr_cont_a", params.continuous_current_limit);
+[13.412s]       |  [01;31m[K^~~~[m[K
+[13.413s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:67:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.413s]    67 |  [01;31m[Kthis[m[K->get_parameter("epos_modules/device", params.device_name);
+[13.413s]       |  [01;31m[K^~~~[m[K
+[13.414s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:68:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.414s]    68 |  [01;31m[Kthis[m[K->get_parameter("epos_modules/protocol", params.protocol_stack_name);
+[13.415s]       |  [01;31m[K^~~~[m[K
+[13.415s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:69:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.415s]    69 |  [01;31m[Kthis[m[K->get_parameter("epos_modules/com_interface", params.interface_name);
+[13.416s]       |  [01;31m[K^~~~[m[K
+[13.416s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:70:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.417s]    70 |  [01;31m[Kthis[m[K->get_parameter("epos_modules/port", params.port_name);
+[13.417s]       |  [01;31m[K^~~~[m[K
+[13.418s] [01m[K/media/jared/32GB3/home/epos_ws/src/epos_ros2/epos_ros2/src/MotorInterface.cpp:71:2:[m[K [01;31m[Kerror: [m[Kinvalid use of ‘[01m[Kthis[m[K’ in non-member function
+[13.418s]    71 |  [01;31m[Kthis[m[K->get_parameter("epos_modules/baud_rate", params.baud_rate);
+[13.418s]       |  [01;31m[K^~~~[m[K
+[16.490s] make[2]: *** [CMakeFiles/motor_interface_lib.dir/build.make:63: CMakeFiles/motor_interface_lib.dir/src/MotorInterface.cpp.o] Error 1
+[16.491s] make[1]: *** [CMakeFiles/Makefile2:110: CMakeFiles/motor_interface_lib.dir/all] Error 2
+[16.493s] make: *** [Makefile:141: all] Error 2
+[16.499s] Invoked command in '/media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2' returned '2': AMENT_PREFIX_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs:/opt/ros/galactic:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib:/opt/ros/galactic/opt/yaml_cpp_vendor/lib:/opt/ros/galactic/opt/rviz_ogre_vendor/lib:/opt/ros/galactic/lib/x86_64-linux-gnu:/opt/ros/galactic/lib:/opt/ros/noetic/lib:/usr/local/cuda-9.0/lib64 PYTHONPATH=/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2 -- -j4 -l4

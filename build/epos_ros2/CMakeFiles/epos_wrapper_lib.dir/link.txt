@@ -1,0 +1,2 @@
+/usr/bin/ar qc libepos_wrapper_lib.a  CMakeFiles/epos_wrapper_lib.dir/src/EPOSWrapper.cpp.o
+/usr/bin/ranlib libepos_wrapper_lib.a

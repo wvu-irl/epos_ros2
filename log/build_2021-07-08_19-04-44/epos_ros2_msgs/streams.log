@@ -1,0 +1,132 @@
+[0.052s] Invoking command in '/media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2_msgs': CMAKE_PREFIX_PATH=/opt/ros/galactic:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2_msgs -- -j4 -l4
+[0.301s] [  2%] Built target epos_ros2_msgs__cpp
+[0.309s] [ 12%] Built target epos_ros2_msgs__rosidl_generator_c
+[0.508s] [ 25%] Built target epos_ros2_msgs__rosidl_typesupport_introspection_cpp
+[0.526s] [ 33%] Built target epos_ros2_msgs__rosidl_typesupport_introspection_c
+[0.540s] [ 43%] Built target epos_ros2_msgs__rosidl_typesupport_cpp
+[0.543s] [ 53%] Built target epos_ros2_msgs__rosidl_typesupport_fastrtps_cpp
+[0.774s] [ 64%] Built target epos_ros2_msgs__rosidl_typesupport_fastrtps_c
+[0.789s] [ 74%] Built target epos_ros2_msgs__rosidl_typesupport_c
+[0.860s] [ 74%] Built target epos_ros2_msgs
+[0.927s] [ 76%] Built target epos_ros2_msgs__py
+[1.011s] [ 84%] Built target epos_ros2_msgs__python
+[1.140s] [ 89%] Built target epos_ros2_msgs__rosidl_typesupport_introspection_c__pyext
+[1.179s] [ 94%] Built target epos_ros2_msgs__rosidl_typesupport_c__pyext
+[1.193s] [100%] Built target epos_ros2_msgs__rosidl_typesupport_fastrtps_c__pyext
+[1.246s] Invoked command in '/media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/galactic:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2_msgs -- -j4 -l4
+[1.416s] Invoking command in '/media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2_msgs': CMAKE_PREFIX_PATH=/opt/ros/galactic:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2_msgs
+[1.469s] -- Install configuration: ""
+[1.474s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/ament_index/resource_index/rosidl_interfaces/epos_ros2_msgs
+[1.477s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs
+[1.481s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg
+[1.487s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail
+[1.494s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__functions.c
+[1.500s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__functions.h
+[1.503s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__struct.h
+[1.506s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__type_support.h
+[1.511s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__functions.c
+[1.515s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__functions.h
+[1.521s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__struct.h
+[1.526s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__type_support.h
+[1.532s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/motor_command.h
+[1.536s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/motor_commands.h
+[1.541s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/rosidl_generator_c__visibility_control.h
+[1.544s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/environment/library_path.sh
+[1.553s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/environment/library_path.dsv
+[1.559s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/libepos_ros2_msgs__rosidl_generator_c.so
+[1.568s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs
+[1.571s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg
+[1.574s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail
+[1.579s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__rosidl_typesupport_fastrtps_c.h
+[1.584s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__rosidl_typesupport_fastrtps_c.h
+[1.588s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[1.595s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/libepos_ros2_msgs__rosidl_typesupport_fastrtps_c.so
+[1.601s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs
+[1.606s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg
+[1.609s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail
+[1.615s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/dds_fastrtps
+[1.621s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__rosidl_typesupport_fastrtps_cpp.hpp
+[1.625s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__rosidl_typesupport_fastrtps_cpp.hpp
+[1.631s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[1.637s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/libepos_ros2_msgs__rosidl_typesupport_fastrtps_cpp.so
+[1.641s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs
+[1.645s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg
+[1.649s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail
+[1.655s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__rosidl_typesupport_introspection_c.h
+[1.660s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__type_support.c
+[1.665s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__rosidl_typesupport_introspection_c.h
+[1.670s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__type_support.c
+[1.674s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[1.680s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/libepos_ros2_msgs__rosidl_typesupport_introspection_c.so
+[1.690s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/libepos_ros2_msgs__rosidl_typesupport_c.so
+[1.695s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs
+[1.698s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg
+[1.700s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail
+[1.706s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__builder.hpp
+[1.710s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__struct.hpp
+[1.714s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__traits.hpp
+[1.717s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__builder.hpp
+[1.719s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__struct.hpp
+[1.726s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__traits.hpp
+[1.733s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/motor_command.hpp
+[1.737s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/motor_commands.hpp
+[1.742s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs
+[1.745s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg
+[1.747s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail
+[1.752s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__rosidl_typesupport_introspection_cpp.hpp
+[1.757s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_commands__type_support.cpp
+[1.761s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__rosidl_typesupport_introspection_cpp.hpp
+[1.766s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/include/epos_ros2_msgs/msg/detail/motor_command__type_support.cpp
+[1.774s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/libepos_ros2_msgs__rosidl_typesupport_introspection_cpp.so
+[1.781s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/libepos_ros2_msgs__rosidl_typesupport_cpp.so
+[1.788s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/environment/pythonpath.sh
+[1.793s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/environment/pythonpath.dsv
+[1.798s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages/epos_ros2_msgs/__init__.py
+[1.887s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages/epos_ros2_msgs/msg
+[1.893s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages/epos_ros2_msgs/msg/_motor_command.py
+[1.895s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages/epos_ros2_msgs/msg/_motor_commands.py
+[1.900s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages/epos_ros2_msgs/msg/_motor_commands_s.c
+[1.903s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages/epos_ros2_msgs/msg/_motor_command_s.c
+[1.906s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages/epos_ros2_msgs/msg/__init__.py
+[1.912s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages/epos_ros2_msgs/epos_ros2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so
+[1.920s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages/epos_ros2_msgs/epos_ros2_msgs_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so
+[1.927s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/python3.8/site-packages/epos_ros2_msgs/epos_ros2_msgs_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so
+[1.938s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/lib/libepos_ros2_msgs__python.so
+[1.944s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/msg/MotorCommand.idl
+[1.948s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/msg/MotorCommands.idl
+[1.953s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/msg/MotorCommand.msg
+[1.956s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/msg/MotorCommands.msg
+[1.961s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/ament_index/resource_index/package_run_dependencies/epos_ros2_msgs
+[1.965s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/ament_index/resource_index/parent_prefix_path/epos_ros2_msgs
+[1.967s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/environment/ament_prefix_path.sh
+[1.971s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/environment/ament_prefix_path.dsv
+[1.974s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/environment/path.sh
+[1.978s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/environment/path.dsv
+[1.983s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/local_setup.bash
+[1.989s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/local_setup.sh
+[1.992s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/local_setup.zsh
+[1.997s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/local_setup.dsv
+[2.001s] -- Installing: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/package.dsv
+[2.010s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/ament_index/resource_index/packages/epos_ros2_msgs
+[2.014s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_generator_cExport.cmake
+[2.016s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_generator_cExport-noconfig.cmake
+[2.020s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_typesupport_introspection_cExport.cmake
+[2.023s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[2.030s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_typesupport_cExport.cmake
+[2.035s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[2.046s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_generator_cppExport.cmake
+[2.052s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[2.058s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[2.065s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_typesupport_cppExport.cmake
+[2.068s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[2.074s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/rosidl_cmake-extras.cmake
+[2.077s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[2.079s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[2.080s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[2.082s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[2.084s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[2.086s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[2.088s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgsConfig.cmake
+[2.090s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/cmake/epos_ros2_msgsConfig-version.cmake
+[2.091s] -- Up-to-date: /media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2_msgs/share/epos_ros2_msgs/package.xml
+[2.105s] Invoked command in '/media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/galactic:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /media/jared/32GB3/home/epos_ws/src/epos_ros2/build/epos_ros2_msgs

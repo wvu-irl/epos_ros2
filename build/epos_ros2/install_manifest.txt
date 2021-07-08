@@ -1,0 +1,17 @@
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/lib/epos_ros2/epos_interface_node
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/ament_index/resource_index/package_run_dependencies/epos_ros2
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/ament_index/resource_index/parent_prefix_path/epos_ros2
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/environment/ament_prefix_path.sh
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/environment/ament_prefix_path.dsv
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/environment/path.sh
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/environment/path.dsv
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/local_setup.bash
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/local_setup.sh
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/local_setup.zsh
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/local_setup.dsv
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/package.dsv
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/ament_index/resource_index/packages/epos_ros2
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/cmake/ament_cmake_export_dependencies-extras.cmake
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/cmake/epos_ros2Config.cmake
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/cmake/epos_ros2Config-version.cmake
+/media/jared/32GB3/home/epos_ws/src/epos_ros2/install/epos_ros2/share/epos_ros2/package.xml

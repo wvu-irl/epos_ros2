@@ -12,87 +12,88 @@
 namespace epos2
 {
 
-   // /////////////////////////////////////////////////////////////////////
-   // /***************************INITIALIZATION**************************/
-   // /////////////////////////////////////////////////////////////////////
-   // /**
-   //     Opens device and subdevices
+   /////////////////////////////////////////////////////////////////////
+   /***************************INITIALIZATION**************************/
+   /////////////////////////////////////////////////////////////////////
+   /**
+       Opens device and subdevices
 
-   //     @return Success(0)/Failure(1) of commands
-   //  */
-   // int EPOSWrapper::openDevices()
-   // {
-   // 		//Success of code
-   // 		int result = MMC_FAILED;
-   // 		// Internal use of motor parameters
-   // 		char* device_name = new char[255];
-   // 		char* protocol_stack_name = new char[255];
-   // 		char* interface_name = new char[255];
-   // 		char* port_name = new char[255];
+       @param Motors to open
+       @return Success(0)/Failure(1) of commands
+    */
+   int EPOSWrapper::open_devices()
+   {
+      //Success of code
+      int result = RETURN_FAILED;
+      // Internal use of motor parameters
+      char *device_name = new char[255];
+      char *protocol_stack_name = new char[255];
+      char *interface_name = new char[255];
+      char *port_name = new char[255];
 
-   // 		strcpy(device_name, device_name_.c_str());
-   // 		strcpy(protocol_stack_name, protocol_stack_name_.c_str());
-   // 		strcpy(interface_name, interface_name_.c_str());
-   // 		strcpy(port_name, port_name_.c_str());
+      strcpy(device_name, device_name_.c_str());
+      strcpy(protocol_stack_name, protocol_stack_name_.c_str());
+      strcpy(interface_name, interface_name_.c_str());
+      strcpy(port_name, port_name_.c_str());
 
-   // 		//std::cout << "dev " << pDeviceName << "__Prot " << pProtocolStackName << "__Int " << pInterfaceName << "__Por" << pPortName << "__Code" << error_code_ << std::endl;
+      //std::cout << "dev " << pDeviceName << "__Prot " << pProtocolStackName << "__Int " << pInterfaceName << "__Por" << pPortName << "__Code" << error_code_ << std::endl;
 
-   // 		ROS_INFO("Open device...");
-   // 		//Opens device
-   // 		key_handle_ = VCS_OpenDevice(device_name, protocol_stack_name, interface_name, port_name, &error_code_);
-   // 		//checking device opened
-   // 		if(key_handle_!=0 && error_code_ == 0)
-   // 		{
-   // 				unsigned int baud_rate = 0;
-   // 				unsigned int timeout = 0;
+      // ROS_INFO("Open device...");
+      //Opens device
+      key_handle_ = VCS_OpenDevice(device_name, protocol_stack_name, interface_name, port_name, &error_code_);
+      //checking device opened
+      if (key_handle_ != 0 && error_code_ == 0)
+      {
+         unsigned int baud_rate = 0;
+         unsigned int timeout = 0;
 
-   // 				if(VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code_))
-   // 				{
-   // 						if(VCS_SetProtocolStackSettings(key_handle_, baud_rate_, timeout, &error_code_))
-   // 						{
-   // 								if(VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code_))
-   // 								{
-   // 										if(baud_rate_==(int)baud_rate)
-   // 										{
-   // 												result = MMC_SUCCESS;
-   // 												ROS_INFO("Device opened");
-   // 										}
-   // 								}
-   // 						}
-   // 				}
-   // 		}
-   // 		else
-   // 		{
-   // 				key_handle_ = 0;
-   // 		}
-   // 		// remove temporary device std::strings
-   // 		delete []device_name;
-   // 		delete []protocol_stack_name;
-   // 		delete []interface_name;
-   // 		delete []port_name;
+         if (VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code_))
+         {
+            if (VCS_SetProtocolStackSettings(key_handle_, baud_rate_, timeout, &error_code_))
+            {
+               if (VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code_))
+               {
+                  if (baud_rate_ == (int)baud_rate)
+                  {
+                     result = RETURN_SUCCESS;
+                     // ROS_INFO("Device opened");
+                  }
+               }
+            }
+         }
+      }
+      else
+      {
+         key_handle_ = 0;
+      }
+      // remove temporary device std::strings
+      delete[] device_name;
+      delete[] protocol_stack_name;
+      delete[] interface_name;
+      delete[] port_name;
 
-   // 		//Get initial device state here
+      //Get initial device state here
 
-   // 		return result;
-   // }
+      return result;
+   }
 
-   // /**
-   //     Closes device and subdevices
+   /**
+       Closes device and subdevices
 
-   //     @return Success(0)/Failure(1) of command
-   //  */
-   // int EPOSWrapper::closeDevices()
-   // {
-   // 		int result = MMC_FAILED;
-   // 		error_code_ = 0;
-   // 		ROS_INFO("Close device");
+       @return Success(0)/Failure(1) of command
+    */
+   int EPOSWrapper::close_devices()
+   {
+      int result = RETURN_FAILED;
+      error_code_ = 0;
+      // ROS_INFO("Close device");
 
-   // 		if(VCS_CloseAllDevices(&error_code_) && error_code_ == 0)
-   // 		{
-   // 				result = MMC_SUCCESS;
-   // 		}
-   // 		return result;
-   // }
+      if (VCS_CloseAllDevices(&error_code_) && error_code_ == 0)
+      {
+         result = RETURN_SUCCESS;
+      }
+      return result;
+   }
 
    // /////////////////////////////////////////////////////////////////////
    // /***************************CONFIGURATION***************************/
@@ -116,10 +117,10 @@ namespace epos2
    // 				} else
    // 				{
    // 						logError("SetOperationMode");
-   // 						return MMC_FAILED;
+   // 						return RETURN_FAILED;
    // 				}
    // 		}
-   // 		return MMC_SUCCESS;
+   // 		return RETURN_SUCCESS;
    // }
 
    // /**
@@ -148,11 +149,11 @@ namespace epos2
    //  */
    // int EPOSWrapper::resetDevice(unsigned short _node_id)
    // {
-   // 		int result = MMC_FAILED;
+   // 		int result = RETURN_FAILED;
 
    // 		if (VCS_ResetDevice(key_handle_, _node_id, &error_code_))
    // 		{
-   // 				result = MMC_SUCCESS;
+   // 				result = RETURN_SUCCESS;
    // 		}
 
    // 		return result;
@@ -169,10 +170,10 @@ namespace epos2
    // {
    // 		if( current_state_ == _state || VCS_SetState(key_handle_,_node_id,_state,&error_code_))
    // 		{
-   // 				return MMC_SUCCESS;
+   // 				return RETURN_SUCCESS;
    // 		} else
    // 		{
-   // 				return MMC_FAILED;
+   // 				return RETURN_FAILED;
    // 		}
    // }
 
@@ -192,11 +193,11 @@ namespace epos2
    // 				ROS_DEBUG("State Retrieved");
    // 				_state = getDevState(state_value);
    // 				//std::cout << "Motor "<< nodeID << " is in state " << state << std::endl;
-   // 				return MMC_SUCCESS;
+   // 				return RETURN_SUCCESS;
 
    // 		} else {
    // 				ROS_WARN("State Failed");
-   // 				return MMC_FAILED;
+   // 				return RETURN_FAILED;
    // 		}
    // }
 
@@ -301,12 +302,12 @@ namespace epos2
    // 						if(VCS_ClearFault(key_handle_, _id, &error_code_) )
    // 						{
    // 								ROS_INFO("Fault Cleared Motor: %b", _id);
-   // 								return MMC_SUCCESS;
+   // 								return RETURN_SUCCESS;
    // 						} else
    // 						{
    // 								logError("VCS_ClearFault");
    // 								ROS_INFO("Failed Fault Clear");
-   // 								return MMC_FAILED;
+   // 								return RETURN_FAILED;
    // 						}
    // 				} else
    // 				{
@@ -348,7 +349,7 @@ namespace epos2
    // 						ROS_WARN("Get state failed: motor %d", _ids[i]);
    // 				}
    // 		}
-   // 		return MMC_SUCCESS;
+   // 		return RETURN_SUCCESS;
    // }
 
    // /************
@@ -376,7 +377,7 @@ namespace epos2
    // 						if (!VCS_MoveWithVelocity(key_handle_, _ids[i], _velocities[i],&error_code_))
    // 						{
    // 								logError("VCS_MoveWithVelocity");
-   // 								return MMC_FAILED;
+   // 								return RETURN_FAILED;
    // 						} else {
    // 								ROS_INFO("Running");
    // 						}
@@ -384,11 +385,11 @@ namespace epos2
    // 				{
    // 						if (!VCS_HaltVelocityMovement(key_handle_, _ids[i],&error_code_))
    // 						{
-   // 								return MMC_FAILED;
+   // 								return RETURN_FAILED;
    // 						}
    // 				}
    // 		}
-   // 		return MMC_SUCCESS;
+   // 		return RETURN_SUCCESS;
    // }
 
    // /**
@@ -416,11 +417,11 @@ namespace epos2
    // 				else
    // 				{
    // 						std::cout << " FAILED POSITION. " << std::endl;
-   // 						return MMC_FAILED;
+   // 						return RETURN_FAILED;
    // 				}
    // 		}
 
-   // 		return MMC_SUCCESS;
+   // 		return RETURN_SUCCESS;
    // }
 
    // /**
@@ -448,11 +449,11 @@ namespace epos2
    // 				else
    // 				{
    // 						std::cout << " FAILED CURRENT. " << std::endl;
-   // 						return MMC_FAILED;
+   // 						return RETURN_FAILED;
    // 				}
    // 		}
 
-   // 		return MMC_SUCCESS;
+   // 		return RETURN_SUCCESS;
    // }
 
    // int EPOSWrapper::goToTorque(std::vector<int> _ids, std::vector<long> _torques, double _gr)
@@ -467,11 +468,11 @@ namespace epos2
    // 						ROS_INFO("Running Current");
    // 				} else {
    // 						logError("VCS_SetCurrentMust");
-   // 						return MMC_FAILED;
+   // 						return RETURN_FAILED;
    // 				}
 
    // 		}
-   // 		return MMC_SUCCESS;
+   // 		return RETURN_SUCCESS;
    // }
 
    // /////////////////////////////////////////////////////////////////////
@@ -485,11 +486,11 @@ namespace epos2
    //  */
    // int EPOSWrapper::getError(unsigned short _error_code_value)
    // {
-   // 		int result = MMC_FAILED;
+   // 		int result = RETURN_FAILED;
    // 		if(VCS_GetErrorInfo(_error_code_value, error_code_char_, MMC_MAX_LOG_MSG_SIZE))
    // 		{
    // 				ROS_ERROR("ERROR %u: %u\n", _error_code_value, *error_code_char_);
-   // 				result = MMC_SUCCESS;
+   // 				result = RETURN_SUCCESS;
    // 		}
 
    // 		return result;
@@ -502,12 +503,12 @@ namespace epos2
 
    // int EPOSWrapper::checkNodeID(int _id)
    // {
-   // 		int result = MMC_FAILED;
+   // 		int result = RETURN_FAILED;
 
    // 		for (int i = 0; i < node_id_list_.size(); ++i)
    // 		{
    // 				if (_id == node_id_list_[i]) {
-   // 						result == MMC_SUCCESS;
+   // 						result == RETURN_SUCCESS;
    // 				}
    // 		}
    // 		return result;
@@ -531,31 +532,22 @@ namespace epos2
  */
    EPOSWrapper::EPOSWrapper(EPOSParams _epos_params) : epos_params_(_epos_params) //, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params)
    {
-      assertm(false, "No default initilializer: code is dependent on ROS Node Pointer!");
 
-      // for (int i = 0; i < _ids.size(); ++i)
-      // {
-      //    node_id_list_.push_back((unsigned short)_ids[i]);
-      // }
-
-      // ROS_INFO("EPOS COMMAND START");
+      this->opendevices;
    }
 
-   // /**
-   //     Destructor closes all devices
-   //  */
-   // EPOSWrapper::~EPOSWrapper()
-   // {
-   // 	/// NEED TO TRY TO CORRECT FAULTS HERE
-   // 		int i = 0;
-   // 		while(!closeDevices() && i < 5)
-   // 		{
-   // 				std::cerr << "Failed to close devices, try " << i << "."<< std::endl;
-   // 				++i;
-   // 		};
-   // 		if (i == 5) {
-   // 				std::cerr << "Failed: Aborting device closure" << std::endl;
-   // 		}
-   // }
+   /**
+       Destructor closes all devices
+    */
+   EPOSWrapper::~EPOSWrapper()
+   {
+      if (!this->close_devices())
+      {
+         // std::cerr << "Failed to close devices, try " << i << "."<< std::endl;
+         /// NEED TO TRY TO CORRECT FAULTS HERE
+         if ( !this->closeDevices() )
+            // print still failedds
+      }
+   }
 
 }
