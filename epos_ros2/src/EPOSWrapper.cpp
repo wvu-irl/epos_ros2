@@ -546,7 +546,7 @@ namespace epos2
          // std::cerr << "Failed to close devices, try " << i << "."<< std::endl;
          /// NEED TO TRY TO CORRECT FAULTS HERE
          if ( !this->closeDevices() )
-            // print still failedds
+            // print still failedds 
       }
    }
 
