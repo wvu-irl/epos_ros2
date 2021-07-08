@@ -98,7 +98,7 @@ namespace epos2
 		/***********************CONSTRUCTORS****************************/
 		eposCommand(); // Set motor type, sensor types, max following error, max velocity, max acc,
 		// velocity units, default operation mode
-		// eposCommand(rclcpp::Node _node, std::vector<int> _ids, int _br);
+		eposCommand(rEPOSParams _epos_params, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params);
 		//motor_cmd(); <- read input from launch
 		// ~eposCommand();
 
