@@ -21,6 +21,8 @@
 #define MMC_MAX_LOG_MSG_SIZE 512
 #endif
 
+#define assertm(exp, msg) assert(((void)msg, exp))
+
 #include <cassert>
 #include <string>
 // #include <iostream>
@@ -40,10 +42,10 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <geometry_msgs/msg/Twist.h>
+// #include <geometry_msgs/msg/Twist.h>
 
-#include <epos_ros2/EPOSParams.hpp>
-#include <epos_ros2/ROSNodeParams.hpp>
+#include <epos_ros2/utils/EPOSParams.hpp>
+//#include <epos_ros2/ROSNodeParams.hpp>
 
 typedef void *HANDLE;
 typedef int BOOL;
@@ -64,7 +66,7 @@ namespace epos2
 		/***********************VARIABLES*****************************/
 		DevState current_state_;
 		OpMode current_mode_;
-		ROSNodeParams node_params_;
+		//ROSNodeParams node_params_;
 		EPOSParams epos_params_;
 
 		//Setup error codes to print intead of being accepted as input. Makes the output simpler...
@@ -96,11 +98,11 @@ namespace epos2
 		// int addNodeIDs(std::vector<int> _ids);
 
 		/***********************CONSTRUCTORS****************************/
-		eposCommand(); // Set motor type, sensor types, max following error, max velocity, max acc,
+		EPOSWrapper(); // Set motor type, sensor types, max following error, max velocity, max acc,
 		// velocity units, default operation mode
-		eposCommand(rEPOSParams _epos_params, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params);
+		EPOSWrapper(EPOSParams _epos_params);//, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params);
 		//motor_cmd(); <- read input from launch
-		// ~eposCommand();
+		// ~EPOSWrapper();
 
 		/**   // get
    int   setPosProfile();
@@ -121,7 +123,7 @@ namespace epos2
 
 	private:
 		/***********************VARIABLES*****************************/
-		// double kT_ = 31.5; // mNm/A
+		// 
 		// /***********************OPERATION*****************************/
 		// short unsigned int getDevStateValue(DevState state);
 		// enum DevState getDevState(short unsigned int state);

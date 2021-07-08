@@ -24,15 +24,18 @@ namespace epos2
     LOG_INFO,
     LOG_WARN,
     LOG_ERROR,
-    LOG_FATAL
+    LOG_FATAL,
   };
   enum loggingThrottle
   {
     THROTTLE_OFF = 0,
     THROTTLE_FREQUENCY,
     THROTTLE_SKIP_N,
-    THROTTLE_DYNAMIC
+    THROTTLE_ONCE,
+    THROTTLE_SKIP_ONCE
   };
+
+  //skip first or log once add param. then do based on count
 
   //typedef std::pair<loggingThrottle, int>
 
@@ -83,7 +86,7 @@ namespace epos2
             default:
               std::string header = "[" this->get_namespace() + "/" + this->get_node + "] ";
               RCLCPP_FATAL(this->get_logger(), header + "INVALID LOGGING THROTTLE: logger %d", _throttle_id);
-             	assert(("KILLED LOGGER", false));	
+              assert(("KILLED LOGGER", false));
               break;
             }
           }
@@ -117,8 +120,8 @@ namespace epos2
       case LOG_FATAL:
         break;
       default:
-        RCLCPP_FATAL(this->get_logger(), header + "INVALID PRIORITY" );
-        assert(("KILLED LOGGER", false));	
+        RCLCPP_FATAL(this->get_logger(), header + "INVALID PRIORITY");
+        assert(("KILLED LOGGER", false));
         break;
       }
       }

@@ -1,7 +1,0 @@
-<launch>
-  <node pkg="epos_ros" type="test_node" name="epos_motor_command" respawn="true" output="screen"/>
-  <node pkg="epos_ros" type="gogoRover" name="epos_input_conversion" respawn="true" output="screen"/>
-
-  <!--node pkg="teleop_twist_joy" type="teleop_node" name="teleop_node"/-->
-  <include file="$(find epos_ros)/launch/joy/local_twist_joy.launch"/>
-</launch>

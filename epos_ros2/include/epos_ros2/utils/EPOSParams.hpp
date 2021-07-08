@@ -40,6 +40,8 @@ namespace epos2
     std::string interface_name = "USB";
     std::string port_name = "USB0";
     int num_devices = 1;
+
+    double kT_ = 31.5; // mNm/A
   };
 
 }

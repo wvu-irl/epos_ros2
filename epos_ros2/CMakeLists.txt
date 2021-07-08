@@ -6,9 +6,9 @@ if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
 endif()
 
-# Default to C++14
+# Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -28,6 +28,7 @@ find_package(builtin_interfaces REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rosidl_default_runtime REQUIRED)
 find_package(epos_ros2_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -51,36 +52,49 @@ endif()
 # )
 
 
-#add_library(epos_cmd
-#src/epos_cmd/epos_command.cpp
-#)
+add_library(epos_wrapper_lib
+src/EPOSWrapper.cpp
+)
+set(DEPENDENCIES
+  "rclcpp"
+)
+target_link_libraries(epos_wrapper_lib)
+ament_target_dependencies(epos_wrapper_lib ${DEPENDENCIES})
+
+add_library(motor_interface_lib
+src/MotorInterface.cpp
+)
+# set(DEPENDENCIES
+#   "rclcpp"
+# )
+target_link_libraries(motor_interface_lib epos_wrapper_lib)
+ament_target_dependencies(motor_interface_lib sensor_msgs)
 
 set(ENV{EPOS_LIB_DIR} /opt/EposCmdLib_${EPOS_CMD_LIB_VER}/lib/x86_64)
 link_directories($ENV{EPOS_LIB_DIR})
 include_directories(include /opt/EposCmdLib_${EPOS_CMD_LIB_VER}/include)
 
 
-add_executable(epos_fsm_node $ENV{EPOS_LIB_DIR} src/epos_cmd/epos_FSM_node.cpp)
-target_link_libraries(epos_fsm_node 
-  EposCmd 
+add_executable(epos_interface_node $ENV{EPOS_LIB_DIR} src/epos_interface_node.cpp)
+target_link_libraries(epos_interface_node 
+  epos_wrapper_lib 
+  motor_interface_lib
   ftd2xx
   ${rclcpp_LIBRARIES}
 )
-#add_dependencies(epos_fsm_node ${PROJECT_NAME})
-ament_target_dependencies(epos_fsm_node 
+#add_dependencies(epos_interface_node ${PROJECT_NAME})
+ament_target_dependencies(epos_interface_node 
   rclcpp 
-  std_msgs 
-  epos_ros2_msgs
 )
-#rosidl_target_interfaces(epos_fsm_node
+#rosidl_target_interfaces(epos_interface_node
 #     ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-add_executable(epos_parameters src/utils/epos_param_server.cpp)
-target_link_libraries(epos_parameters ${rclcpp_LIBRARIES})
-#add_dependencies(epos_parameters ${PROJECT_NAME})
-ament_target_dependencies(epos_parameters 
-  rclcpp 
-)
+# add_executable(epos_parameters src/utils/epos_param_server.cpp)
+# target_link_libraries(epos_parameters ${rclcpp_LIBRARIES})
+# #add_dependencies(epos_parameters ${PROJECT_NAME})
+# ament_target_dependencies(epos_parameters 
+#   rclcpp 
+# )
 
 #add_dependencies(epos_fsm_node epos_ros_generate_messages_cpp)
 #target_link_libraries(epos_fsm_node
@@ -89,13 +103,13 @@ ament_target_dependencies(epos_parameters
 #)
 
 install (TARGETS
-  epos_fsm_node
+  epos_interface_node
   DESTINATION lib/${PROJECT_NAME}
 )
-install (TARGETS
-  epos_parameters
-  DESTINATION lib/${PROJECT_NAME}
-)
+# install (TARGETS
+#   epos_parameters
+#   DESTINATION lib/${PROJECT_NAME}
+# )
 
 ament_export_dependencies(rosidl_default_runtime)
 

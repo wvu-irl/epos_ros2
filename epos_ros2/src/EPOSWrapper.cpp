@@ -6,6 +6,9 @@
    @author Jared Beard
    @version 1.0 11/13/18
  */
+
+#include <epos_ros2/EPOSWrapper.hpp>
+
 namespace epos2
 {
 
@@ -517,7 +520,7 @@ namespace epos2
  */
    EPOSWrapper::EPOSWrapper()
    {
-      assert(("No default initilializer: code is dependent on ROS Node Pointer!", false));
+      assertm(false, "No default initilializer: code is dependent on ROS Node Pointer!");
    }
 
    /**
@@ -526,8 +529,10 @@ namespace epos2
     @param ids id number of motors to be used
     @param br baudrate for communications
  */
-   EPOSWrapper::eposCommand(EPOSParams _epos_params, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params)
+   EPOSWrapper::EPOSWrapper(EPOSParams _epos_params) : epos_params_(_epos_params) //, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params)
    {
+      assertm(false, "No default initilializer: code is dependent on ROS Node Pointer!");
+
       // for (int i = 0; i < _ids.size(); ++i)
       // {
       //    node_id_list_.push_back((unsigned short)_ids[i]);

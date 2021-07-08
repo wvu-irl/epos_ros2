@@ -6,43 +6,35 @@
    @author Jared Beard
    @version 1.0 6/4/21
  */
-#ifndef MOTOR_INTERFACE_H	
+#ifndef MOTOR_INTERFACE_H
 #define MOTOR_INTERFACE_H
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <std_msgs/msg/int64_multi_array.hpp>
-
-//#include <epos_ros/msg/epos_command.h>
-#include <epos_ros2_msgs/msg/motor_command.hpp>
-#include <epos_ros2_msgs/msg/motor_commands.hpp>
+#include <sensor_msgs/msg/joint_state.hpp>
 
 #include <epos_ros2/EPOSWrapper.hpp>
+#include <epos_ros2/utils/EPOSParams.hpp>
 
 using std::placeholders::_1;
+using namespace std::chrono_literals;
 
 class MotorInterface : public rclcpp::Node
 {
-	public:
-		EPOSWrapper interface;
+public:
+	epos2::EPOSWrapper *interface_ptr_;
+	//epos2::EPOSBasicInterface interface_;
+	sensor_msgs::msg::JointState motor_commands_, motor_state_;
 
-		epos_ros2_msgs::msg::MotorCommands motor_commands_; 
-		//modes 1 = velocity, 2 = torque, 3 = current, 4 = position, 5 = homing
+	MotorInterface(std::string _node_name);
 
-		MotorInterface(std::string node_name) : Node (node_name);
-		MotorInterface(std::string node_name,std::vector<int> _ids, int _br) : Node (node_name);
+private:
+	rclcpp::TimerBase::SharedPtr main_;
+	rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr motor_state_publisher_;
+	rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr motor_command_subscription_;
 
-  	private:
-		//rclcpp::TimerBase::SharedPtr timer_;
-    	rclcpp::Publisher<std_msgs::msg::Int64MultiArray>::SharedPtr motor_position_publisher_;
-		rclcpp::Subscription<epos_ros2_msgs::msg::MotorCommands>::SharedPtr motor_subscription_;
-
-    	void motor_callback(const epos_ros2_msgs::msg::MotorCommands::SharedPtr msg)
-    	{
-			motor_commands_ = *msg;
-			//RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
-    	}
-    	
+	void motor_callback(const sensor_msgs::msg::JointState::SharedPtr msg);
+	void main_callback();
 
 };
 

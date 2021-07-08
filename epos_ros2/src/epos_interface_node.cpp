@@ -1,38 +1,26 @@
 /*
-   Maxon Motor Controller Finite State Machine node epos_test_node
-   epos_FSM_node.cpp
-   Purpose: Deployable EPOS code for most projects un epos commands and test behavior
+   Maxon Motor Controller interface node
+   epos_interface_node.cpp
+   Purpose: Deployable EPOS code for most projects
 
    @author Jared Beard
    @version 1.0 6/4/21
  */
-
-
-#include <rclcpp/rclcpp.hpp>
-
-#include <std_msgs/msg/int64_multi_array.hpp> // make a msg to wrap around this so we can specify motor
-
-//#include <epos_ros/msg/EPOSCommand.h>
-#include <epos_ros2_msgs/msg/motor_command.hpp>
-#include <epos_ros2_msgs/msg/motor_commands.hpp>
-
-#include <epos_ros2/MotorInterface.hpp>
 
 #include <stdio.h>
 #include <cmath>
 #include <string>
 #include <memory>
 
+#include <rclcpp/rclcpp.hpp>
 
-
+#include <epos_ros2/MotorInterface.hpp>
 
 int main(int argc, char** argv)
 {
 		// ROS INITILIZATION ------------------------------------------------------------------------
 		rclcpp::init(argc,argv);
-		MotorInterface interface("epos_fsm_node");
-
-		
+		MotorInterface interface("epos_interface_node");
 
 		while(rclcpp::ok())
 		{
@@ -41,7 +29,6 @@ int main(int argc, char** argv)
 
 		}
 				
-
 		// IMPORT CONFIGURATION ---------------------------------------------------------------------
 		// nh.param("motors_ids/list", motorIDs);
 		// int baudrate;
