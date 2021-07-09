@@ -1,2 +1,0 @@
-/usr/bin/ar qc libmotor_interface_lib.a  CMakeFiles/motor_interface_lib.dir/src/MotorInterface.cpp.o
-/usr/bin/ranlib libmotor_interface_lib.a

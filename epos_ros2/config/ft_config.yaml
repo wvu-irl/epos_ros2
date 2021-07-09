@@ -1,5 +1,5 @@
 motors:
-  names: ['fr_drive', 'fr_ankle', 'fl_drive', 'fl_ankle', 'bl_ankle', 'bl_drive', 'br_drive', 'br_ankle']
+  names: ["fr_drive", "fr_ankle", "fl_drive", "fl_ankle", "bl_ankle", "bl_drive", "br_drive", "br_ankle"]
   ids: [1,2,4,5,8,9,16,31]
   gear_ratio: 126.0
   counts_per_rev: 128.0
