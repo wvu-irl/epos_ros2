@@ -47,8 +47,8 @@ epos2::EPOSParams MotorInterface::get_params()
 	std::vector<std::string> motors;
 	this->get_parameter("motors/names", motors);
 	std::vector<int> ids;
-	this->get_parameter("motors/ids", motors);
-	for (int i = 0; i < ids.size(); ++i)
+	this->get_parameter("motors/ids", ids);
+	for (std::vector<int>::size_type i = 0; i < ids.size(); ++i)
 	{
 		params.motor_name_map.insert( std::make_pair(motors[i], ids[i]) );
 		params.motor_inds.push_back(i);

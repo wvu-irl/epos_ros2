@@ -49,6 +49,7 @@
 
 typedef void *HANDLE;
 typedef int BOOL;
+typedef unsigned long DWORD; 
 
 
 namespace epos2
@@ -58,7 +59,7 @@ namespace epos2
 	{
 
 		void *key_handle_ = 0;
-		unsigned int error_code_ = 0;
+		DWORD error_code_ = 0;
 		//unsigned short maxStrSize = 512;
 		char *error_code_char_;
 
@@ -137,7 +138,7 @@ namespace epos2
 		//  void clearFaultCallback(const sensor_msgs::Joy& msg);
 
 		/***************Print and Commands*****************/
-
+		std::string getErrorCode(DWORD _error_code);
 		//  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
 	};
 }
