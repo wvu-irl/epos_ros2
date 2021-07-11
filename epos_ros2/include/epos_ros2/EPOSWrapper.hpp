@@ -49,34 +49,70 @@
 
 typedef void *HANDLE;
 typedef int BOOL;
-typedef unsigned long DWORD; 
-
+typedef unsigned long DWORD;
 
 namespace epos2
 {
 
 	class EPOSWrapper
 	{
+		/////////////////////////////////////////////////////////////////////
+   		/***************************INITIALIZER LIST************************/
+   		/////////////////////////////////////////////////////////////////////
 
-		void *key_handle_ = 0;
-		DWORD error_code_ = 0;
-		//unsigned short maxStrSize = 512;
-		char *error_code_char_;
+		// void *key_handle_ = 0;
+		// DWORD error_code_ = 0;
+		// //unsigned short maxStrSize = 512;
+		// char *error_code_char_;
 
 	public:
-		/***********************VARIABLES*****************************/
-		std::vector<int> current_state_;
-		std::vector<int> current_mode_;
-		//ROSNodeParams node_params_;
-		rclcpp::Node* node_;
-		EPOSParams epos_params_;
 
-		//Setup error codes to print intead of being accepted as input. Makes the output simpler...
-		/***********************INTIALIZATION***************************/
-		// int open_devices();
-		// int close_devices();
+		/////////////////////////////////////////////////////////////////////
+   		/***************************VARIABLES*******************************/
+   		/////////////////////////////////////////////////////////////////////
+		
+		/////////////////////////////////////////////////////////////////////
+   		/***************************CONSTRUCTORS****************************/
+   		/////////////////////////////////////////////////////////////////////
+		
+		/**
+		 * Asserts Error: default constructor doesn't make sense without ROS2 node
+    	 * @brief Default Constructor
+   		*/
+		EPOSWrapper(); 
 
-		// /***********************CONFIGURATION***************************/
+		/**
+    	 * Constructs wrapper object for a ROS2 node and with parameters specified by epos2::EPOSParams struct
+		 * @brief Special Constructor
+    	 * @param _node Pointer to a ROS2 node
+    	 * @param _epos_params Struct of EPOS parameters
+   		*/
+		EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _epos_params);
+
+		/**
+         * Destructs object and attempts to close all devices
+		 * @brief Destructor
+    	*/
+		//~EPOSWrapper();
+
+						/**   // get
+   int   setPosProfile();
+   int   goToPos();
+   int   stopPos();
+   int   setVelProfile();
+   int   startHomingMode();
+   int   setHome();
+   int   goToHome();
+   int   stopHome();
+   int   waitForHome();
+   int   setCurrentMust();
+   int   getCurrentMust();*/
+		// getpositionis -> encoder?? try to find something that decouples these from the hall sensors
+		//getvelocityis
+		//get currentis
+		//waitfortargetreached
+
+	// /***********************CONFIGURATION***************************/
 		// int setMode(std::vector<int> _node_ids, OpMode _mode);
 		// //void setModeCallback(const ; //NEED TO MAKE MESSAGE FOR THIS, need to make way to display/handle specific error
 		// int resetDevice(unsigned short _node_id);
@@ -99,33 +135,31 @@ namespace epos2
 		// int checkNodeID(int _id);
 		// int addNodeIDs(std::vector<int> _ids);
 
-		/***********************CONSTRUCTORS****************************/
-		EPOSWrapper(); // Set motor type, sensor types, max following error, max velocity, max acc,
-		// velocity units, default operation mode
-		EPOSWrapper(rclcpp::Node* _node, EPOSParams _epos_params);//, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params);
-		//motor_cmd(); <- read input from launch
-		~EPOSWrapper();
+		/////////////////////////////////////////////////////////////////////
+    /**************************ERRORS and LOGGING***********************/
+    /////////////////////////////////////////////////////////////////////
 
-		/**   // get
-   int   setPosProfile();
-   int   goToPos();
-   int   stopPos();
-   int   setVelProfile();
-   int   startHomingMode();
-   int   setHome();
-   int   goToHome();
-   int   stopHome();
-   int   waitForHome();
-   int   setCurrentMust();
-   int   getCurrentMust();*/
-		// getpositionis -> encoder?? try to find something that decouples these from the hall sensors
-		//getvelocityis
-		//get currentis
-		//waitfortargetreached
+		/***********************VARIABLES*****************************/
+		// std::vector<int> current_state_;
+		// std::vector<int> current_mode_;
+		//ROSNodeParams node_params_;
+		rclcpp::Node *node_ptr_;
+		EPOSParams epos_params_;
+
+		//Setup error codes to print intead of being accepted as input. Makes the output simpler...
+		/***********************INTIALIZATION***************************/
+		int open_devices();
+		// int close_devices();
+
+		
+		
+
 
 	private:
-		/***********************VARIABLES*****************************/
-		// 
+		/////////////////////////////////////////////////////////////////////
+   		/***************************VARIABLES*******************************/
+   		/////////////////////////////////////////////////////////////////////
+
 		// /***********************OPERATION*****************************/
 		// short unsigned int getDevStateValue(DevState state);
 		// enum DevState getDevState(short unsigned int state);
@@ -137,11 +171,33 @@ namespace epos2
 
 		//  void cmdReceived(const geometry_msgs::Twist& msg);
 		//  void clearFaultCallback(const sensor_msgs::Joy& msg);
+		
 
-		/***************Print and Commands*****************/
-		void log_issue(std::string _issue, int _verbosity, int _category);
+		/////////////////////////////////////////////////////////////////////
+    	/**************************ERRORS and LOGGING***********************/
+    	/////////////////////////////////////////////////////////////////////
+		
+		/**
+		 * Wraps ROS2 logging and adds additional semantic behaviors
+		 * @brief ROS2 logging wrapper
+    	 * @param _msg Error message
+    	 * @param _verbosity Level of verbosity
+    	 * @param _group Group of log message 
+    	*/
+		void log_msg(std::string _msg, loggingVerbosity _verbosity, loggingGroup _group);
+
+		/**
+       	 * Converts error codes to description of error as provided in Maxon
+		 * communication library
+		 * @brief Gets error description
+       	 * @param _error_code Error code number
+         * @return Error description
+    	*/
 		std::string get_error_code(DWORD _error_code);
+		
+
 		//  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
 	};
 }
 #endif
+

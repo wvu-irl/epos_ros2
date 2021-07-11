@@ -72,9 +72,9 @@ void MotorInterface::declare_params()
 
 	// // Logging
 	this->declare_parameter("logging/is_on", false);
-	this->declare_parameter("logging/categories");
-	rclcpp::Parameter log_categories_param("logging/categories", std::vector<int>{0});
-	special_params_.push_back(log_categories_param);
+	this->declare_parameter("logging/groups");
+	rclcpp::Parameter log_groups_param("logging/groups", std::vector<int>{0});
+	special_params_.push_back(log_groups_param);
 }
 
 epos2::EPOSParams MotorInterface::get_params()
@@ -120,9 +120,8 @@ epos2::EPOSParams MotorInterface::get_params()
 
 	// // Logging
 	this->get_parameter("logging/is_on", params.is_on);
-	// this->get_parameter("logging/categories", params.categories);
-	this->get_parameter("logging/categories", special_params_[special_param_counter]);
-	params.categories = std::vector<int>(special_params_[special_param_counter].as_integer_array().begin(),
+	this->get_parameter("logging/groups", special_params_[special_param_counter]);
+	params.groups = std::vector<int>(special_params_[special_param_counter].as_integer_array().begin(),
 										 special_params_[special_param_counter].as_integer_array().end());
 	++special_param_counter;
 

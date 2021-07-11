@@ -15,31 +15,64 @@
 
 namespace epos2
 {
-  
-  enum loggingPriority
+  /// Defines verbosity for custom logging
+  enum loggingVerbosity
   {
+    /// Turns off logging
     LOG_OFF = 0,
+    /// Sets logging verbosity to ROS2 Debug
     LOG_DEBUG,
+    /// Sets logging verbosity to ROS2 Info
     LOG_INFO,
+    /// Sets logging verbosity to ROS2 Warn
     LOG_WARN,
+    /// Sets logging verbosity to ROS2 Error
     LOG_ERROR,
+    /// Sets logging verbosity to ROS2 Fatal
     LOG_FATAL
   };
 
-  enum loggingCategory
+  /// Defines group a given epos2::EPOSWrapper::log_msg call function belongs to.
+  /// Helps with custom logging by given semantic meaning to logging calls
+  /// (e.g., if we are monitoring the output of a motor we may use LOG_FEEDBACK to print motor position logs)
+  enum loggingGroup
   {
+    /// Includes all log output
     LOG_ALL = 0,
+    /// Includes logging related to motor feedback (e.g., current, postion, etc)
     LOG_FEEDBACK,
+    /// Includes logging related to motor input (e.g., velocity commands)
     LOG_INPUT,
+    /// Includes logging related to current function call or other progress metrics
+    LOG_PROGRESS,
+    /// Includes logging related EPOS error messages
+    LOG_ERROR,
+    /// Print statements for unspecified groups
     LOG_OTHER
   };
 
+  /// Defines operational modes for EPOS to command Maxon motors as described
+  /// in the EPOS Command Library. Definition includes official names.
   enum OpMode
   {
-    OMD_PROFILE_POSITION_MODE = 1,
-    OMD_PROFILE_VELOCITY_MODE = 3,
-    OMD_HOMING_MODE = 6,
-    OMD_CURRENT_MODE = -3
+    /// OMD_STEP_DIRECTION_MODE: 
+    STEP_DIRECTION_MODE = -6,
+    /// OMD_MASTER_ENCODER_MODE
+    MASTER_ENCODER_MODE = -5,
+    /// OMD_CURRENT_MODE
+    CURRENT_MODE = -3,
+    /// OMD_VELOCITY_MODE
+    VELOCITY_MODE = -2,
+    /// OMD_POSITION_MODE
+    POSITION_MODE = -1,
+    /// OMD_PROFILE_POSITION_MODE
+    PROFILE_POSITION_MODE = 1,
+    /// OMD_PROFILE_VELOCITY_MODE
+    PROFILE_VELOCITY_MODE = 3,
+    /// OMD_HOMING_MODE
+    HOMING_MODE = 6,
+    /// OMD_INTERPOLATED_POSITION_MODE
+    INTERPOLATED_POSITION_MODE = 7
   };
 
   enum DevState
@@ -75,7 +108,7 @@ namespace epos2
 
     // Logging
     bool is_on;
-    std::vector<int> categories;
+    std::vector<int> groups;
   };
 
 }

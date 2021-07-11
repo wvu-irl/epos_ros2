@@ -53,7 +53,9 @@ endif()
 
 
 add_library(epos_wrapper_lib
-src/EPOSWrapper.cpp
+src/wrapper/EPOSWrapper.cpp
+src/wrapper/error_log.cpp
+src/wrapper/initialization.cpp
 )
 set(DEPENDENCIES
   "rclcpp"
