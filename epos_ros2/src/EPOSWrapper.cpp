@@ -492,7 +492,7 @@ namespace epos2
     @param ids id number of motors to be used
     @param br baudrate for communications
  */
-   EPOSWrapper::EPOSWrapper(EPOSParams _epos_params) : epos_params_(_epos_params) //, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params)
+   EPOSWrapper::EPOSWrapper(rclcpp::Node* _node, EPOSParams _epos_params) : node_(_node), epos_params_(_epos_params) //, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params)
    {
 
       //this->opendevices;
@@ -503,13 +503,13 @@ namespace epos2
     */
    EPOSWrapper::~EPOSWrapper()
    {
-      if (!this->close_devices())
-      {
+      // if (!this->close_devices())
+      // {
          // std::cerr << "Failed to close devices, try " << i << "."<< std::endl;
          /// NEED TO TRY TO CORRECT FAULTS HERE
          //if (!this->closeDevices())
          // print still failedds
-      }
+      // }
    }
 
    // /////////////////////////////////////////////////////////////////////
@@ -551,7 +551,54 @@ namespace epos2
    // 		return result;
    // }
 
-   std::string EPOSWrapper::getErrorCode(DWORD _error_code)
+   /**
+       Prints error statement
+
+       @param _issue Error cause
+       @param _verbosity Level of verbosity
+       @param _category Category of Issue
+       @return Error cause
+    */
+   void EPOSWrapper::log_issue(std::string _issue, int _verbosity = LOG_OFF, int _category = LOG_ALL)
+   {
+      _issue = "[EPOS WRAPPER] " + _issue;
+
+      bool is_in_category = std::find(epos_params_.categories.begin(), epos_params_.categories.end(), _category) != epos_params_.categories.end();
+      bool log_expression = epos_params_.is_on && is_in_category;
+
+      switch (_verbosity)
+      {
+      case LOG_OFF:
+         break;
+      case LOG_DEBUG:
+         RCLCPP_DEBUG_EXPRESSION(node_->get_logger(), log_expression, _issue);
+         break;
+      case LOG_INFO:
+         RCLCPP_INFO_EXPRESSION(node_->get_logger(), log_expression, _issue);
+         break;
+      case LOG_WARN:
+         RCLCPP_WARN_EXPRESSION(node_->get_logger(), log_expression, _issue);
+         break;
+      case LOG_ERROR:
+         RCLCPP_ERROR_EXPRESSION(node_->get_logger(), log_expression, _issue);
+         break;
+      case LOG_FATAL:
+         RCLCPP_FATAL_EXPRESSION(node_->get_logger(), log_expression, _issue);
+         break;
+      default:
+         RCLCPP_FATAL(node_->get_logger(), "[EPOS WRAPPER] INVALID ERROR VERBOSITY");
+         break;
+      }
+
+   }
+
+   /**
+       Converts error codes to cause
+
+       @param _error_code Error code number
+       @return Error cause
+    */
+   std::string EPOSWrapper::get_error_code(DWORD _error_code)
    {
       switch (_error_code)
       {

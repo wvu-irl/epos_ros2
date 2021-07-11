@@ -68,7 +68,7 @@ src/MotorInterface.cpp
 #   "rclcpp"
 # )
 target_link_libraries(motor_interface_lib epos_wrapper_lib)
-ament_target_dependencies(motor_interface_lib sensor_msgs)
+ament_target_dependencies(motor_interface_lib sensor_msgs rclcpp)
 
 set(ENV{EPOS_LIB_DIR} /opt/EposCmdLib_${EPOS_CMD_LIB_VER}/lib/x86_64)
 link_directories($ENV{EPOS_LIB_DIR})

@@ -68,12 +68,13 @@ namespace epos2
 		std::vector<int> current_state_;
 		std::vector<int> current_mode_;
 		//ROSNodeParams node_params_;
+		rclcpp::Node* node_;
 		EPOSParams epos_params_;
 
 		//Setup error codes to print intead of being accepted as input. Makes the output simpler...
 		/***********************INTIALIZATION***************************/
-		int open_devices();
-		int close_devices  ();
+		// int open_devices();
+		// int close_devices();
 
 		// /***********************CONFIGURATION***************************/
 		// int setMode(std::vector<int> _node_ids, OpMode _mode);
@@ -101,7 +102,7 @@ namespace epos2
 		/***********************CONSTRUCTORS****************************/
 		EPOSWrapper(); // Set motor type, sensor types, max following error, max velocity, max acc,
 		// velocity units, default operation mode
-		EPOSWrapper(EPOSParams _epos_params);//, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params);
+		EPOSWrapper(rclcpp::Node* _node, EPOSParams _epos_params);//, ROSNodeParams _node_params) epos_params_(_epos_params), node_params_(_node_params);
 		//motor_cmd(); <- read input from launch
 		~EPOSWrapper();
 
@@ -138,7 +139,8 @@ namespace epos2
 		//  void clearFaultCallback(const sensor_msgs::Joy& msg);
 
 		/***************Print and Commands*****************/
-		std::string getErrorCode(DWORD _error_code);
+		void log_issue(std::string _issue, int _verbosity, int _category);
+		std::string get_error_code(DWORD _error_code);
 		//  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
 	};
 }

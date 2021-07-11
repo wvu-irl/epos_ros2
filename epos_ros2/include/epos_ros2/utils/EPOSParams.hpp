@@ -15,6 +15,24 @@
 
 namespace epos2
 {
+  
+  enum loggingPriority
+  {
+    LOG_OFF = 0,
+    LOG_DEBUG,
+    LOG_INFO,
+    LOG_WARN,
+    LOG_ERROR,
+    LOG_FATAL
+  };
+
+  enum loggingCategory
+  {
+    LOG_ALL = 0,
+    LOG_FEEDBACK,
+    LOG_INPUT,
+    LOG_OTHER
+  };
 
   enum OpMode
   {
@@ -54,6 +72,10 @@ namespace epos2
     std::string protocol_stack_name = "MAXON SERIAL V2";
     std::string interface_name = "USB";
     std::string port_name = "USB0";
+
+    // Logging
+    bool is_on;
+    std::vector<int> categories;
   };
 
 }

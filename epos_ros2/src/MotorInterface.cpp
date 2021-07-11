@@ -12,6 +12,8 @@
 MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name)
 {
 	// PARAM INITILIZATION ------------------------------------------------------------------------
+	declare_params();
+
 	//Publishers
 	motor_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/epos_motor_state", 10);
 
@@ -21,7 +23,7 @@ MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name)
 
 	// Spin information
 	main_ = this->create_wall_timer(20ms, std::bind(&MotorInterface::main_callback, this));
-	interface_ptr_ = new epos2::EPOSWrapper(get_params());
+	interface_ptr_ = new epos2::EPOSWrapper(this, get_params());
 }
 
 void MotorInterface::motor_callback(const sensor_msgs::msg::JointState::SharedPtr _msg)
@@ -39,21 +41,66 @@ void MotorInterface::main_callback()
 	//publish state
 }
 
+void MotorInterface::declare_params()
+{
+	// DECLARE PARAMS --------------------------------------------------
+
+	this->declare_parameter("motors/names");
+	rclcpp::Parameter motor_names_param("motor/names", std::vector<std::string>{"none"});
+	special_params_.push_back(motor_names_param);
+
+	this->declare_parameter("motors/ids");
+	rclcpp::Parameter motor_ids_param("motor/ids", std::vector<int>{0});
+	special_params_.push_back(motor_ids_param);
+
+	this->declare_parameter("motors/gear_ratio", 1);
+	this->declare_parameter("motors/counts_per_rev", 1.0);
+	this->declare_parameter("motors/wheel_radius/cm", 1.0);
+	this->declare_parameter("motors/kT", 1.0);
+	this->declare_parameter("motors/user_limits/ang_vel_rpm", 1.0);
+	this->declare_parameter("motors/user_limits/acc_rpm", 1.0);
+	this->declare_parameter("motors/absolute_limits/curr_stall_a", 1.0);
+	this->declare_parameter("motors/user_limits/curr_inst_a", 1.0);
+	this->declare_parameter("motors/user_limits/curr_cont_a", 1.0);
+
+	// EPOS Modules
+	this->declare_parameter("epos_modules/device", "EPOS4");
+	this->declare_parameter("epos_modules/protocol", "MAXON SERIAL V2");
+	this->declare_parameter("epos_modules/com_interface", "USB");
+	this->declare_parameter("epos_modules/port", "USB0");
+	this->declare_parameter("epos_modules/baud_rate", 1000000);
+
+	// // Logging
+	this->declare_parameter("logging/is_on", false);
+	this->declare_parameter("logging/categories");
+	rclcpp::Parameter log_categories_param("logging/categories", std::vector<int>{0});
+	special_params_.push_back(log_categories_param);
+}
+
 epos2::EPOSParams MotorInterface::get_params()
 {
 	epos2::EPOSParams params;
+	int special_param_counter = 0;
 
 	// Motors
 	std::vector<std::string> motors;
-	this->get_parameter("motors/names", motors);
+	this->get_parameter("motors/names", special_params_[special_param_counter]);
+	motors = special_params_[special_param_counter].as_string_array();
+	++special_param_counter;
+
 	std::vector<int> ids;
-	this->get_parameter("motors/ids", ids);
+	this->get_parameter("motors/ids", special_params_[special_param_counter]);
+	ids = std::vector<int>(special_params_[special_param_counter].as_integer_array().begin(),
+										 special_params_[special_param_counter].as_integer_array().end());
+	++special_param_counter;
+
 	for (std::vector<int>::size_type i = 0; i < ids.size(); ++i)
 	{
-		params.motor_name_map.insert( std::make_pair(motors[i], ids[i]) );
+		params.motor_name_map.insert(std::make_pair(motors[i], ids[i]));
 		params.motor_inds.push_back(i);
-		params.motor_ind_map.insert( std::make_pair(ids[1],i) );
+		params.motor_ind_map.insert(std::make_pair(ids[1], i));
 	}
+
 	this->get_parameter("motors/gear_ratio", params.gear_ratio);
 	this->get_parameter("motors/counts_per_rev", params.counts_per_rev);
 	this->get_parameter("motors/wheel_radius/cm", params.wheel_radius);
@@ -70,6 +117,14 @@ epos2::EPOSParams MotorInterface::get_params()
 	this->get_parameter("epos_modules/com_interface", params.interface_name);
 	this->get_parameter("epos_modules/port", params.port_name);
 	this->get_parameter("epos_modules/baud_rate", params.baud_rate);
+
+	// // Logging
+	this->get_parameter("logging/is_on", params.is_on);
+	// this->get_parameter("logging/categories", params.categories);
+	this->get_parameter("logging/categories", special_params_[special_param_counter]);
+	params.categories = std::vector<int>(special_params_[special_param_counter].as_integer_array().begin(),
+										 special_params_[special_param_counter].as_integer_array().end());
+	++special_param_counter;
 
 	return params;
 }
