@@ -59,19 +59,19 @@ namespace epos2
         case LOG_OFF:
             break;
         case LOG_DEBUG:
-            RCLCPP_DEBUG_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg);
+            RCLCPP_DEBUG_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg.c_str());
             break;
         case LOG_INFO:
-            RCLCPP_INFO_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg);
+            RCLCPP_INFO_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg.c_str());
             break;
         case LOG_WARN:
-            RCLCPP_WARN_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg);
+            RCLCPP_WARN_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg.c_str());
             break;
         case LOG_ERROR:
-            RCLCPP_ERROR_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg);
+            RCLCPP_ERROR_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg.c_str());
             break;
         case LOG_FATAL:
-            RCLCPP_FATAL_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg);
+            RCLCPP_FATAL_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg.c_str());
             break;
         default:
             RCLCPP_FATAL(node_ptr_->get_logger(), "[EPOS WRAPPER] INVALID ERROR VERBOSITY");
