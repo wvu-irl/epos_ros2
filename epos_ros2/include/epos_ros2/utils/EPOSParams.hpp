@@ -38,17 +38,17 @@ namespace epos2
   enum loggingGroup
   {
     /// Includes all log output
-    LOG_ALL = 0,
+    GROUP_ALL = 0,
     /// Includes logging related to motor feedback (e.g., current, postion, etc)
-    LOG_FEEDBACK,
+    GROUP_FEEDBACK,
     /// Includes logging related to motor input (e.g., velocity commands)
-    LOG_INPUT,
+    INPUT,
     /// Includes logging related to current function call or other progress metrics
-    LOG_PROGRESS,
+    GROUP_PROGRESS,
     /// Includes logging related EPOS error messages
-    LOG_ERROR,
+    GROUP_ERROR,
     /// Print statements for unspecified groups
-    LOG_OTHER
+    GROUP_OTHER
   };
 
   /// Defines operational modes for EPOS to command Maxon motors as described

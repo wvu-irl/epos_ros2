@@ -11,61 +11,94 @@ namespace epos2
        @param Motors to open
        @return Success(0)/Failure(1) of commands
     */
-    // int EPOSWrapper::open_devices()
-    // {
-    //    //Success of code
-    //    int result = RETURN_FAILED;
-    //    // Internal use of motor parameters
-    //    char *device_name = new char[255];
-    //    char *protocol_stack_name = new char[255];
-    //    char *interface_name = new char[255];
-    //    char *port_name = new char[255];
+    int EPOSWrapper::open_devices()
+    {
+        // Variables
+        std::string msg;  //For constructing log messages
+        DWORD error_code; //For returning errors
 
-    //    strcpy(device_name, device_name_.c_str());
-    //    strcpy(protocol_stack_name, protocol_stack_name_.c_str());
-    //    strcpy(interface_name, interface_name_.c_str());
-    //    strcpy(port_name, port_name_.c_str());
+        log_msg("Opening Devices", LOG_INFO, GROUP_PROGRESS);
 
-    //    //std::cout << "dev " << pDeviceName << "__Prot " << pProtocolStackName << "__Int " << pInterfaceName << "__Por" << pPortName << "__Code" << error_code_ << std::endl;
+        //Success of code
+        int result = RETURN_FAILED;
+        // Internal use of motor parameters
+        char *device_name = new char[255];
+        char *protocol_stack_name = new char[255];
+        char *interface_name = new char[255];
+        char *port_name = new char[255];
+        // copy EPOS device parameters to local variables
+        strcpy(device_name, epos_params_.device_name.c_str());
+        strcpy(protocol_stack_name, epos_params_.protocol_stack_name.c_str());
+        strcpy(interface_name, epos_params_.interface_name.c_str());
+        strcpy(port_name, epos_params_.port_name.c_str());
 
-    //    // ROS_INFO("Open device...");
-    //    //Opens device
-    //    key_handle_ = VCS_OpenDevice(device_name, protocol_stack_name, interface_name, port_name, &error_code_);
-    //    //checking device opened
-    //    if (key_handle_ != 0 && error_code_ == 0)
-    //    {
-    //       unsigned int baud_rate = 0;
-    //       unsigned int timeout = 0;
+        msg = "Device: " + epos_params_.device_name + " | Protocol Stack: " + epos_params_.protocol_stack_name + 
+              " | Interface: " + epos_params_.interface_name + " | Port: " + epos_params_.port_name;
+        log_msg(msg, LOG_DEBUG, GROUP_PROGRESS);
 
-    //       if (VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code_))
-    //       {
-    //          if (VCS_SetProtocolStackSettings(key_handle_, baud_rate_, timeout, &error_code_))
-    //          {
-    //             if (VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code_))
-    //             {
-    //                if (baud_rate_ == (int)baud_rate)
-    //                {
-    //                   result = RETURN_SUCCESS;
-    //                   // ROS_INFO("Device opened");
-    //                }
-    //             }
-    //          }
-    //       }
-    //    }
-    //    else
-    //    {
-    //       key_handle_ = 0;
-    //    }
-    //    // remove temporary device std::strings
-    //    delete[] device_name;
-    //    delete[] protocol_stack_name;
-    //    delete[] interface_name;
-    //    delete[] port_name;
+        //Opens device
+        key_handle_ = VCS_OpenDevice(device_name, protocol_stack_name, interface_name, port_name, &error_code);
+        //msg = "Key handle: " + (int)key_handle_;
+        //log_msg(msg, LOG_DEBUG, GROUP_PROGRESS);
 
-    //    //Get initial device state here
+        if (error_code != 0)
+            log_msg(this->get_error_code(error_code), LOG_ERROR, GROUP_ERROR);
 
-    //    return result;
-    // }
+        //checking device opened
+        if (key_handle_ != 0 && error_code == 0)
+        {
+            unsigned int baud_rate = 0;
+            unsigned int timeout = 0;
+
+            if (VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code))
+            {
+                if (error_code != 0)
+                {
+                    msg = "Protocol Check 1: timeout: " + timeout;
+                    log_msg(msg, LOG_ERROR, GROUP_ALL);
+                    log_msg(this->get_error_code(error_code), LOG_ERROR, GROUP_ERROR);
+                }
+                if (VCS_SetProtocolStackSettings(key_handle_, epos_params_.baud_rate, timeout, &error_code))
+                {
+                    if (error_code != 0)
+                    {
+                        msg = "Protocol Check 2: timeout: " + timeout;
+                        log_msg(msg, LOG_ERROR, GROUP_ERROR);
+                        log_msg(this->get_error_code(error_code), LOG_ERROR, GROUP_ERROR);
+                    }
+                    if (VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code))
+                    {
+                        if (error_code != 0)
+                        {
+                            msg = "Protocol Check 3: timeout: " + timeout;
+                            log_msg(msg, LOG_ERROR, GROUP_ERROR);
+                            log_msg(this->get_error_code(error_code), LOG_ERROR, GROUP_ERROR);
+                        }
+                        if (epos_params_.baud_rate == (int)baud_rate)
+                        {
+                            result = RETURN_SUCCESS;
+                            log_msg("Device Opened successfully", LOG_INFO, GROUP_PROGRESS);
+                        }
+                        else
+                        {
+                            log_msg("Baud rate did not match", LOG_WARN, GROUP_ERROR);
+                        }
+                    }
+                }
+            }
+        }
+
+        // remove temporary device std::strings
+        delete[] device_name;
+        delete[] protocol_stack_name;
+        delete[] interface_name;
+        delete[] port_name;
+
+        if (!result)
+            log_msg("DEVICES NOT OPENED", LOG_FATAL, GROUP_ERROR);
+
+        return result;
+    }
 
     // /**
     //     Closes device and subdevices
@@ -92,19 +125,11 @@ namespace epos2
     ///
     ///
     ///
-    EPOSWrapper::EPOSWrapper()
-    {
-        assertm(false, "No default initilializer: code is dependent on ROS Node Pointer!");
-    }
-
-    ///
-    ///
-    ///
     EPOSWrapper::EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _epos_params) : node_ptr_(_node_ptr), epos_params_(_epos_params)
     {
-        log_msg("Initializing EPOS Wrapper", LOG_INFO, LOG_PROGRESS);
+        log_msg("Initializing EPOS Wrapper", LOG_WARN, GROUP_PROGRESS);
         // Open devices
-        //this->open_devices();
+        this->open_devices();
     }
 
     /**
@@ -112,6 +137,8 @@ namespace epos2
     */
     //EPOSWrapper::~EPOSWrapper()
     //{
+    //   log_msg("Closing EPOS Devices/destructing EPOSWrapper", LOG_WARN, LOG_PROGRESS);
+
     // if (!this->close_devices())
     // {
     // std::cerr << "Failed to close devices, try " << i << "."<< std::endl;

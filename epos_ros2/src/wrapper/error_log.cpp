@@ -47,12 +47,12 @@ namespace epos2
     //---------------------------------------------------------------------------
 
     
-    void EPOSWrapper::log_msg(std::string _msg, loggingVerbosity _verbosity = LOG_OFF, loggingGroup _group = LOG_ALL)
+    void EPOSWrapper::log_msg(std::string _msg, loggingVerbosity _verbosity = LOG_OFF, loggingGroup _group = GROUP_ERROR)
     {
         _msg = "[EPOS WRAPPER] " + _msg;
 
         bool is_in_group = std::find(epos_params_.groups.begin(), epos_params_.groups.end(), _group) != epos_params_.groups.end();
-        bool log_expression = epos_params_.is_on && is_in_group;
+        bool log_expression = epos_params_.is_on && (is_in_group || _group == GROUP_ERROR);
 
         switch (_verbosity)
         {

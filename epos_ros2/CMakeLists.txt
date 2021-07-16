@@ -50,7 +50,9 @@ endif()
 #   "msg/MotorCommands.msg"
 #   DEPENDENCIES builtin_interfaces std_msgs
 # )
-
+set(ENV{EPOS_LIB_DIR} /opt/EposCmdLib_${EPOS_CMD_LIB_VER}/lib/x86_64)
+link_directories($ENV{EPOS_LIB_DIR})
+include_directories(include /opt/EposCmdLib_${EPOS_CMD_LIB_VER}/include)
 
 add_library(epos_wrapper_lib
 src/wrapper/EPOSWrapper.cpp
@@ -60,8 +62,8 @@ src/wrapper/initialization.cpp
 set(DEPENDENCIES
   "rclcpp"
 )
-target_link_libraries(epos_wrapper_lib)
-ament_target_dependencies(epos_wrapper_lib ${DEPENDENCIES})
+target_link_libraries(epos_wrapper_lib ftd2xx)
+ament_target_dependencies(epos_wrapper_lib ${DEPENDENCIES} $ENV{EPOS_LIB_DIR})
 
 add_library(motor_interface_lib
 src/MotorInterface.cpp
@@ -72,16 +74,12 @@ src/MotorInterface.cpp
 target_link_libraries(motor_interface_lib epos_wrapper_lib)
 ament_target_dependencies(motor_interface_lib sensor_msgs rclcpp)
 
-set(ENV{EPOS_LIB_DIR} /opt/EposCmdLib_${EPOS_CMD_LIB_VER}/lib/x86_64)
-link_directories($ENV{EPOS_LIB_DIR})
-include_directories(include /opt/EposCmdLib_${EPOS_CMD_LIB_VER}/include)
-
 
 add_executable(epos_interface_node $ENV{EPOS_LIB_DIR} src/epos_interface_node.cpp)
 target_link_libraries(epos_interface_node 
   epos_wrapper_lib 
   motor_interface_lib
-  ftd2xx
+  #ftd2xx
   ${rclcpp_LIBRARIES}
 )
 #add_dependencies(epos_interface_node ${PROJECT_NAME})

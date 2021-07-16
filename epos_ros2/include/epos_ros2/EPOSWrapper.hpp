@@ -23,6 +23,7 @@
 
 #define assertm(exp, msg) assert(((void)msg, exp))
 
+// C++ libraries
 #include <cassert>
 #include <string>
 // #include <iostream>
@@ -38,18 +39,21 @@
 // #include <sys/times.h>
 // #include <sys/time.h>
 
+// EPOS C Communication Library
 #include <Definitions.h>
 
+// ROS2 Libraries
 #include <rclcpp/rclcpp.hpp>
 
 // #include <geometry_msgs/msg/Twist.h>
 
+// Custom Libraries 
 #include <epos_ros2/utils/EPOSParams.hpp>
 //#include <epos_ros2/ROSNodeParams.hpp>
 
 typedef void *HANDLE;
 typedef int BOOL;
-typedef unsigned long DWORD;
+typedef unsigned int DWORD;
 
 namespace epos2
 {
@@ -60,8 +64,6 @@ namespace epos2
    		/***************************INITIALIZER LIST************************/
    		/////////////////////////////////////////////////////////////////////
 
-		// void *key_handle_ = 0;
-		// DWORD error_code_ = 0;
 		// //unsigned short maxStrSize = 512;
 		// char *error_code_char_;
 
@@ -79,7 +81,7 @@ namespace epos2
 		 * Asserts Error: default constructor doesn't make sense without ROS2 node
     	 * @brief Default Constructor
    		*/
-		EPOSWrapper(); 
+		EPOSWrapper(){assertm(false, "No default initilializer: code is dependent on ROS Node Pointer!");}; 
 
 		/**
     	 * Constructs wrapper object for a ROS2 node and with parameters specified by epos2::EPOSParams struct
@@ -143,8 +145,7 @@ namespace epos2
 		// std::vector<int> current_state_;
 		// std::vector<int> current_mode_;
 		//ROSNodeParams node_params_;
-		rclcpp::Node *node_ptr_;
-		EPOSParams epos_params_;
+		
 
 		//Setup error codes to print intead of being accepted as input. Makes the output simpler...
 		/***********************INTIALIZATION***************************/
@@ -159,6 +160,15 @@ namespace epos2
 		/////////////////////////////////////////////////////////////////////
    		/***************************VARIABLES*******************************/
    		/////////////////////////////////////////////////////////////////////
+
+		/// Pointer to ROS2 node 
+		rclcpp::Node *node_ptr_;
+		/// Parameters for EPOS device, motors, and logging
+		EPOSParams epos_params_;
+
+		/// Handle for port access
+		HANDLE key_handle_ = 0;
+
 
 		// /***********************OPERATION*****************************/
 		// short unsigned int getDevStateValue(DevState state);
@@ -193,7 +203,7 @@ namespace epos2
        	 * @param _error_code Error code number
          * @return Error description
     	*/
-		std::string get_error_code(DWORD _error_code);
+		static std::string get_error_code(DWORD _error_code);
 		
 
 		//  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
