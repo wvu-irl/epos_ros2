@@ -75,39 +75,64 @@ namespace epos2
     INTERPOLATED_POSITION_MODE = 7
   };
 
+  /// Defines device states for EPOS controllers
   enum DevState
   {
+    /// Disable device 
     DISABLED = 0x0000,
+    /// Enables device for normal operation
     ENABLED = 0x0001,
+    /// Quick stop device
     QUICKSTOP = 0x0002,
+    /// Device has faulted due to some condition
     FAULT = 0x0003
   };
 
+  /// Parameters for EPOS controller, motor parameters (assumes single motor type), and logging parameters
   struct EPOSParams
   {
     // Motors
+    /// Assume joints are defined semantically, this defines mapping to ids
     std::map<std::string, int> motor_name_map;
+    /// Defines mapping from motor id to index in list
     std::map<int, int> motor_ind_map;
+    /// List of motor indices
     std::vector<int> motor_inds;
+    /// Motor gear ratio
     double gear_ratio;
+    /// Number of encoder counts per revolution
     int counts_per_rev;
+    /// Radius of wheel (cm) 
     double wheel_radius;                // cm
+    /// Angular velocity upper limit (RPM)
     double ang_vel_limit;               // RPM
+    /// Angular acceleration upper limit (RPM^2)
     double acc_limit;                   // RPM
+    /// Stall current of motors (A) can be used to set artificial stall limit
     double stall_current;               // A
+    /// Maximum allowable instantaneous current (A) can be user defined
     double instantaneous_current_limit; // A
+    /// Maximum allowable continuous current (A) can be user defined
     double continuous_current_limit;    // A
+    /// Torque constant of motors (mNm/A)
     double kT = 31.5;                   // mNm/A
 
     // EPOS Modules
+    /// Baudrate for communication (Hz)
     int baud_rate = 1000000;
+    /// Name of EPOS device (e.g. EPOS2 (not tested), EPOS4)
     std::string device_name = "EPOS4";
+    /// Name of protocol stack for EPOS device
     std::string protocol_stack_name = "MAXON SERIAL V2";
+    /// Name of interface being used (e.g. USB, RS232 (not tested))
     std::string interface_name = "USB";
+    /// Port of interface
     std::string port_name = "USB0";
 
     // Logging
+    /// If true sets logging to print
     bool is_on;
+    /// Groups to log, see epos2::loggingGroup
     std::vector<int> groups;
   };
 
