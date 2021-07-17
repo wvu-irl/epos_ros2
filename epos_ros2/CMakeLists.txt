@@ -62,8 +62,8 @@ src/wrapper/initialization.cpp
 set(DEPENDENCIES
   "rclcpp"
 )
-target_link_libraries(epos_wrapper_lib ftd2xx)
-ament_target_dependencies(epos_wrapper_lib ${DEPENDENCIES} $ENV{EPOS_LIB_DIR})
+target_link_libraries(epos_wrapper_lib ftd2xx EposCmd)
+ament_target_dependencies(epos_wrapper_lib ${DEPENDENCIES})
 
 add_library(motor_interface_lib
 src/MotorInterface.cpp
