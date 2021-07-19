@@ -54,6 +54,7 @@
 typedef void *HANDLE;
 typedef int BOOL;
 typedef unsigned int DWORD;
+typedef unsigned short WORD;
 
 namespace epos2
 {
@@ -64,8 +65,8 @@ namespace epos2
 		/***************************INITIALIZER LIST************************/
 		/////////////////////////////////////////////////////////////////////
 
-		// //unsigned short maxStrSize = 512;
-		// char *error_code_char_;
+		/// maximum size of string containing error information, set to 512
+		WORD max_error_size_ = 512;
 
 	public:
 		/////////////////////////////////////////////////////////////////////
@@ -95,6 +96,77 @@ namespace epos2
 		 * @brief Destructor
     	*/
 		~EPOSWrapper();
+		
+		/////////////////////////////////////////////////////////////////////
+    	/***************************INITIALIZATION**************************/
+    	/////////////////////////////////////////////////////////////////////
+
+		/**
+       	 * Requires that device_name, protocol_stack_name, interface_name and port_name be 
+		 * set in mac::EPOSParams struct 
+		 * 
+         * @brief Opens device and subdevices
+         * @return Success(0)/Failure(1) of commands
+     	*/
+		int open_devices();
+
+		/**
+		 * @brief Closess device and subdevices
+    	 * @return Success(0)/Failure(1) of command
+    	*/
+		int close_devices();
+
+	private:
+		/////////////////////////////////////////////////////////////////////
+		/***************************VARIABLES*******************************/
+		/////////////////////////////////////////////////////////////////////
+
+		/// Pointer to ROS2 node
+		rclcpp::Node *node_ptr_;
+		/// Parameters for EPOS device, motors, and logging
+		EPOSParams epos_params_;
+		/// Handle for port access
+		HANDLE key_handle_ = 0;
+
+		/////////////////////////////////////////////////////////////////////
+		/**************************ERRORS and LOGGING***********************/
+		/////////////////////////////////////////////////////////////////////
+
+		/**
+		 * Wraps ROS2 logging and adds additional semantic behaviors
+		 * @brief ROS2 logging wrapper
+    	 * @param _msg Error message
+    	 * @param _verbosity Level of verbosity
+    	 * @param _group Group of log message 
+    	*/
+		void log_msg(std::string _msg, loggingVerbosity _verbosity = LOG_OFF, loggingGroup _group = GROUP_ERROR);
+
+		/**
+       	 * Converts error codes to description of error as provided in Maxon
+		 * communication library
+		 * @brief Gets error description
+       	 * @param _error_code Error code number
+         * @return Error description
+    	*/
+		static std::string get_error_code(DWORD _error_code);
+
+	};
+}
+#endif
+
+		//  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
+
+		// /***********************OPERATION*****************************/
+		// short unsigned int getDevStateValue(DevState state);
+		// enum DevState getDevState(short unsigned int state);
+		// int getModeValue(OpMode mode);
+
+		//  int   DemoProfilePositionMode(HANDLE p_DeviceHandle, unsigned short p_usNodeId, unsigned int & p_rlErrorCode);
+		//  int   Demo(unsigned int* pErrorCode);
+		//  int   PrepareDemo(unsigned int* pErrorCode);
+
+		//  void cmdReceived(const geometry_msgs::Twist& msg);
+		//  void clearFaultCallback(const sensor_msgs::Joy& msg);
 
 		/**   // get
    int   setPosProfile();
@@ -135,85 +207,11 @@ namespace epos2
 		// void logError(std::string _function_name);
 		// int checkNodeID(int _id);
 		// int addNodeIDs(std::vector<int> _ids);
-
-		/////////////////////////////////////////////////////////////////////
-		/**************************ERRORS and LOGGING***********************/
-		/////////////////////////////////////////////////////////////////////
-
+		
 		/***********************VARIABLES*****************************/
 		// std::vector<int> current_state_;
 		// std::vector<int> current_mode_;
 		//ROSNodeParams node_params_;
 
 		//Setup error codes to print intead of being accepted as input. Makes the output simpler...
-		
-		/////////////////////////////////////////////////////////////////////
-    	/***************************INITIALIZATION**************************/
-    	/////////////////////////////////////////////////////////////////////
 
-		/**
-       	 * Requires that device_name, protocol_stack_name, interface_name and port_name be 
-		 * set in mac::EPOSParams struct 
-		 * 
-         * @brief Opens device and subdevices
-         * @return Success(0)/Failure(1) of commands
-     	*/
-		int open_devices();
-
-		/**
-		 * @brief Closess device and subdevices
-    	 * @return Success(0)/Failure(1) of command
-    	*/
-		int close_devices();
-
-	private:
-		/////////////////////////////////////////////////////////////////////
-		/***************************VARIABLES*******************************/
-		/////////////////////////////////////////////////////////////////////
-
-		/// Pointer to ROS2 node
-		rclcpp::Node *node_ptr_;
-		/// Parameters for EPOS device, motors, and logging
-		EPOSParams epos_params_;
-
-		/// Handle for port access
-		HANDLE key_handle_ = 0;
-
-		// /***********************OPERATION*****************************/
-		// short unsigned int getDevStateValue(DevState state);
-		// enum DevState getDevState(short unsigned int state);
-		// int getModeValue(OpMode mode);
-
-		//  int   DemoProfilePositionMode(HANDLE p_DeviceHandle, unsigned short p_usNodeId, unsigned int & p_rlErrorCode);
-		//  int   Demo(unsigned int* pErrorCode);
-		//  int   PrepareDemo(unsigned int* pErrorCode);
-
-		//  void cmdReceived(const geometry_msgs::Twist& msg);
-		//  void clearFaultCallback(const sensor_msgs::Joy& msg);
-
-		/////////////////////////////////////////////////////////////////////
-		/**************************ERRORS and LOGGING***********************/
-		/////////////////////////////////////////////////////////////////////
-
-		/**
-		 * Wraps ROS2 logging and adds additional semantic behaviors
-		 * @brief ROS2 logging wrapper
-    	 * @param _msg Error message
-    	 * @param _verbosity Level of verbosity
-    	 * @param _group Group of log message 
-    	*/
-		void log_msg(std::string _msg, loggingVerbosity _verbosity = LOG_OFF, loggingGroup _group = GROUP_ERROR);
-
-		/**
-       	 * Converts error codes to description of error as provided in Maxon
-		 * communication library
-		 * @brief Gets error description
-       	 * @param _error_code Error code number
-         * @return Error description
-    	*/
-		static std::string get_error_code(DWORD _error_code);
-
-		//  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
-	};
-}
-#endif

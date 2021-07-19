@@ -55,9 +55,10 @@ link_directories($ENV{EPOS_LIB_DIR})
 include_directories(include /opt/EposCmdLib_${EPOS_CMD_LIB_VER}/include)
 
 add_library(epos_wrapper_lib
-src/wrapper/EPOSWrapper.cpp
-src/wrapper/error_log.cpp
-src/wrapper/initialization.cpp
+  ${PROJECT_SOURCE_DIR}/src/EPOSWrapper/configuration.cpp
+  ${PROJECT_SOURCE_DIR}/src/EPOSWrapper/error_log.cpp
+  ${PROJECT_SOURCE_DIR}/src/EPOSWrapper/initialization.cpp
+  ${PROJECT_SOURCE_DIR}/src/EPOSWrapper/operation.cpp
 )
 set(DEPENDENCIES
   "rclcpp"
