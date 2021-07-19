@@ -47,7 +47,7 @@ namespace epos2
     //---------------------------------------------------------------------------
 
     
-    void EPOSWrapper::log_msg(std::string _msg, loggingVerbosity _verbosity = LOG_OFF, loggingGroup _group = GROUP_ERROR)
+    void EPOSWrapper::log_msg(std::string _msg, loggingVerbosity _verbosity, loggingGroup _group)
     {
         _msg = "[EPOS WRAPPER] " + _msg;
 
@@ -72,6 +72,9 @@ namespace epos2
             break;
         case LOG_FATAL:
             RCLCPP_FATAL_EXPRESSION(node_ptr_->get_logger(), log_expression, _msg.c_str());
+            break;
+        case LOG_DEATH:
+            assertm(false, _msg);
             break;
         default:
             RCLCPP_FATAL(node_ptr_->get_logger(), "[EPOS WRAPPER] INVALID ERROR VERBOSITY");

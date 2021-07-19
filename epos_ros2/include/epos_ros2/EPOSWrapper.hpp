@@ -47,7 +47,7 @@
 
 // #include <geometry_msgs/msg/Twist.h>
 
-// Custom Libraries 
+// Custom Libraries
 #include <epos_ros2/utils/EPOSParams.hpp>
 //#include <epos_ros2/ROSNodeParams.hpp>
 
@@ -61,27 +61,26 @@ namespace epos2
 	class EPOSWrapper
 	{
 		/////////////////////////////////////////////////////////////////////
-   		/***************************INITIALIZER LIST************************/
-   		/////////////////////////////////////////////////////////////////////
+		/***************************INITIALIZER LIST************************/
+		/////////////////////////////////////////////////////////////////////
 
 		// //unsigned short maxStrSize = 512;
 		// char *error_code_char_;
 
 	public:
+		/////////////////////////////////////////////////////////////////////
+		/***************************VARIABLES*******************************/
+		/////////////////////////////////////////////////////////////////////
 
 		/////////////////////////////////////////////////////////////////////
-   		/***************************VARIABLES*******************************/
-   		/////////////////////////////////////////////////////////////////////
-		
+		/***************************CONSTRUCTORS****************************/
 		/////////////////////////////////////////////////////////////////////
-   		/***************************CONSTRUCTORS****************************/
-   		/////////////////////////////////////////////////////////////////////
-		
+
 		/**
 		 * Asserts Error: default constructor doesn't make sense without ROS2 node
     	 * @brief Default Constructor
    		*/
-		EPOSWrapper(){assertm(false, "No default initilializer: code is dependent on ROS Node Pointer!");}; 
+		EPOSWrapper();
 
 		/**
     	 * Constructs wrapper object for a ROS2 node and with parameters specified by epos2::EPOSParams struct
@@ -95,9 +94,9 @@ namespace epos2
          * Destructs object and attempts to close all devices
 		 * @brief Destructor
     	*/
-		//~EPOSWrapper();
+		~EPOSWrapper();
 
-						/**   // get
+		/**   // get
    int   setPosProfile();
    int   goToPos();
    int   stopPos();
@@ -114,7 +113,7 @@ namespace epos2
 		//get currentis
 		//waitfortargetreached
 
-	// /***********************CONFIGURATION***************************/
+		// /***********************CONFIGURATION***************************/
 		// int setMode(std::vector<int> _node_ids, OpMode _mode);
 		// //void setModeCallback(const ; //NEED TO MAKE MESSAGE FOR THIS, need to make way to display/handle specific error
 		// int resetDevice(unsigned short _node_id);
@@ -138,37 +137,47 @@ namespace epos2
 		// int addNodeIDs(std::vector<int> _ids);
 
 		/////////////////////////////////////////////////////////////////////
-    /**************************ERRORS and LOGGING***********************/
-    /////////////////////////////////////////////////////////////////////
+		/**************************ERRORS and LOGGING***********************/
+		/////////////////////////////////////////////////////////////////////
 
 		/***********************VARIABLES*****************************/
 		// std::vector<int> current_state_;
 		// std::vector<int> current_mode_;
 		//ROSNodeParams node_params_;
-		
 
 		//Setup error codes to print intead of being accepted as input. Makes the output simpler...
-		/***********************INTIALIZATION***************************/
+		
+		/////////////////////////////////////////////////////////////////////
+    	/***************************INITIALIZATION**************************/
+    	/////////////////////////////////////////////////////////////////////
+
+		/**
+       	 * Requires that device_name, protocol_stack_name, interface_name and port_name be 
+		 * set in mac::EPOSParams struct 
+		 * 
+         * @brief Opens device and subdevices
+         * @return Success(0)/Failure(1) of commands
+     	*/
 		int open_devices();
-		// int close_devices();
 
-		
-		
-
+		/**
+		 * @brief Closess device and subdevices
+    	 * @return Success(0)/Failure(1) of command
+    	*/
+		int close_devices();
 
 	private:
 		/////////////////////////////////////////////////////////////////////
-   		/***************************VARIABLES*******************************/
-   		/////////////////////////////////////////////////////////////////////
+		/***************************VARIABLES*******************************/
+		/////////////////////////////////////////////////////////////////////
 
-		/// Pointer to ROS2 node 
+		/// Pointer to ROS2 node
 		rclcpp::Node *node_ptr_;
 		/// Parameters for EPOS device, motors, and logging
 		EPOSParams epos_params_;
 
 		/// Handle for port access
 		HANDLE key_handle_ = 0;
-
 
 		// /***********************OPERATION*****************************/
 		// short unsigned int getDevStateValue(DevState state);
@@ -181,12 +190,11 @@ namespace epos2
 
 		//  void cmdReceived(const geometry_msgs::Twist& msg);
 		//  void clearFaultCallback(const sensor_msgs::Joy& msg);
-		
 
 		/////////////////////////////////////////////////////////////////////
-    	/**************************ERRORS and LOGGING***********************/
-    	/////////////////////////////////////////////////////////////////////
-		
+		/**************************ERRORS and LOGGING***********************/
+		/////////////////////////////////////////////////////////////////////
+
 		/**
 		 * Wraps ROS2 logging and adds additional semantic behaviors
 		 * @brief ROS2 logging wrapper
@@ -194,7 +202,7 @@ namespace epos2
     	 * @param _verbosity Level of verbosity
     	 * @param _group Group of log message 
     	*/
-		void log_msg(std::string _msg, loggingVerbosity _verbosity, loggingGroup _group);
+		void log_msg(std::string _msg, loggingVerbosity _verbosity = LOG_OFF, loggingGroup _group = GROUP_ERROR);
 
 		/**
        	 * Converts error codes to description of error as provided in Maxon
@@ -204,10 +212,8 @@ namespace epos2
          * @return Error description
     	*/
 		static std::string get_error_code(DWORD _error_code);
-		
 
 		//  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
 	};
 }
 #endif
-

@@ -29,7 +29,9 @@ namespace epos2
     /// Sets logging verbosity to ROS2 Error
     LOG_ERROR,
     /// Sets logging verbosity to ROS2 Fatal
-    LOG_FATAL
+    LOG_FATAL,
+    /// KILLS PROGRAM, calls cassert
+    LOG_DEATH
   };
 
   /// Defines group a given epos2::EPOSWrapper::log_msg call function belongs to.

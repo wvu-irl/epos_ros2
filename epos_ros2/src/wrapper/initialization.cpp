@@ -5,12 +5,10 @@ namespace epos2
     /////////////////////////////////////////////////////////////////////
     /***************************INITIALIZATION**************************/
     /////////////////////////////////////////////////////////////////////
-    /**
-       Opens device and subdevices
 
-       @param Motors to open
-       @return Success(0)/Failure(1) of commands
-    */
+    ///
+    ///
+    ///
     int EPOSWrapper::open_devices()
     {
         // Variables
@@ -32,7 +30,7 @@ namespace epos2
         strcpy(interface_name, epos_params_.interface_name.c_str());
         strcpy(port_name, epos_params_.port_name.c_str());
 
-        msg = "Device: " + epos_params_.device_name + " | Protocol Stack: " + epos_params_.protocol_stack_name + 
+        msg = "Device: " + epos_params_.device_name + " | Protocol Stack: " + epos_params_.protocol_stack_name +
               " | Interface: " + epos_params_.interface_name + " | Port: " + epos_params_.port_name;
         log_msg(msg, LOG_DEBUG, GROUP_PROGRESS);
 
@@ -94,29 +92,24 @@ namespace epos2
         delete[] interface_name;
         delete[] port_name;
 
-        if (!result)
-            log_msg("DEVICES NOT OPENED", LOG_FATAL, GROUP_ERROR);
-
         return result;
     }
 
-    // /**
-    //     Closes device and subdevices
+    ///
+    ///
+    ///
+    int EPOSWrapper::close_devices()
+    {
+        int result = RETURN_FAILED;
+        DWORD error_code = 0;
 
-    //     @return Success(0)/Failure(1) of command
-    //  */
-    // int EPOSWrapper::close_devices()
-    // {
-    //    int result = RETURN_FAILED;
-    //    error_code_ = 0;
-    //    // ROS_INFO("Close device");
+        log_msg("Closing devices", LOG_INFO, GROUP_PROGRESS);
 
-    //    if (VCS_CloseAllDevices(&error_code_) && error_code_ == 0)
-    //    {
-    //       result = RETURN_SUCCESS;
-    //    }
-    //    return result;
-    // }
+        if (VCS_CloseAllDevices(&error_code) && error_code == 0)
+            result = RETURN_SUCCESS;
+
+        return result;
+    }
 
     /////////////////////////////////////////////////////////////////////
     /***************************CONSTRUCTORS****************************/
@@ -125,27 +118,31 @@ namespace epos2
     ///
     ///
     ///
+    EPOSWrapper::EPOSWrapper()
+    {
+        log_msg("No default initilializer: code is dependent on ROS Node Pointer!", LOG_DEATH);
+    }
+
+    ///
+    ///
+    ///
     EPOSWrapper::EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _epos_params) : node_ptr_(_node_ptr), epos_params_(_epos_params)
     {
         log_msg("Initializing EPOS Wrapper", LOG_WARN, GROUP_PROGRESS);
         // Open devices
-        this->open_devices();
+        if (!this->open_devices())
+            log_msg("DEVICES NOT OPENED", LOG_DEATH);
     }
 
-    /**
-        *   Destructor closes all devices :)
-    */
-    //EPOSWrapper::~EPOSWrapper()
-    //{
-    //   log_msg("Closing EPOS Devices/destructing EPOSWrapper", LOG_WARN, LOG_PROGRESS);
+    ///
+    ///
+    ///
+    EPOSWrapper::~EPOSWrapper()
+    {
+        log_msg("Closing EPOS Devices/destructing EPOSWrapper", LOG_WARN, GROUP_PROGRESS);
 
-    // if (!this->close_devices())
-    // {
-    // std::cerr << "Failed to close devices, try " << i << "."<< std::endl;
-    /// NEED TO TRY TO CORRECT FAULTS HERE
-    //if (!this->closeDevices())
-    // print still failedds
-    // }
-    //}
+        if (!this->close_devices())
+            log_msg("FAILED TO CLOSE DEVICES", LOG_DEATH);
+    }
 
 }
