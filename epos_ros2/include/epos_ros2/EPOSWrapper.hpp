@@ -66,7 +66,7 @@ namespace epos2
 		/////////////////////////////////////////////////////////////////////
 
 		/// maximum size of string containing error information, set to 512
-		WORD max_error_size_ = 512;
+		WORD max_log_size_ = 512;
 
 	public:
 		/////////////////////////////////////////////////////////////////////
@@ -143,12 +143,21 @@ namespace epos2
 
 		/**
        	 * Converts error codes to description of error as provided in Maxon
-		 * communication library
+		 * communication library. Does not invlude device errors
+		 * @brief Gets error description from device
+       	 * @param _error_code Error code number
+         * @return Error description
+    	*/
+		std::string get_error_vcs(DWORD _error_code);
+
+		/**
+       	 * Converts error codes to description of error as provided in Maxon
+		 * communication library. Includes device errors
 		 * @brief Gets error description
        	 * @param _error_code Error code number
          * @return Error description
     	*/
-		static std::string get_error_code(DWORD _error_code);
+		static std::string get_error(DWORD _error_code);
 
 	};
 }
@@ -215,3 +224,16 @@ namespace epos2
 
 		//Setup error codes to print intead of being accepted as input. Makes the output simpler...
 
+
+    // int EPOSWrapper::checkNodeID(int _id)
+    // {
+    // 		int result = RETURN_FAILED;
+
+    // 		for (int i = 0; i < node_id_list_.size(); ++i)
+    // 		{
+    // 				if (_id == node_id_list_[i]) {
+    // 						result == RETURN_SUCCESS;
+    // 				}
+    // 		}
+    // 		return result;
+    // }

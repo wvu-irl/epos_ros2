@@ -6,47 +6,9 @@ namespace epos2
     /**************************ERRORS and LOGGING***********************/
     /////////////////////////////////////////////////////////////////////
 
-    // /**
-    //     Displays Error info for an executed function
-
-    //     @param error_code_Value Error code number
-    //     @return Success(0)/Failure(1) of command
-    //  */
-    // int EPOSWrapper::getError(unsigned short _error_code_value)
-    // {
-    // 		int result = RETURN_FAILED;
-    // 		if(VCS_GetErrorInfo(_error_code_value, error_code_char_, MMC_MAX_LOG_MSG_SIZE))
-    // 		{
-    // 				ROS_ERROR("ERROR %u: %u\n", _error_code_value, *error_code_char_);
-    // 				result = RETURN_SUCCESS;
-    // 		}
-
-    // 		return result;
-    // }
-
-    // void EPOSWrapper::logError(std::string _function_name)
-    // {
-    // 		std::cerr << "EPOS COMMAND: " << _function_name << " failed (error_code_=0x" << std::hex << error_code_ << ")"<< std::endl;
-    // }
-
-    // int EPOSWrapper::checkNodeID(int _id)
-    // {
-    // 		int result = RETURN_FAILED;
-
-    // 		for (int i = 0; i < node_id_list_.size(); ++i)
-    // 		{
-    // 				if (_id == node_id_list_[i]) {
-    // 						result == RETURN_SUCCESS;
-    // 				}
-    // 		}
-    // 		return result;
-    // }
-
-    //---------------------------------------------------------------------------
-    //---------------------------------------------------------------------------
-    //---------------------------------------------------------------------------
-
-    
+    ///
+    ///
+    ///
     void EPOSWrapper::log_msg(std::string _msg, loggingVerbosity _verbosity, loggingGroup _group)
     {
         _msg = "[EPOS WRAPPER] " + _msg;
@@ -82,11 +44,27 @@ namespace epos2
         }
     }
 
-    //---------------------------------------------------------------------------
-    //---------------------------------------------------------------------------
-    //---------------------------------------------------------------------------
+    /// Uses VCS_getErrorInfo()
+    ///
+    ///
+    std::string EPOSWrapper::get_error_vcs(DWORD _error_code)
+    {
+        char* error_description_ptr;
+        if (VCS_GetErrorInfo(_error_code, error_description_ptr, max_log_size_))
+        {
+            log_msg("VCS_GetErrorInfo Succeed", LOG_DEBUG, GROUP_OTHER);
+        } else
+        {
+            log_msg("VCS_GetErrorInfo Failed", LOG_ERROR, GROUP_ERROR);
+        }
+        std::string msg(error_description_ptr);
+        return msg;
+    }
 
-    std::string EPOSWrapper::get_error_code(DWORD _error_code)
+    /// Directly maps error codes
+    ///
+    ///
+    std::string EPOSWrapper::get_error(DWORD _error_code)
     {
         switch (_error_code)
         {

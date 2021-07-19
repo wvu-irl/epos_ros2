@@ -6,7 +6,7 @@ namespace epos2
     /***************************INITIALIZATION**************************/
     /////////////////////////////////////////////////////////////////////
 
-    ///
+    /// Uses VCS_OpenDevice(), VCS_GetProtocolStackSettings()
     ///
     ///
     int EPOSWrapper::open_devices()
@@ -40,7 +40,7 @@ namespace epos2
         //log_msg(msg, LOG_DEBUG, GROUP_PROGRESS);
 
         if (error_code != 0)
-            log_msg(this->get_error_code(error_code), LOG_ERROR, GROUP_ERROR);
+            log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
 
         //checking device opened
         if (key_handle_ != 0 && error_code == 0)
@@ -54,7 +54,7 @@ namespace epos2
                 {
                     msg = "Protocol Check 1: timeout: " + timeout;
                     log_msg(msg, LOG_ERROR, GROUP_ALL);
-                    log_msg(this->get_error_code(error_code), LOG_ERROR, GROUP_ERROR);
+                    log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
                 }
                 if (VCS_SetProtocolStackSettings(key_handle_, epos_params_.baud_rate, timeout, &error_code))
                 {
@@ -62,7 +62,7 @@ namespace epos2
                     {
                         msg = "Protocol Check 2: timeout: " + timeout;
                         log_msg(msg, LOG_ERROR, GROUP_ERROR);
-                        log_msg(this->get_error_code(error_code), LOG_ERROR, GROUP_ERROR);
+                        log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
                     }
                     if (VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code))
                     {
@@ -70,7 +70,7 @@ namespace epos2
                         {
                             msg = "Protocol Check 3: timeout: " + timeout;
                             log_msg(msg, LOG_ERROR, GROUP_ERROR);
-                            log_msg(this->get_error_code(error_code), LOG_ERROR, GROUP_ERROR);
+                            log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
                         }
                         if (epos_params_.baud_rate == (int)baud_rate)
                         {
@@ -82,7 +82,19 @@ namespace epos2
                             log_msg("Baud rate did not match", LOG_WARN, GROUP_ERROR);
                         }
                     }
+                    else
+                    {
+                        log_msg("VCS_GetProtocolStackSettings failed", LOG_ERROR, GROUP_ERROR);
+                    }
                 }
+                else
+                {
+                    log_msg("VCS_GetProtocolStackSettings failed", LOG_ERROR, GROUP_ERROR);
+                }
+            }
+            else
+            {
+                log_msg("VCS_GetProtocolStackSettings failed", LOG_ERROR, GROUP_ERROR);
             }
         }
 
@@ -95,7 +107,7 @@ namespace epos2
         return result;
     }
 
-    ///
+    /// Usess VCS_CloseAllDevices()
     ///
     ///
     int EPOSWrapper::close_devices()
