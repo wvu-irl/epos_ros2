@@ -57,7 +57,7 @@ namespace epos2
   /// in the EPOS Command Library. Definition includes official names.
   enum OpMode
   {
-    /// OMD_STEP_DIRECTION_MODE: 
+    /// OMD_STEP_DIRECTION_MODE:
     STEP_DIRECTION_MODE = -6,
     /// OMD_MASTER_ENCODER_MODE
     MASTER_ENCODER_MODE = -5,
@@ -80,7 +80,7 @@ namespace epos2
   /// Defines device states for EPOS controllers
   enum DevState
   {
-    /// Disable device 
+    /// Disable device
     DISABLED = 0x0000,
     /// Enables device for normal operation
     ENABLED = 0x0001,
@@ -88,6 +88,31 @@ namespace epos2
     QUICKSTOP = 0x0002,
     /// Device has faulted due to some condition
     FAULT = 0x0003
+  };
+
+  /// 
+  struct MaxonMotor
+  {
+    /// Motor index
+    int index;
+    /// Motor gear ratio
+    double gear_ratio;
+    /// Number of encoder counts per revolution
+    int counts_per_rev;
+    /// Radius of wheel (cm)
+    double wheel_radius; // cm
+    /// Angular velocity upper limit (RPM)
+    double ang_vel_limit; // RPM
+    /// Angular acceleration upper limit (RPM^2)
+    double acc_limit; // RPM
+    /// Stall current of motors (A) can be used to set artificial stall limit
+    double stall_current; // A
+    /// Maximum allowable instantaneous current (A) can be user defined
+    double instantaneous_current_limit; // A
+    /// Maximum allowable continuous current (A) can be user defined
+    double continuous_current_limit; // A
+    /// Torque constant of motors (mNm/A)
+    double kT = 31.5; // mNm/A
   };
 
   /// Parameters for EPOS controller, motor parameters (assumes single motor type), and logging parameters
@@ -98,26 +123,8 @@ namespace epos2
     std::map<std::string, int> motor_name_map;
     /// Defines mapping from motor id to index in list
     std::map<int, int> motor_ind_map;
-    /// List of motor indices
-    std::vector<int> motor_inds;
-    /// Motor gear ratio
-    double gear_ratio;
-    /// Number of encoder counts per revolution
-    int counts_per_rev;
-    /// Radius of wheel (cm) 
-    double wheel_radius;                // cm
-    /// Angular velocity upper limit (RPM)
-    double ang_vel_limit;               // RPM
-    /// Angular acceleration upper limit (RPM^2)
-    double acc_limit;                   // RPM
-    /// Stall current of motors (A) can be used to set artificial stall limit
-    double stall_current;               // A
-    /// Maximum allowable instantaneous current (A) can be user defined
-    double instantaneous_current_limit; // A
-    /// Maximum allowable continuous current (A) can be user defined
-    double continuous_current_limit;    // A
-    /// Torque constant of motors (mNm/A)
-    double kT = 31.5;                   // mNm/A
+    /// Parameters for each motor
+    std::vector<MaxonMotor> motors;
 
     // EPOS Modules
     /// Baudrate for communication (Hz)

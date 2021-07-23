@@ -91,25 +91,32 @@ epos2::EPOSParams MotorInterface::get_params()
 	std::vector<int> ids;
 	this->get_parameter("motors/ids", special_params_[special_param_counter]);
 	ids = std::vector<int>(special_params_[special_param_counter].as_integer_array().begin(),
-										 special_params_[special_param_counter].as_integer_array().end());
+						   special_params_[special_param_counter].as_integer_array().end());
 	++special_param_counter;
 
 	for (std::vector<int>::size_type i = 0; i < ids.size(); ++i)
 	{
 		params.motor_name_map.insert(std::make_pair(motors[i], ids[i]));
-		params.motor_inds.push_back(i);
 		params.motor_ind_map.insert(std::make_pair(ids[1], i));
 	}
 
-	this->get_parameter("motors/gear_ratio", params.gear_ratio);
-	this->get_parameter("motors/counts_per_rev", params.counts_per_rev);
-	this->get_parameter("motors/wheel_radius/cm", params.wheel_radius);
-	this->get_parameter("motors/kT", params.kT);
-	this->get_parameter("motors/user_limits/ang_vel_rpm", params.ang_vel_limit);
-	this->get_parameter("motors/user_limits/acc_rpm", params.acc_limit);
-	this->get_parameter("motors/absolute_limits/curr_stall_a", params.stall_current);
-	this->get_parameter("motors/user_limits/curr_inst_a", params.instantaneous_current_limit);
-	this->get_parameter("motors/user_limits/curr_cont_a", params.continuous_current_limit);
+	// Maxon Motors
+	epos2::MaxonMotor temp_motor;
+	for (std::vector<int>::size_type i = 0; i < ids.size(); ++i)
+	{
+		temp_motor.index = ids[i];
+		this->get_parameter("motors/gear_ratio", temp_motor.gear_ratio);
+		this->get_parameter("motors/counts_per_rev", temp_motor.counts_per_rev);
+		this->get_parameter("motors/wheel_radius/cm", temp_motor.wheel_radius);
+		this->get_parameter("motors/kT", temp_motor.kT);
+		this->get_parameter("motors/user_limits/ang_vel_rpm", temp_motor.ang_vel_limit);
+		this->get_parameter("motors/user_limits/acc_rpm", temp_motor.acc_limit);
+		this->get_parameter("motors/absolute_limits/curr_stall_a", temp_motor.stall_current);
+		this->get_parameter("motors/user_limits/curr_inst_a", temp_motor.instantaneous_current_limit);
+		this->get_parameter("motors/user_limits/curr_cont_a", temp_motor.continuous_current_limit);
+
+		params.motors.push_back(temp_motor);
+	}
 
 	// EPOS Modules
 	this->get_parameter("epos_modules/device", params.device_name);
@@ -122,7 +129,7 @@ epos2::EPOSParams MotorInterface::get_params()
 	this->get_parameter("logging/is_on", params.is_on);
 	this->get_parameter("logging/groups", special_params_[special_param_counter]);
 	params.groups = std::vector<int>(special_params_[special_param_counter].as_integer_array().begin(),
-										 special_params_[special_param_counter].as_integer_array().end());
+									 special_params_[special_param_counter].as_integer_array().end());
 	++special_param_counter;
 
 	return params;
