@@ -17,9 +17,9 @@
 #define RETURN_FAILED 0
 #endif
 
-#ifndef MAX_LOG_MSG_SIZE
-#define MAX_LOG_MSG_SIZE 512
-#endif
+// #ifndef MAX_LOG_MSG_SIZE
+// #define MAX_LOG_MSG_SIZE 512
+// #endif
 
 #define assertm(exp, msg) assert(((void)msg, exp))
 
@@ -45,11 +45,8 @@
 // ROS2 Libraries
 #include <rclcpp/rclcpp.hpp>
 
-// #include <geometry_msgs/msg/Twist.h>
-
 // Custom Libraries
 #include <epos_ros2/utils/EPOSParams.hpp>
-//#include <epos_ros2/ROSNodeParams.hpp>
 
 typedef void *HANDLE;
 typedef int BOOL;
@@ -96,25 +93,100 @@ namespace epos2
 		 * @brief Destructor
     	*/
 		~EPOSWrapper();
-		
+
 		/////////////////////////////////////////////////////////////////////
-    	/***************************INITIALIZATION**************************/
-    	/////////////////////////////////////////////////////////////////////
+		/***************************INITIALIZATION**************************/
+		/////////////////////////////////////////////////////////////////////
 
 		/**
        	 * Requires that device_name, protocol_stack_name, interface_name and port_name be 
 		 * set in mac::EPOSParams struct 
 		 * 
          * @brief Opens device and subdevices
-         * @return Success(0)/Failure(1) of commands
+         * @return Success(1)/Failure(0) of commands
      	*/
 		int open_devices();
 
 		/**
 		 * @brief Closess device and subdevices
-    	 * @return Success(0)/Failure(1) of command
+    	 * @return Success(1)/Failure(0) of command
     	*/
 		int close_devices();
+
+		/////////////////////////////////////////////////////////////////////
+		/***************************CONFIGURATION***************************/
+		/////////////////////////////////////////////////////////////////////
+
+		/**
+		 * 
+		 * @brief Sets the mode for a vector of motors
+		 * @param _motors motor names for devices to set mode
+		 * @param _mode operation mode to be set
+		 * @return Success(1)/Failure(0) of command
+    	*/
+		int set_mode_motors(std::vector<std::string> _motor, std::vector<int> _modes);
+
+		/**
+       	 * All motors will be set to the same mode
+		 * 
+		 * @brief Sets the mode for a vector of motors
+		 * @param _motors motor names for devices to set mode
+		 * @param _mode operation mode to be set
+		 * @return Success(1)/Failure(0) of command
+    	*/
+		int set_mode_motors(std::vector<std::string> _motor, int _mode);
+
+		/**
+		 * 
+		 * @brief Sets the mode for an individual motors
+		 * @param _motor motor name for devices to set mode
+		 * @param _mode operation mode to be set
+		 * @return Success(1)/Failure(0) of command
+    	*/
+		int set_mode_motor(std::string _motor, int _mode);
+
+		/**
+		 *
+		 * @brief Resets device state machine for those specified
+		 * @param _motors motor to have operation mode reset
+       	 * @return Success(1)/Failure(0) of command
+    	*/
+		int reset_devices(std::vector<std::string> _motors);
+
+		/**
+		 *
+		 * @brief Resets device state machine for that specified
+		 * @param _motors motor to have operation mode reset
+       	 * @return Success(1)/Failure(0) of command
+    	*/
+		int reset_device(std::string _motor);
+
+
+		/////////////////////////////////////////////////////////////////////
+		/***************************OPERATION*******************************/
+		/////////////////////////////////////////////////////////////////////
+
+		/////////////////////////////////////////////////////////////////////
+		/**************************ERRORS and LOGGING***********************/
+		/////////////////////////////////////////////////////////////////////
+
+		/**
+       	 * Converts error codes to description of error as provided in Maxon
+		 * communication library. Includes device errors
+		 * @brief Gets error description
+       	 * @param _error_code Error code number
+         * @return Error description
+    	*/
+		static std::string get_error(DWORD _error_code);
+
+		/**
+       	 * Converts error codes to description of error as provided in Maxon
+		 * communication library. Does not invlude device errors
+		 * @brief Gets error description from device
+       	 * @param _error_code Error code number
+         * @return Error description
+    	*/
+		std::string get_error_vcs(DWORD _error_code);
 
 	private:
 		/////////////////////////////////////////////////////////////////////
@@ -129,6 +201,14 @@ namespace epos2
 		HANDLE key_handle_ = 0;
 
 		/////////////////////////////////////////////////////////////////////
+		/***************************CONFIGURATION***************************/
+		/////////////////////////////////////////////////////////////////////
+
+		/////////////////////////////////////////////////////////////////////
+		/***************************OPERATION*******************************/
+		/////////////////////////////////////////////////////////////////////
+
+		/////////////////////////////////////////////////////////////////////
 		/**************************ERRORS and LOGGING***********************/
 		/////////////////////////////////////////////////////////////////////
 
@@ -140,44 +220,25 @@ namespace epos2
     	 * @param _group Group of log message 
     	*/
 		void log_msg(std::string _msg, loggingVerbosity _verbosity = LOG_OFF, loggingGroup _group = GROUP_ERROR);
-
-		/**
-       	 * Converts error codes to description of error as provided in Maxon
-		 * communication library. Does not invlude device errors
-		 * @brief Gets error description from device
-       	 * @param _error_code Error code number
-         * @return Error description
-    	*/
-		std::string get_error_vcs(DWORD _error_code);
-
-		/**
-       	 * Converts error codes to description of error as provided in Maxon
-		 * communication library. Includes device errors
-		 * @brief Gets error description
-       	 * @param _error_code Error code number
-         * @return Error description
-    	*/
-		static std::string get_error(DWORD _error_code);
-
 	};
 }
 #endif
 
-		//  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
+//  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
 
-		// /***********************OPERATION*****************************/
-		// short unsigned int getDevStateValue(DevState state);
-		// enum DevState getDevState(short unsigned int state);
-		// int getModeValue(OpMode mode);
+// /***********************OPERATION*****************************/
+// short unsigned int getDevStateValue(DevState state);
+// enum DevState getDevState(short unsigned int state);
+// int getModeValue(OpMode mode);
 
-		//  int   DemoProfilePositionMode(HANDLE p_DeviceHandle, unsigned short p_usNodeId, unsigned int & p_rlErrorCode);
-		//  int   Demo(unsigned int* pErrorCode);
-		//  int   PrepareDemo(unsigned int* pErrorCode);
+//  int   DemoProfilePositionMode(HANDLE p_DeviceHandle, unsigned short p_usNodeId, unsigned int & p_rlErrorCode);
+//  int   Demo(unsigned int* pErrorCode);
+//  int   PrepareDemo(unsigned int* pErrorCode);
 
-		//  void cmdReceived(const geometry_msgs::Twist& msg);
-		//  void clearFaultCallback(const sensor_msgs::Joy& msg);
+//  void cmdReceived(const geometry_msgs::Twist& msg);
+//  void clearFaultCallback(const sensor_msgs::Joy& msg);
 
-		/**   // get
+/**   // get
    int   setPosProfile();
    int   goToPos();
    int   stopPos();
@@ -189,51 +250,28 @@ namespace epos2
    int   waitForHome();
    int   setCurrentMust();
    int   getCurrentMust();*/
-		// getpositionis -> encoder?? try to find something that decouples these from the hall sensors
-		//getvelocityis
-		//get currentis
-		//waitfortargetreached
+// getpositionis -> encoder?? try to find something that decouples these from the hall sensors
+//getvelocityis
+//get currentis
+//waitfortargetreached
 
-		// /***********************CONFIGURATION***************************/
-		// int setMode(std::vector<int> _node_ids, OpMode _mode);
-		// //void setModeCallback(const ; //NEED TO MAKE MESSAGE FOR THIS, need to make way to display/handle specific error
-		// int resetDevice(unsigned short _node_id);
-		// int setState(unsigned short _node_id, DevState _state);
-		// int getState(unsigned short _node_id, DevState &_state);
+// /***********************CONFIGURATION***************************/
+// int resetDevice(unsigned short _node_id);
+// int setState(unsigned short _node_id, DevState _state);
+// int getState(unsigned short _node_id, DevState &_state);
 
-		// /***********************OPERATION*******************************/
-		// virtual bool checkFault();
-		// int handleFault(int _id);
-		// int enableMotors(std::vector<int> _ids);
-		// int goToVel(std::vector<int> _ids, std::vector<long> _velocities);
-		// //int stopVel(std::vector<int> IDs);
-		// int getPosition(std::vector<int> _ids, std::vector<int> &_positions); //put in check that mode is correct
-		// int getCurrent(std::vector<int> _ids, std::vector<short> &_currents);
-		// int goToTorque(std::vector<int> _ids, std::vector<long> _torques, double _gr);
+// /***********************OPERATION*******************************/
+// virtual bool checkFault();
+// int handleFault(int _id);
+// int enableMotors(std::vector<int> _ids);
+// int goToVel(std::vector<int> _ids, std::vector<long> _velocities);
+// //int stopVel(std::vector<int> IDs);
+// int getPosition(std::vector<int> _ids, std::vector<int> &_positions); //put in check that mode is correct
+// int getCurrent(std::vector<int> _ids, std::vector<short> &_currents);
+// int goToTorque(std::vector<int> _ids, std::vector<long> _torques, double _gr);
 
-		// /***********************PRINT/DEBUGGING*************************/
-		// int getError(unsigned short _error_code_value);   //NEED to convert error code to text
-		// void logError(std::string _function_name);
-		// int checkNodeID(int _id);
-		// int addNodeIDs(std::vector<int> _ids);
-		
-		/***********************VARIABLES*****************************/
-		// std::vector<int> current_state_;
-		// std::vector<int> current_mode_;
-		//ROSNodeParams node_params_;
-
-		//Setup error codes to print intead of being accepted as input. Makes the output simpler...
-
-
-    // int EPOSWrapper::checkNodeID(int _id)
-    // {
-    // 		int result = RETURN_FAILED;
-
-    // 		for (int i = 0; i < node_id_list_.size(); ++i)
-    // 		{
-    // 				if (_id == node_id_list_[i]) {
-    // 						result == RETURN_SUCCESS;
-    // 				}
-    // 		}
-    // 		return result;
-    // }
+// /***********************PRINT/DEBUGGING*************************/
+// int getError(unsigned short _error_code_value);   //NEED to convert error code to text
+// void logError(std::string _function_name);
+// int checkNodeID(int _id);
+// int addNodeIDs(std::vector<int> _ids);

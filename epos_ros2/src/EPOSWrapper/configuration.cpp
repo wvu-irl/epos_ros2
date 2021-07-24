@@ -5,74 +5,102 @@ namespace epos2
    /////////////////////////////////////////////////////////////////////
    /***************************CONFIGURATION***************************/
    /////////////////////////////////////////////////////////////////////
-   
-   // /**
-   //     Sets mode for select devices
 
-   //     @param _ids IDs for devices to set mode
-   //     @param _mode operation mode to be set
-   //     @return Success(0)/Failure(1) of command
-   //  */
-   // int EPOSWrapper::setMode(std::vector<int> _ids, OpMode _mode)
-   // {
-   // 		current_mode_ = _mode;
-   // 		for (int i = 0; i < _ids.size(); ++i)
-   // 		{
-   // 				//std::cout << IDs.size() << std::endl;
-   // 				if(VCS_SetOperationMode(key_handle_, _ids[i], _mode, &error_code_))
-   // 				{
-   // 						ROS_INFO("Operation mode set");
-   // 				} else
-   // 				{
-   // 						logError("SetOperationMode");
-   // 						return RETURN_FAILED;
-   // 				}
-   // 		}
-   // 		return RETURN_SUCCESS;
-   // }
+   ///
+   ///
+   ///
+   int EPOSWrapper::set_mode_motors(std::vector<std::string> _motors, std::vector<int> _modes)
+   {
+      log_msg("SET MODE MOTORS", LOG_DEBUG, GROUP_PROGRESS);
 
-   // /**
-   //     ROS callback for setting operational mode
+      for (std::vector<std::string>::size_type i = 0; i < _motors.size(); ++i)
+      {
+         if (!this->set_mode_motor(_motors[i], _modes[i]))
+            return RETURN_FAILED;
+      }
+      return RETURN_SUCCESS;
+   }
 
-   //     @param msg ROS msg of custom type:
-   //  */
-   // /**void EPOSWrapper::setModeCallback(const )
-   //    {
-   //    for(int i = 0; i < msg.nodeID.size(); ++i)
-   //    {
-   //     if (!setMode(msg.nodeID[i],msg.mode, error_code_))
-   //     {
-   //       ROS_ERROR("FAILED TO SET MODE OF NODE %d", msg.nodeID[i]);
-   //       break;
-   //     }
-   //    }
-   //    }
+   ///
+   ///
+   ///
+   int EPOSWrapper::set_mode_motors(std::vector<std::string> _motors, int _mode)
+   {
+      log_msg("SET MODE MOTORS", LOG_DEBUG, GROUP_PROGRESS);
 
-   //    /**
-   //     Resets device state machine
+      for (auto &motor : _motors)
+      {
+         if (!this->set_mode_motor(motor, _mode))
+            return RETURN_FAILED;
+      }
+      return RETURN_SUCCESS;
+   }
 
-   //     @param _node_id node to have operation mode modified
+   ///
+   ///
+   ///
+   int EPOSWrapper::set_mode_motor(std::string _motor, int _mode)
+   {
+      log_msg("SET MODE", LOG_DEBUG, GROUP_PROGRESS);
 
-   //     @return Success(0)/Failure(1) of command
-   //  */
-   // int EPOSWrapper::resetDevice(unsigned short _node_id)
-   // {
-   // 		int result = RETURN_FAILED;
+      std::string msg;
+      DWORD error_code;
 
-   // 		if (VCS_ResetDevice(key_handle_, _node_id, &error_code_))
-   // 		{
-   // 				result = RETURN_SUCCESS;
-   // 		}
+      if (VCS_SetOperationMode(key_handle_, epos_params_.motor_name_map[_motor], _mode, &error_code))
+      {
+         msg = "Motor " + _motor + " set to " + std::to_string(_mode);
+         log_msg(msg, LOG_DEBUG, GROUP_PROGRESS);
+         return RETURN_SUCCESS;
+      }
+      else
+      {
+         log_msg(this->get_error(error_code), LOG_WARN, GROUP_PROGRESS);
+         return RETURN_FAILED;
+      }
+   }
 
-   // 		return result;
-   // }
+   ///
+   ///
+   ///
+   int EPOSWrapper::reset_devices(std::vector<std::string> _motors)
+   {
+      log_msg("RESET DEVICES", LOG_DEBUG, GROUP_PROGRESS);
+
+      for (auto &motor : _motors)
+      {
+         if (!this->reset_device(motor))
+            return RETURN_FAILED;
+      }
+      return RETURN_SUCCESS;
+   }
+
+   ///
+   int EPOSWrapper::reset_device(std::string _motor)
+   {
+      log_msg("RESET DEVICE", LOG_DEBUG, GROUP_PROGRESS);
+
+      std::string msg;
+      DWORD error_code;
+
+      if (VCS_ResetDevice(key_handle_, epos_params_.motor_name_map[_motor], &error_code))
+      {
+         msg = "Motor " + _motor + " reset";
+         log_msg(msg, LOG_DEBUG, GROUP_PROGRESS);
+         return RETURN_SUCCESS;
+      }
+      else
+      {
+         log_msg(this->get_error(error_code), LOG_WARN, GROUP_PROGRESS);
+         return RETURN_FAILED;
+      }
+   }
 
    // /**
    //     Sets Device State in state machine
 
    //     @param _node_id node to have operation mode modified
    //     @param _state desried state of state machine
-   //     @return Success(0)/Failure(1) of command
+   //     @return Success(1)/Failure(0) of command
    //  */
    // int EPOSWrapper::setState(unsigned short _node_id, DevState _state)
    // {
@@ -90,7 +118,7 @@ namespace epos2
 
    //     @param _node_id node to have operation mode modified
    //     @param _state state of state machine
-   //     @return Success(0)/Failure(1) of command
+   //     @return Success(1)/Failure(0) of command
    //  */
    // int EPOSWrapper::getState(unsigned short _node_id, DevState &_state)
    // {

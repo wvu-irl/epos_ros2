@@ -89,7 +89,7 @@ namespace epos2
    //     Clears fault for specified motor
 
    //     @param _id motor id
-   //     @return Success(0)/Failure(1) of command
+   //     @return Success(1)/Failure(0) of command
    //  */
    // int EPOSWrapper::handleFault(int _id)
    // {
@@ -124,7 +124,7 @@ namespace epos2
    //     Enables Specified motors
 
    //     @param _ids motor ids
-   //     @return Success(0)/Failure(1) of command
+   //     @return Success(1)/Failure(0) of command
    //  */
    // int EPOSWrapper::enableMotors(std::vector<int> _ids)
    // {
@@ -163,7 +163,7 @@ namespace epos2
 
    //     @param _ids motor ids
    // 		@param _velocities angular velocities for each motor. If only one velocity listed, it will be applied to all motor ids provided.
-   //     @return Success(0)/Failure(1) of command
+   //     @return Success(1)/Failure(0) of command
    //  */
    // int EPOSWrapper::goToVel(std::vector<int> _ids, std::vector<long> _velocities)
    // {
@@ -198,7 +198,7 @@ namespace epos2
 
    //     @param _ids motor ids
    // 		@param _positions angular position for each motor
-   //     @return Success(0)/Failure(1) of command
+   //     @return Success(1)/Failure(0) of command
    //  */
    // int EPOSWrapper::getPosition(std::vector<int> _ids, std::vector<int> &_positions) //128 cts/turn
    // {
@@ -230,7 +230,7 @@ namespace epos2
 
    //     @param _ids motor ids
    // 		@param current current for each motor
-   //     @return Success(0)/Failure(1) of command
+   //     @return Success(1)/Failure(0) of command
    //  */
    // int EPOSWrapper::getCurrent(std::vector<int> _ids, std::vector<short> &_currents)
    // {

@@ -52,7 +52,7 @@ namespace epos2
             {
                 if (error_code != 0)
                 {
-                    msg = "Protocol Check 1: timeout: " + timeout;
+                    msg = "Protocol Get 1: timeout: " + timeout;
                     log_msg(msg, LOG_ERROR, GROUP_ALL);
                     log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
                 }
@@ -60,7 +60,7 @@ namespace epos2
                 {
                     if (error_code != 0)
                     {
-                        msg = "Protocol Check 2: timeout: " + timeout;
+                        msg = "Protocol Set: timeout: " + timeout;
                         log_msg(msg, LOG_ERROR, GROUP_ERROR);
                         log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
                     }
@@ -68,7 +68,7 @@ namespace epos2
                     {
                         if (error_code != 0)
                         {
-                            msg = "Protocol Check 3: timeout: " + timeout;
+                            msg = "Protocol Get 3: timeout: " + timeout;
                             log_msg(msg, LOG_ERROR, GROUP_ERROR);
                             log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
                         }

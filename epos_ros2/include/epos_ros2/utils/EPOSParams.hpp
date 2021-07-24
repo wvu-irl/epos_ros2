@@ -55,7 +55,7 @@ namespace epos2
 
   /// Defines operational modes for EPOS to command Maxon motors as described
   /// in the EPOS Command Library. Definition includes official names.
-  enum OpMode
+  enum OperationMode
   {
     /// OMD_STEP_DIRECTION_MODE:
     STEP_DIRECTION_MODE = -6,
@@ -78,7 +78,7 @@ namespace epos2
   };
 
   /// Defines device states for EPOS controllers
-  enum DevState
+  enum DeviceState
   {
     /// Disable device
     DISABLED = 0x0000,
@@ -100,19 +100,23 @@ namespace epos2
     /// Number of encoder counts per revolution
     int counts_per_rev;
     /// Radius of wheel (cm)
-    double wheel_radius; // cm
+    double wheel_radius;
     /// Angular velocity upper limit (RPM)
-    double ang_vel_limit; // RPM
+    double ang_vel_limit;
     /// Angular acceleration upper limit (RPM^2)
-    double acc_limit; // RPM
+    double acc_limit;
     /// Stall current of motors (A) can be used to set artificial stall limit
-    double stall_current; // A
+    double stall_current;
     /// Maximum allowable instantaneous current (A) can be user defined
-    double instantaneous_current_limit; // A
+    double instantaneous_current_limit;
     /// Maximum allowable continuous current (A) can be user defined
-    double continuous_current_limit; // A
+    double continuous_current_limit;
     /// Torque constant of motors (mNm/A)
-    double kT = 31.5; // mNm/A
+    double kT;
+    /// Current state of the corresponding EPOS device
+    DeviceState state;
+    /// Current operation mode for the motor
+    OperationMode mode;
   };
 
   /// Parameters for EPOS controller, motor parameters (assumes single motor type), and logging parameters
