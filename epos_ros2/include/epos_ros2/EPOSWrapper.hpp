@@ -289,10 +289,6 @@ namespace epos2
 //  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
 
 // /***********************OPERATION*****************************/
-// short unsigned int getDevStateValue(DevState state);
-// enum DevState getDevState(short unsigned int state);
-// int getModeValue(OpMode mode);
-
 //  int   DemoProfilePositionMode(HANDLE p_DeviceHandle, unsigned short p_usNodeId, unsigned int & p_rlErrorCode);
 //  int   Demo(unsigned int* pErrorCode);
 //  int   PrepareDemo(unsigned int* pErrorCode);
@@ -330,9 +326,3 @@ namespace epos2
 // int getPosition(std::vector<int> _ids, std::vector<int> &_positions); //put in check that mode is correct
 // int getCurrent(std::vector<int> _ids, std::vector<short> &_currents);
 // int goToTorque(std::vector<int> _ids, std::vector<long> _torques, double _gr);
-
-// /***********************PRINT/DEBUGGING*************************/
-// int getError(unsigned short _error_code_value);   //NEED to convert error code to text
-// void logError(std::string _function_name);
-// int checkNodeID(int _id);
-// int addNodeIDs(std::vector<int> _ids);
