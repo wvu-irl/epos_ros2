@@ -64,6 +64,8 @@ namespace epos2
 
 		/// maximum size of string containing error information, set to 512
 		WORD max_log_size_ = 512;
+		/// Maps DeviceState to short unsigned int*
+		std::map<WORD, DeviceState> device_state_map_ = {{0x0000, DISABLED}, {0x0001, ENABLED}, {0x0002, QUICKSTOP}, {0x0003, FAULT}};
 
 	public:
 		/////////////////////////////////////////////////////////////////////
@@ -124,7 +126,7 @@ namespace epos2
 		 * @param _mode operation mode to be set
 		 * @return Success(1)/Failure(0) of command
     	*/
-		int set_mode_motors(std::vector<std::string> _motor, std::vector<int> _modes);
+		int set_modes(std::vector<std::string> _motor, std::vector<OperationMode> _modes);
 
 		/**
        	 * All motors will be set to the same mode
@@ -134,7 +136,7 @@ namespace epos2
 		 * @param _mode operation mode to be set
 		 * @return Success(1)/Failure(0) of command
     	*/
-		int set_mode_motors(std::vector<std::string> _motor, int _mode);
+		int set_modes(std::vector<std::string> _motor, OperationMode _mode);
 
 		/**
 		 * 
@@ -143,7 +145,7 @@ namespace epos2
 		 * @param _mode operation mode to be set
 		 * @return Success(1)/Failure(0) of command
     	*/
-		int set_mode_motor(std::string _motor, int _mode);
+		int set_mode(std::string _motor, OperationMode _mode);
 
 		/**
 		 *
@@ -161,6 +163,50 @@ namespace epos2
     	*/
 		int reset_device(std::string _motor);
 
+		/**
+    	 * 
+    	 * @brief Sets Device State in state machine
+    	 * @param _motors Motors to set device state of
+    	 * @param _state Desired states of state machines
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+		int set_states(std::vector<std::string> _motors, std::vector<DeviceState> _states);
+
+		/**
+    	 * 
+    	 * @brief Sets Device State in state machine
+    	 * @param _motors Motors to set device state of
+    	 * @param _state Desired state of state machines
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+		int set_states(std::vector<std::string> _motors, DeviceState _state);
+
+		/**
+    	 * 
+    	 * @brief Sets Device State in state machine
+    	 * @param _motor Motor to set device state of
+    	 * @param _state Desired state of state machine
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+		int set_state(std::string _motor, DeviceState _state);
+
+		/**
+    	 * 
+    	 * @brief Gets Device States passed back through reference
+    	 * @param _motors Motor to get device state of
+    	 * @param _states State of state machine
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+   		int get_states(std::vector<std::string> _motors, std::vector<DeviceState> &_states);
+
+		/**
+    	 * 
+    	 * @brief Gets Device States passed back through reference
+    	 * @param _motor Motor to set device data of
+    	 * @param _state State of state machine
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+   		int get_state(std::string _motor, DeviceState &_state);
 
 		/////////////////////////////////////////////////////////////////////
 		/***************************OPERATION*******************************/
@@ -177,7 +223,7 @@ namespace epos2
        	 * @param _error_code Error code number
          * @return Error description
     	*/
-		static std::string get_error(DWORD _error_code);
+			static std::string get_error(DWORD _error_code);
 
 		/**
        	 * Converts error codes to description of error as provided in Maxon
@@ -187,6 +233,22 @@ namespace epos2
          * @return Error description
     	*/
 		std::string get_error_vcs(DWORD _error_code);
+
+		/**
+       	 * 
+		 * @brief Gets state string description enum value
+       	 * @param _state Device state to convert to string
+         * @return Device state string
+    	*/
+		std::string get_state_string(DeviceState _state);
+
+		/**
+       	 * 
+		 * @brief Gets mode string description enum value
+       	 * @param _state Device mode to convert to string
+         * @return Device mode string
+    	*/
+		std::string get_mode_string(OperationMode _mode);
 
 	private:
 		/////////////////////////////////////////////////////////////////////
@@ -257,7 +319,6 @@ namespace epos2
 
 // /***********************CONFIGURATION***************************/
 // int resetDevice(unsigned short _node_id);
-// int setState(unsigned short _node_id, DevState _state);
 // int getState(unsigned short _node_id, DevState &_state);
 
 // /***********************OPERATION*******************************/

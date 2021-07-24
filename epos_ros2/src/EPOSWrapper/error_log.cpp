@@ -9,6 +9,82 @@ namespace epos2
     ///
     ///
     ///
+    std::string EPOSWrapper::get_state_string(DeviceState _state)
+    {
+        if (_state == DISABLED)
+        {
+            return "DISABLED";
+        }
+        else if (_state == ENABLED)
+        {
+            return "ENABLED";
+        }
+        else if (_state == QUICKSTOP)
+        {
+            return "QUICKSTOP";
+        }
+        else if (_state == FAULT)
+        {
+            return "FAULT";
+        }
+        else
+        {
+            log_msg("BAD STATE VALUE", LOG_FATAL, GROUP_PROGRESS);
+            return std::to_string(_state);
+        }
+    }
+
+    ///
+    ///
+    ///
+    std::string EPOSWrapper::get_mode_string(OperationMode _mode)
+    {
+        if (_mode == STEP_DIRECTION_MODE)
+        {
+            return "STEP_DIRECTION_MODE";
+        }
+        else if (_mode == MASTER_ENCODER_MODE)
+        {
+            return "MASTER_ENCODER_MODE";
+        }
+        else if (_mode == CURRENT_MODE)
+        {
+            return "CURRENT_MODE";
+        }
+        else if (_mode == VELOCITY_MODE)
+        {
+            return "VELOCITY_MODE";
+        }
+        else if (_mode == POSITION_MODE)
+        {
+            return "POSITION_MODE";
+        }
+        else if (_mode == PROFILE_POSITION_MODE)
+        {
+            return "PROFILE_POSITION_MODE";
+        }
+        else if (_mode == PROFILE_VELOCITY_MODE)
+        {
+            return "PROFILE_VELOCITY_MODE";
+        }
+        else if (_mode == HOMING_MODE)
+        {
+            return "HOMING_MODE";
+        }
+        else if (_mode == INTERPOLATED_POSITION_MODE)
+        {
+            return "INTERPOLATED_POSITION_MODE";
+        }
+        else
+        {
+            log_msg("BAD MODE VALUE", LOG_FATAL, GROUP_PROGRESS);
+            return std::to_string(_mode);
+        }
+    }
+
+    ///
+    ///
+    ///
     void EPOSWrapper::log_msg(std::string _msg, loggingVerbosity _verbosity, loggingGroup _group)
     {
         _msg = "[EPOS WRAPPER] " + _msg;
@@ -49,17 +125,19 @@ namespace epos2
     ///
     std::string EPOSWrapper::get_error_vcs(DWORD _error_code)
     {
-        char* error_description_ptr;
+        char *error_description_ptr;
         if (VCS_GetErrorInfo(_error_code, error_description_ptr, max_log_size_))
         {
             log_msg("VCS_GetErrorInfo Succeed", LOG_DEBUG, GROUP_OTHER);
-        } else
+            std::string msg(error_description_ptr);
+            return msg;
+        }
+        else
         {
             log_msg("VCS_GetErrorInfo Failed", LOG_ERROR, GROUP_ERROR);
+            return "COULD NOT GET ERROR CODE";
         }
-        std::string msg(error_description_ptr);
-        return msg;
-    }
+   }
 
     /// Directly maps error codes
     ///
