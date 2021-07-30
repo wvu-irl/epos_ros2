@@ -444,6 +444,8 @@ namespace epos2
 
         /// Pointer to ROS2 node
         rclcpp::Node *node_ptr_;
+        /// Clock for Logger throttling
+        rclcpp::Clock clock_;
         /// Parameters for EPOS device, motors, and logging
         EPOSParams params_;
         /// Handle for port access
@@ -485,19 +487,37 @@ namespace epos2
     	 * 
     	 * @brief Convert motor velcoty from RPM to m/s
     	 * @param _motor Motor to convert velocities
-    	 * @param _velocities Motor velocity (RPM)
+    	 * @param _velocity Motor velocity (RPM)
     	 * @return Motor velocity (m/s)
    		*/
         double rpm_2_mps(MaxonMotor &_motor, double _velocity);
 
         /**
     	 * 
-    	 * @brief Convert motor velcoty from RPM to m/s
+    	 * @brief Convert motor velocity from RPM to m/s
     	 * @param _motor Motor to convert velocities
-    	 * @param _velocities Motor velocity (m/s)
+    	 * @param _velocity Motor velocity (m/s)
     	 * @return Motor velocity (RPM)
    		*/
-        double mps_2_rpm(MaxonMotor &_motor, double _velocity);
+        double mps_2_rpm(MaxonMotor &_motor, int _velocity);
+
+        /**
+    	 * 
+    	 * @brief Convert motor position from encoder counts to m
+    	 * @param _motor Motor to convert position
+    	 * @param _position Motor position (encoder counts)
+    	 * @return Motor position (m)
+   		*/
+        double count_2_m(MaxonMotor &_motor, double _position);
+
+        /**
+    	 * 
+    	 * @brief Convert motor velcoty from encoder counts to m
+    	 * @param _motor Motor to convert position
+    	 * @param _position Motor position (m)
+    	 * @return Motor position (encoder counts)
+   		*/
+        double m_2_count(MaxonMotor &_motor, double _position);
     };
 }
 #endif

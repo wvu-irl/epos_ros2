@@ -65,8 +65,8 @@ namespace epos2
         DWORD error_code;
 
         //check motor is in correct mode
-        if (params_.motors[params_.motor_inds[_motor]].mode != PROFILE_VELOCITY_MODE)
-            set_mode(_motor, PROFILE_VELOCITY_MODE);
+        if (params_.motors[params_.motor_inds[_motor]].mode != VELOCITY_MODE)
+            set_mode(_motor, VELOCITY_MODE);
 
         // convert velocity if need be
         long velocity;
@@ -126,6 +126,24 @@ namespace epos2
     ///
     int EPOSWrapper::get_velocity(const std::string &_motor, double &_velocity, bool _rpm = true)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GET VELOCITY");
+
+        std::string msg;
+        DWORD error_code;
+        int *v;
+
+        if (VCS_GetVelocityIs(key_handle_, params_.motor_ids[_motor], v, &error_code))
+        {
+            // convert velocity if need be
+            if (!_rpm)
+                _velocity = mps_2_rpm(params_.motors[params_.motor_inds[_motor]], *v);
+            return RETURN_SUCCESS;
+        }
+        else
+        {
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
+            return RETURN_FAILED;
+        }
     }
 
     ///
@@ -163,6 +181,47 @@ namespace epos2
     ///
     int EPOSWrapper::go_to_position(const std::string &_motor, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITION");
+
+        std::string msg;
+        DWORD error_code;
+
+        //check motor is in correct mode
+        if (params_.motors[params_.motor_inds[_motor]].mode != POSITION_MODE)
+            set_mode(_motor, POSITION_MODE);
+
+        // // convert velocity if need be
+        // long position;
+        // if (_count)
+        // {
+        //     position = _position;
+        // }
+        // else
+        // {
+        //     position = rpm_2_mps(params_.motors[params_.motor_inds[_motor]], _position);
+        // }
+
+        // //command position or halt
+        // if (abs(_velocity) > 0)
+        // {
+        //     if (VCS_MoveWithVelocity(key_handle_, params_.motor_ids[_motor], velocity, &error_code))
+        //     {
+        //         msg = "Motor " + _motor + " commanded to velocity of " + std::to_string(velocity) + " RPM";
+        //         RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+        //         return RETURN_SUCCESS;
+        //     }
+        //     else
+        //     {
+        //         RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
+        //         return RETURN_FAILED;
+        //     }
+        // }
+        // else
+        // {
+        //     if (!halt_velocity(_motor))
+        //         return RETURN_FAILED;
+        // }
+        // return RETURN_SUCCESS;
     }
 
     ///
@@ -189,15 +248,7 @@ namespace epos2
     ///
     int EPOSWrapper::get_position(const std::string &_motor, double &_position, bool _count = true)
     {
-        // /**
-        //     Gets position for a list of motors
 
-        //     @param _ids motor ids
-        // 		@param _positions angular position for each motor
-        //     @return Success(1)/Failure(0) of command
-        //  */
-        // int EPOSWrapper::getPosition(std::vector<int> _ids, std::vector<int> &_positions) //128 cts/turn
-        // {
         // 		int pos = 0;
         // 		//ROS_WARN("---------------------------------------------------%d", pos);
         // 		//*pos = 1;
@@ -219,7 +270,6 @@ namespace epos2
         // 		}
 
         // 		return RETURN_SUCCESS;
-        // }
     }
 
     ///
@@ -395,7 +445,7 @@ namespace epos2
         }
         else
         {
-            RCLCPP_WARN(node_ptr_->get_logger(),this->get_error(error_code).c_str());
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
             return RETURN_FAILED;
         }
     }
@@ -418,7 +468,7 @@ namespace epos2
         }
         else
         {
-            RCLCPP_WARN(node_ptr_->get_logger(),this->get_error(error_code).c_str());
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
             return RETURN_FAILED;
         }
     }
