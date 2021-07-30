@@ -234,142 +234,152 @@ namespace epos2
     	 * 
     	 * @brief Command motors to go to a list of velocities
     	 * @param _motor Motors to command velocities
-    	 * @param _velocities Desired motor velocities ()
+    	 * @param _velocities Desired motor velocities
+         * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocities(std::vector<std::string> _motors, std::vector<long> _velocities);
+        int go_to_velocities(std::vector<std::string> _motors, std::vector<double> _velocities, bool _rpm);
 
         /**
     	 * 
     	 * @brief Command motors to go to a velocity
     	 * @param _motor Motors to command velocity
-    	 * @param _velocities Desired motor velocities ()
+    	 * @param _velocities Desired motor velocities
+         * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocities(std::vector<std::string> _motors, long _velocities);
+        int go_to_velocities(std::vector<std::string> _motors, double _velocities, bool _rpm);
 
         /**
     	 * 
     	 * @brief Command motor to go to a velocity
     	 * @param _motor Motor to command velocity
-    	 * @param _velocity Desired motor velocity ()
+    	 * @param _velocity Desired motor velocity
+         * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocity(std::string _motor, long _velocity);
+        int go_to_velocity(std::string _motor, double _velocity, bool _rpm);
 
         /**
     	 * 
     	 * @brief Get velocities of motors
     	 * @param _motor Motors to get velocities
-    	 * @param _velocities Current motor velocities ()
+    	 * @param _velocities Current motor velocities
+         * @param _rpm if true, units are in RPM else m/s (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_velocities(std::vector<std::string> _motors, std::vector<long> &_velocities);
+        int get_velocities(std::vector<std::string> _motors, std::vector<double> &_velocities, bool _rpm);
 
         /**
     	 * 
     	 * @brief Get velocity of motors
     	 * @param _motor Motors to velocity
-    	 * @param _velocity Current motor velocity ()
+    	 * @param _velocity Current motor velocity
+         * @param _rpm if true, units are in RPM else m/s (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_velocity(std::string _motor, long &_velocity);
+        int get_velocity(std::string _motor, double &_velocity, bool _rpm);
 
         /**
     	 * 
     	 * @brief Command motors to go to a list of positions
     	 * @param _motor Motors to command positions
-    	 * @param _positions Desired motor positions ()
+    	 * @param _positions Desired motor positions
+         * @param _counts if true, units are in encoder counts else m (default: true) note, double gets casted to long
          * @param _absolute if true uses absolute position command, else relative (default: true)
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions(std::vector<std::string> _motors, std::vector<long> _positions, bool _absolute, bool _immediate);
+        int go_to_positions(std::vector<std::string> _motors, std::vector<double> _positions, bool _counts, bool _absolute, bool _immediate);
 
         /**
     	 * 
     	 * @brief Command motors to go to a position
     	 * @param _motor Motors to command position
-    	 * @param _positions Desired motor positions ()
+    	 * @param _positions Desired motor positions
+         * @param _counts if true, units are in encoder counts else m (default: true) note, double gets casted to long
          * @param _absolute if true uses absolute position command, else relative (default: true)
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions(std::vector<std::string> _motors, long _positions, bool _absolute, bool _immediate);
+        int go_to_positions(std::vector<std::string> _motors, double _positions, bool _counts, bool _absolute, bool _immediate);
 
         /**
     	 * 
     	 * @brief Command motor to go to a position
     	 * @param _motor Motor to command position
-    	 * @param _position Desired motor position ()
+    	 * @param _position Desired motor position
+         * @param _counts if true, units are in encoder counts else m (default: true) note, double gets casted to long
          * @param _absolute if true uses absolute position command, else relative (default: true)
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_position(std::string _motor, long _position, bool _absolute, bool _immediate);
+        int go_to_position(std::string _motor, double _position, bool _counts, bool _absolute, bool _immediate);
 
         /**
     	 * 
     	 * @brief Get positions of motors
     	 * @param _motor Motors to get positions
-    	 * @param _positions Current motor positions ()
+    	 * @param _positions Current motor positions
+         * @param _counts if true, units are in encoder counts else m (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_positions(std::vector<std::string> _motors, std::vector<long> &_positions);
+        int get_positions(std::vector<std::string> _motors, std::vector<double> &_positions, bool _counts);
 
         /**
     	 * 
     	 * @brief Get position of motors
     	 * @param _motor Motors to position
-    	 * @param _position Current motor position ()
+    	 * @param _position Current motor position
+         * @param _counts if true, units are in encoder counts else m (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_position(std::string _motor, long &_position);
+        int get_position(std::string _motor, double &_position, bool _counts);
 
         /**
     	 * 
     	 * @brief Command motors to go to a list of torques
     	 * @param _motor Motors to command torques
-    	 * @param _torques Desired motor torques ()
+    	 * @param _torques Desired motor torques (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_torques(std::vector<std::string> _motors, std::vector<long> _torques);
+        int go_to_torques(std::vector<std::string> _motors, std::vector<double> _torques);
 
         /**
     	 * 
     	 * @brief Command motors to go to a torque
     	 * @param _motor Motors to command torque
-    	 * @param _torques Desired motor torques ()
+    	 * @param _torques Desired motor torques (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_torques(std::vector<std::string> _motors, long _torques);
+        int go_to_torques(std::vector<std::string> _motors, double _torques);
 
         /**
     	 * 
     	 * @brief Command motor to go to a torque
     	 * @param _motor Motor to command torque
-    	 * @param _torque Desired motor torque ()
+    	 * @param _torque Desired motor torque (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_torque(std::string _motor, long _torque);
+        int go_to_torque(std::string _motor, double _torque);
 
         /**
     	 * 
     	 * @brief Get torques of motors
     	 * @param _motor Motors to get torques
-    	 * @param _torques Current motor torques ()
+    	 * @param _torques Current motor torques (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_torques(std::vector<std::string> _motors, std::vector<long> &_torques);
+        int get_torques(std::vector<std::string> _motors, std::vector<double> &_torques);
 
         /**
     	 * 
     	 * @brief Get torque of motors
     	 * @param _motor Motors to torque
-    	 * @param _torque Current motor torque ()
+    	 * @param _torque Current motor torque (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_torque(std::string _motor, long &_torque);
+        int get_torque(std::string _motor, double &_torque);
 
         /////////////////////////////////////////////////////////////////////
         /**************************ERRORS and LOGGING***********************/

@@ -24,105 +24,105 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocities(std::vector<std::string> _motors, std::vector<long> _velocities)
+    int EPOSWrapper::go_to_velocities(std::vector<std::string> _motors, std::vector<double> _velocities, bool _rpm = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocities(std::vector<std::string> _motors, long _velocities)
+    int EPOSWrapper::go_to_velocities(std::vector<std::string> _motors, double _velocities, bool _rpm = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocity(std::string _motor, long _velocity)
+    int EPOSWrapper::go_to_velocity(std::string _motor, double _velocity, bool _rpm = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::get_velocities(std::vector<std::string> _motors, std::vector<long> &_velocities)
+    int EPOSWrapper::get_velocities(std::vector<std::string> _motors, std::vector<double> &_velocities, bool _rpm = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::get_velocity(std::string _motor, long &_velocity)
+    int EPOSWrapper::get_velocity(std::string _motor, double &_velocity, bool _rpm = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, std::vector<long> _positions, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, std::vector<double> _positions, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, long _positions, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, double _positions, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_position(std::string _motor, long _position, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_position(std::string _motor, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::get_positions(std::vector<std::string> _motors, std::vector<long> &_positions)
+    int EPOSWrapper::get_positions(std::vector<std::string> _motors, std::vector<double> &_positions, bool _count = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::get_position(std::string _motor, long &_position)
+    int EPOSWrapper::get_position(std::string _motor, double &_position, bool _count = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_torques(std::vector<std::string> _motors, std::vector<long> _torques)
+    int EPOSWrapper::go_to_torques(std::vector<std::string> _motors, std::vector<double> _torques)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_torques(std::vector<std::string> _motors, long _torques)
+    int EPOSWrapper::go_to_torques(std::vector<std::string> _motors, double _torques)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_torque(std::string _motor, long _torque)
+    int EPOSWrapper::go_to_torque(std::string _motor, double _torque)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::get_torques(std::vector<std::string> _motors, std::vector<long> &_torques)
+    int EPOSWrapper::get_torques(std::vector<std::string> _motors, std::vector<double> &_torques)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::get_torque(std::string _motor, long &_torque)
+    int EPOSWrapper::get_torque(std::string _motor, double &_torque)
     {
     }
 
