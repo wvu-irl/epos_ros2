@@ -15,44 +15,6 @@
 
 namespace epos2
 {
-  /// Defines verbosity for custom logging
-  enum loggingVerbosity
-  {
-    /// Turns off logging
-    LOG_OFF = 0,
-    /// Sets logging verbosity to ROS2 Debug
-    LOG_DEBUG,
-    /// Sets logging verbosity to ROS2 Info
-    LOG_INFO,
-    /// Sets logging verbosity to ROS2 Warn
-    LOG_WARN,
-    /// Sets logging verbosity to ROS2 Error
-    LOG_ERROR,
-    /// Sets logging verbosity to ROS2 Fatal
-    LOG_FATAL,
-    /// KILLS PROGRAM, calls cassert
-    LOG_DEATH
-  };
-
-  /// Defines group a given epos2::EPOSWrapper::log_msg call function belongs to.
-  /// Helps with custom logging by given semantic meaning to logging calls
-  /// (e.g., if we are monitoring the output of a motor we may use LOG_FEEDBACK to print motor position logs)
-  enum loggingGroup
-  {
-    /// Includes all log output
-    GROUP_ALL = 0,
-    /// Includes logging related to motor feedback (e.g., current, postion, etc)
-    GROUP_FEEDBACK,
-    /// Includes logging related to motor input (e.g., velocity commands)
-    INPUT,
-    /// Includes logging related to current function call or other progress metrics
-    GROUP_PROGRESS,
-    /// Includes logging related EPOS error messages
-    GROUP_ERROR,
-    /// Print statements for unspecified groups
-    GROUP_OTHER
-  };
-
   /// Defines operational modes for EPOS to command Maxon motors as described
   /// in the EPOS Command Library. Definition includes official names.
   enum OperationMode

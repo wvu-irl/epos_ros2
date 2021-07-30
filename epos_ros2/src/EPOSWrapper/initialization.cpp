@@ -15,7 +15,7 @@ namespace epos2
         std::string msg;  //For constructing log messages
         DWORD error_code; //For returning errors
 
-        log_msg("Opening Devices", LOG_INFO, GROUP_PROGRESS);
+        RCLCPP_WARN(node_ptr_->get_logger(), "Opening Devices");
 
         //Success of code
         int result = RETURN_FAILED;
@@ -32,7 +32,7 @@ namespace epos2
 
         msg = "Device: " + epos_params_.device_name + " | Protocol Stack: " + epos_params_.protocol_stack_name +
               " | Interface: " + epos_params_.interface_name + " | Port: " + epos_params_.port_name;
-        log_msg(msg, LOG_DEBUG, GROUP_PROGRESS);
+        RCLCPP_WARN(node_ptr_->get_logger(), msg.c_str());
 
         //Opens device
         key_handle_ = VCS_OpenDevice(device_name, protocol_stack_name, interface_name, port_name, &error_code);
@@ -40,7 +40,7 @@ namespace epos2
         //log_msg(msg, LOG_DEBUG, GROUP_PROGRESS);
 
         if (error_code != 0)
-            log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
+            RCLCPP_ERROR(node_ptr_->get_logger(), this->get_error(error_code).c_str());
 
         //checking device opened
         if (key_handle_ != 0 && error_code == 0)
@@ -53,48 +53,48 @@ namespace epos2
                 if (error_code != 0)
                 {
                     msg = "Protocol Get 1: timeout: " + timeout;
-                    log_msg(msg, LOG_ERROR, GROUP_ALL);
-                    log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
+                    RCLCPP_ERROR(node_ptr_->get_logger(), msg.c_str());
+                    RCLCPP_ERROR(node_ptr_->get_logger(), this->get_error(error_code).c_str());
                 }
                 if (VCS_SetProtocolStackSettings(key_handle_, epos_params_.baud_rate, timeout, &error_code))
                 {
                     if (error_code != 0)
                     {
                         msg = "Protocol Set: timeout: " + timeout;
-                        log_msg(msg, LOG_ERROR, GROUP_ERROR);
-                        log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
+                        RCLCPP_ERROR(node_ptr_->get_logger(), msg.c_str());
+                        RCLCPP_ERROR(node_ptr_->get_logger(), this->get_error(error_code).c_str());
                     }
                     if (VCS_GetProtocolStackSettings(key_handle_, &baud_rate, &timeout, &error_code))
                     {
                         if (error_code != 0)
                         {
                             msg = "Protocol Get 3: timeout: " + timeout;
-                            log_msg(msg, LOG_ERROR, GROUP_ERROR);
-                            log_msg(this->get_error(error_code), LOG_ERROR, GROUP_ERROR);
+                            RCLCPP_ERROR(node_ptr_->get_logger(), msg.c_str());
+                            RCLCPP_ERROR(node_ptr_->get_logger(), this->get_error(error_code).c_str());
                         }
                         if (epos_params_.baud_rate == (int)baud_rate)
                         {
                             result = RETURN_SUCCESS;
-                            log_msg("Device Opened successfully", LOG_INFO, GROUP_PROGRESS);
+                            RCLCPP_WARN(node_ptr_->get_logger(), "Device Opened successfully");
                         }
                         else
                         {
-                            log_msg("Baud rate did not match", LOG_WARN, GROUP_ERROR);
+                            RCLCPP_ERROR(node_ptr_->get_logger(), "Baud rate did not match");
                         }
                     }
                     else
                     {
-                        log_msg("VCS_GetProtocolStackSettings failed", LOG_ERROR, GROUP_ERROR);
+                        RCLCPP_ERROR(node_ptr_->get_logger(), "VCS_GetProtocolStackSettings failed");
                     }
                 }
                 else
                 {
-                    log_msg("VCS_GetProtocolStackSettings failed", LOG_ERROR, GROUP_ERROR);
+                    RCLCPP_ERROR(node_ptr_->get_logger(), "VCS_GetProtocolStackSettings failed");
                 }
             }
             else
             {
-                log_msg("VCS_GetProtocolStackSettings failed", LOG_ERROR, GROUP_ERROR);
+                RCLCPP_ERROR(node_ptr_->get_logger(), "VCS_GetProtocolStackSettings failed");
             }
         }
 
@@ -115,11 +115,17 @@ namespace epos2
         int result = RETURN_FAILED;
         DWORD error_code = 0;
 
-        log_msg("Closing devices", LOG_INFO, GROUP_PROGRESS);
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "Closing devices");
 
         if (VCS_CloseAllDevices(&error_code) && error_code == 0)
+        {
+            RCLCPP_WARN(node_ptr_->get_logger(), "Devices closed");
             result = RETURN_SUCCESS;
-
+        }
+        else
+        {
+            RCLCPP_ERROR(node_ptr_->get_logger(), get_error(error_code).c_str());
+        }
         return result;
     }
 
@@ -132,7 +138,8 @@ namespace epos2
     ///
     EPOSWrapper::EPOSWrapper()
     {
-        log_msg("No default initilializer: code is dependent on ROS Node Pointer!", LOG_DEATH);
+        RCLCPP_FATAL(node_ptr_->get_logger(), "No default initilializer: code is dependent on ROS Node Pointer!");
+        assertm(true, "Killing EPOSWrapper");
     }
 
     ///
@@ -140,10 +147,13 @@ namespace epos2
     ///
     EPOSWrapper::EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _epos_params) : node_ptr_(_node_ptr), epos_params_(_epos_params)
     {
-        log_msg("Initializing EPOS Wrapper", LOG_WARN, GROUP_PROGRESS);
+        RCLCPP_WARN(node_ptr_->get_logger(), "Initializing EPOS Wrapper");
         // Open devices
         if (!this->open_devices())
-            log_msg("DEVICES NOT OPENED", LOG_DEATH);
+        {
+            RCLCPP_FATAL(node_ptr_->get_logger(), "Devices failed to open");
+            assertm(true, "Killing EPOSWrapper");
+        }
     }
 
     ///
@@ -151,10 +161,10 @@ namespace epos2
     ///
     EPOSWrapper::~EPOSWrapper()
     {
-        log_msg("Closing EPOS Devices/destructing EPOSWrapper", LOG_WARN, GROUP_PROGRESS);
+        RCLCPP_WARN(node_ptr_->get_logger(), "Closing EPOS Devices/destructing EPOSWrapper");
 
         if (!this->close_devices())
-            log_msg("FAILED TO CLOSE DEVICES", LOG_DEATH);
+            RCLCPP_FATAL(node_ptr_->get_logger(), "Devices failed to close");
     }
 
 }
