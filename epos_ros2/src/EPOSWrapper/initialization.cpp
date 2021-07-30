@@ -34,13 +34,13 @@ namespace epos2
         char *interface_name = new char[255];
         char *port_name = new char[255];
         // copy EPOS device parameters to local variables
-        strcpy(device_name, epos_params_.device_name.c_str());
-        strcpy(protocol_stack_name, epos_params_.protocol_stack_name.c_str());
-        strcpy(interface_name, epos_params_.interface_name.c_str());
-        strcpy(port_name, epos_params_.port_name.c_str());
+        strcpy(device_name, params_.device_name.c_str());
+        strcpy(protocol_stack_name, params_.protocol_stack_name.c_str());
+        strcpy(interface_name, params_.interface_name.c_str());
+        strcpy(port_name, params_.port_name.c_str());
 
-        msg = "Device: " + epos_params_.device_name + " | Protocol Stack: " + epos_params_.protocol_stack_name +
-              " | Interface: " + epos_params_.interface_name + " | Port: " + epos_params_.port_name;
+        msg = "Device: " + params_.device_name + " | Protocol Stack: " + params_.protocol_stack_name +
+              " | Interface: " + params_.interface_name + " | Port: " + params_.port_name;
         RCLCPP_WARN(node_ptr_->get_logger(), msg.c_str());
 
         //Opens device
@@ -65,7 +65,7 @@ namespace epos2
                     RCLCPP_ERROR(node_ptr_->get_logger(), msg.c_str());
                     RCLCPP_ERROR(node_ptr_->get_logger(), this->get_error(error_code).c_str());
                 }
-                if (VCS_SetProtocolStackSettings(key_handle_, epos_params_.baud_rate, timeout, &error_code))
+                if (VCS_SetProtocolStackSettings(key_handle_, params_.baud_rate, timeout, &error_code))
                 {
                     if (error_code != 0)
                     {
@@ -81,7 +81,7 @@ namespace epos2
                             RCLCPP_ERROR(node_ptr_->get_logger(), msg.c_str());
                             RCLCPP_ERROR(node_ptr_->get_logger(), this->get_error(error_code).c_str());
                         }
-                        if (epos_params_.baud_rate == (int)baud_rate)
+                        if (params_.baud_rate == (int)baud_rate)
                         {
                             result = RETURN_SUCCESS;
                             RCLCPP_WARN(node_ptr_->get_logger(), "Device Opened successfully");
@@ -154,7 +154,7 @@ namespace epos2
     ///
     ///
     ///
-    EPOSWrapper::EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _epos_params) : node_ptr_(_node_ptr), epos_params_(_epos_params)
+    EPOSWrapper::EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _params) : node_ptr_(_node_ptr), params_(_params)
     {
         RCLCPP_WARN(node_ptr_->get_logger(), "Initializing EPOS Wrapper");
         // Open devices

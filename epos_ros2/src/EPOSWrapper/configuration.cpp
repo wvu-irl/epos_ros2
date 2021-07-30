@@ -60,17 +60,17 @@ namespace epos2
         std::string msg;
         DWORD error_code;
 
-        if (epos_params_.motors[epos_params_.motor_name_map[_motor]].mode == _mode)
+        if (params_.motors[params_.motors_ids[_motor]].mode == _mode)
         {
             msg = "Motor " + _motor + " set mode already " + std::to_string(_mode);
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
             return RETURN_SUCCESS;
         }
-        else if (VCS_SetOperationMode(key_handle_, epos_params_.motor_name_map[_motor], _mode, &error_code))
+        else if (VCS_SetOperationMode(key_handle_, params_.motors_ids[_motor], _mode, &error_code))
         {
             msg = "Motor " + _motor + " set mode to " + get_mode_string(_mode);
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
-            epos_params_.motors[epos_params_.motor_name_map[_motor]].mode = _mode;
+            params_.motors[params_.motors_ids[_motor]].mode = _mode;
             return RETURN_SUCCESS;
         }
         else
@@ -103,7 +103,7 @@ namespace epos2
         std::string msg;
         DWORD error_code;
 
-        if (VCS_ResetDevice(key_handle_, epos_params_.motor_name_map[_motor], &error_code))
+        if (VCS_ResetDevice(key_handle_, params_.motors_ids[_motor], &error_code))
         {
             msg = "Motor " + _motor + " reset";
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
@@ -158,11 +158,11 @@ namespace epos2
         std::string msg;
         DWORD error_code;
 
-        if (VCS_SetState(key_handle_, epos_params_.motor_name_map[_motor], _state, &error_code))
+        if (VCS_SetState(key_handle_, params_.motors_ids[_motor], _state, &error_code))
         {
             msg = "Motor " + _motor + " state set to " + get_state_string(_state);
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
-            epos_params_.motors[epos_params_.motor_name_map[_motor]].state == _state;
+            params_.motors[params_.motors_ids[_motor]].state == _state;
             return RETURN_SUCCESS;
         }
         else
@@ -202,7 +202,7 @@ namespace epos2
         DWORD error_code;
         WORD *state;
 
-        if (VCS_GetState(key_handle_, epos_params_.motor_name_map[_motor], state, &error_code))
+        if (VCS_GetState(key_handle_, params_.motors_ids[_motor], state, &error_code))
         {
             _state = device_state_map_[*state];
             msg = "Motor " + _motor + " state is " + get_state_string(_state);
@@ -241,7 +241,7 @@ namespace epos2
         std::string msg;
         DWORD error_code;
 
-        if (VCS_ClearFault(key_handle_, epos_params_.motor_name_map[_motor], &error_code))
+        if (VCS_ClearFault(key_handle_, params_.motors_ids[_motor], &error_code))
         {
             msg = "Motor " + _motor + " fault cleared ";
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());

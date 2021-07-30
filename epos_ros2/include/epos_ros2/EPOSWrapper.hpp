@@ -88,9 +88,9 @@ namespace epos2
     	 * Constructs wrapper object for a ROS2 node and with parameters specified by epos2::EPOSParams struct
 		 * @brief Special Constructor
     	 * @param _node Pointer to a ROS2 node
-    	 * @param _epos_params Struct of EPOS parameters
+    	 * @param _params Struct of EPOS parameters
    		*/
-        EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _epos_params);
+        EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _params);
 
         /**
          * Destructs object and attempts to close all devices
@@ -411,7 +411,7 @@ namespace epos2
         /// Pointer to ROS2 node
         rclcpp::Node *node_ptr_;
         /// Parameters for EPOS device, motors, and logging
-        EPOSParams epos_params_;
+        EPOSParams params_;
         /// Handle for port access
         HANDLE key_handle_ = 0;
 

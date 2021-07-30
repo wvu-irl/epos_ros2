@@ -88,9 +88,9 @@ namespace epos2
   {
     // Motors
     /// Assume joints are defined semantically, this defines mapping to ids
-    std::map<std::string, int> motor_name_map;
+    std::map<std::string, int> motor_ids;
     /// Defines mapping from motor id to index in list
-    std::map<int, int> motor_ind_map;
+    std::map<int, int> motor_inds;
     /// Parameters for each motor
     std::vector<MaxonMotor> motors;
 
