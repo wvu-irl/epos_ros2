@@ -14,7 +14,7 @@
 #include <sensor_msgs/msg/joint_state.hpp>
 
 #include <epos_ros2/EPOSWrapper.hpp>
-#include <epos_ros2/utils/EPOSParams.hpp>
+#include <epos_ros2/EPOSParams.hpp>
 
 using std::placeholders::_1;
 using namespace std::chrono_literals;

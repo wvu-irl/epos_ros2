@@ -48,7 +48,7 @@
 #include <rclcpp/rclcpp.hpp>
 
 // Custom Libraries
-#include <epos_ros2/utils/EPOSParams.hpp>
+#include <epos_ros2/EPOSParams.hpp>
 
 typedef void *HANDLE;
 typedef int BOOL;
@@ -79,22 +79,22 @@ namespace epos2
         /////////////////////////////////////////////////////////////////////
 
         /**
-		 * Asserts Error: default constructor doesn't make sense without ROS2 node
-    	 * @brief Default Constructor
+         * Asserts Error: default constructor doesn't make sense without ROS2 node
+         * @brief Default Constructor
    		*/
         EPOSWrapper();
 
         /**
-    	 * Constructs wrapper object for a ROS2 node and with parameters specified by epos2::EPOSParams struct
-		 * @brief Special Constructor
-    	 * @param _node Pointer to a ROS2 node
-    	 * @param _params Struct of EPOS parameters
+         * Constructs wrapper object for a ROS2 node and with parameters specified by epos2::EPOSParams struct
+         * @brief Special Constructor
+         * @param _node Pointer to a ROS2 node
+         * @param _params Struct of EPOS parameters
    		*/
         EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _params);
 
         /**
          * Destructs object and attempts to close all devices
-		 * @brief Destructor
+         * @brief Destructor
     	*/
         ~EPOSWrapper();
 
@@ -103,16 +103,16 @@ namespace epos2
         /////////////////////////////////////////////////////////////////////
 
         /**
-       	 * Requires that device_name, protocol_stack_name, interface_name and port_name be 
-		 * set in mac::EPOSParams struct 
-		 * 
+         * Requires that device_name, protocol_stack_name, interface_name and port_name be 
+         * set in mac::EPOSParams struct 
+         * 
          * @brief Opens device and subdevices
          * @return Success(1)/Failure(0) of commands
      	*/
         int open_devices();
 
         /**
-		 * @brief Closess device and subdevices
+         * @brief Closess device and subdevices
     	 * @return Success(1)/Failure(0) of command
     	*/
         int close_devices();
@@ -122,46 +122,46 @@ namespace epos2
         /////////////////////////////////////////////////////////////////////
 
         /**
-		 * 
-		 * @brief Sets the mode for a vector of motors
-		 * @param _motors motor names for devices to set mode
-		 * @param _mode operation mode to be set
-		 * @return Success(1)/Failure(0) of command
+         * 
+         * @brief Sets the mode for a vector of motors
+         * @param _motors motor names for devices to set mode
+         * @param _mode operation mode to be set
+         * @return Success(1)/Failure(0) of command
     	*/
         int set_modes(std::vector<std::string> _motor, std::vector<OperationMode> _modes);
 
         /**
-       	 * All motors will be set to the same mode
-		 * 
-		 * @brief Sets the mode for a vector of motors
-		 * @param _motors motor names for devices to set mode
-		 * @param _mode operation mode to be set
-		 * @return Success(1)/Failure(0) of command
+         * All motors will be set to the same mode
+         * 
+         * @brief Sets the mode for a vector of motors
+         * @param _motors motor names for devices to set mode
+         * @param _mode operation mode to be set
+         * @return Success(1)/Failure(0) of command
     	*/
         int set_modes(std::vector<std::string> _motor, OperationMode _mode);
 
         /**
-		 * 
-		 * @brief Sets the mode for an individual motors
-		 * @param _motor motor name for devices to set mode
-		 * @param _mode operation mode to be set
-		 * @return Success(1)/Failure(0) of command
+         * 
+         * @brief Sets the mode for an individual motors
+         * @param _motor motor name for devices to set mode
+         * @param _mode operation mode to be set
+         * @return Success(1)/Failure(0) of command
     	*/
         int set_mode(std::string _motor, OperationMode _mode);
 
         /**
-		 *
-		 * @brief Resets device state machine for those specified
-		 * @param _motors motor to have operation mode reset
-       	 * @return Success(1)/Failure(0) of command
+         *
+         * @brief Resets device state machine for those specified
+         * @param _motors motor to have operation mode reset
+         * @return Success(1)/Failure(0) of command
     	*/
         int reset_devices(std::vector<std::string> _motors);
 
         /**
-		 *
-		 * @brief Resets device state machine for that specified
-		 * @param _motors motor to have operation mode reset
-       	 * @return Success(1)/Failure(0) of command
+         *
+         * @brief Resets device state machine for that specified
+         * @param _motors motor to have operation mode reset
+         * @return Success(1)/Failure(0) of command
     	*/
         int reset_device(std::string _motor);
 
@@ -211,17 +211,17 @@ namespace epos2
         int get_state(std::string _motor, DeviceState &_state);
 
         /**
-		 * 
-		 * @brief Clears faults of selected motors
-       	 * @param _motors names of motors to clear faults for
+         * 
+         * @brief Clears faults of selected motors
+         * @param _motors names of motors to clear faults for
          * @return Success(1)/Failure(0) of command
     	*/
         int clear_faults(std::vector<std::string> _motors);
 
         /**
-		 * 
-		 * @brief Clears faults of selected motor
-       	 * @param _motors name of motor to clear fault for
+         * 
+         * @brief Clears faults of selected motor
+         * @param _motors name of motor to clear fault for
          * @return Success(1)/Failure(0) of command
     	*/
         int clear_fault(std::string _motor);
@@ -381,40 +381,58 @@ namespace epos2
    		*/
         int get_torque(std::string _motor, double &_torque);
 
+        /**
+    	 * 
+    	 * @brief Get currents of motors
+    	 * @param _motor Motors to currents
+    	 * @param _currents Currents (mA)
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int get_currents(std::vector<std::string> _motors, std::vector<double> &_currents);
+
+        /**
+    	 * 
+    	 * @brief Get current of motor
+    	 * @param _motor Motors to current
+    	 * @param _current Current (mA)
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int get_current(std::string _motor, double &_current);
+
         /////////////////////////////////////////////////////////////////////
         /**************************ERRORS and LOGGING***********************/
         /////////////////////////////////////////////////////////////////////
 
         /**
-       	 * Converts error codes to description of error as provided in Maxon
-		 * communication library. Includes device errors
-		 * @brief Gets error description
-       	 * @param _error_code Error code number
+         * Converts error codes to description of error as provided in Maxon
+         * communication library. Includes device errors
+         * @brief Gets error description
+         * @param _error_code Error code number
          * @return Error description
     	*/
         static std::string get_error(DWORD _error_code);
 
         /**
-       	 * Converts error codes to description of error as provided in Maxon
-		 * communication library. Does not invlude device errors
-		 * @brief Gets error description from device
-       	 * @param _error_code Error code number
+         * Converts error codes to description of error as provided in Maxon
+         * communication library. Does not invlude device errors
+         * @brief Gets error description from device
+         * @param _error_code Error code number
          * @return Error description
     	*/
         std::string get_error_vcs(DWORD _error_code);
 
         /**
-       	 * 
-		 * @brief Gets state string description enum value
-       	 * @param _state Device state to convert to string
+         * 
+         * @brief Gets state string description enum value
+         * @param _state Device state to convert to string
          * @return Device state string
     	*/
         std::string get_state_string(DeviceState _state);
 
         /**
-       	 * 
-		 * @brief Gets mode string description enum value
-       	 * @param _state Device mode to convert to string
+         * 
+         * @brief Gets mode string description enum value
+         * @param _state Device mode to convert to string
          * @return Device mode string
     	*/
         std::string get_mode_string(OperationMode _mode);
@@ -457,6 +475,10 @@ namespace epos2
 
         /////////////////////////////////////////////////////////////////////
         /**************************ERRORS and LOGGING***********************/
+        /////////////////////////////////////////////////////////////////////
+
+        /////////////////////////////////////////////////////////////////////
+        /**************************UTILS************************************/
         /////////////////////////////////////////////////////////////////////
     };
 }

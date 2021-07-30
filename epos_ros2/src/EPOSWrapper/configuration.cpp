@@ -11,6 +11,7 @@
  *          users can decide whether or not its worth the risk to actually 
  *          probe device or have some trust, can affect comms if bandwidth 
  *          is too low
+ * TODO: Come back and throttle high frequency output
  */
 #include <epos_ros2/EPOSWrapper.hpp>
 

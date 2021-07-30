@@ -59,6 +59,7 @@ add_library(epos_wrapper_lib
   ${PROJECT_SOURCE_DIR}/src/EPOSWrapper/error_log.cpp
   ${PROJECT_SOURCE_DIR}/src/EPOSWrapper/initialization.cpp
   ${PROJECT_SOURCE_DIR}/src/EPOSWrapper/operation.cpp
+  ${PROJECT_SOURCE_DIR}/src/EPOSWrapper/utils.cpp
 )
 set(DEPENDENCIES
   "rclcpp"
