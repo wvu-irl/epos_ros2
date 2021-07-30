@@ -244,11 +244,11 @@ namespace epos2
     	 * 
     	 * @brief Command motors to go to a velocity
     	 * @param _motor Motors to command velocity
-    	 * @param _velocities Desired motor velocities
+    	 * @param _velocity Desired motor velocities
          * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocities(std::vector<std::string> _motors, double _velocities, bool _rpm);
+        int go_to_velocities(std::vector<std::string> _motors, double _velocity, bool _rpm);
 
         /**
     	 * 
@@ -296,13 +296,13 @@ namespace epos2
     	 * 
     	 * @brief Command motors to go to a position
     	 * @param _motor Motors to command position
-    	 * @param _positions Desired motor positions
+    	 * @param _position Desired motor positions
          * @param _counts if true, units are in encoder counts else m (default: true) note, double gets casted to long
          * @param _absolute if true uses absolute position command, else relative (default: true)
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions(std::vector<std::string> _motors, double _positions, bool _counts, bool _absolute, bool _immediate);
+        int go_to_positions(std::vector<std::string> _motors, double _position, bool _counts, bool _absolute, bool _immediate);
 
         /**
     	 * 
@@ -349,10 +349,10 @@ namespace epos2
     	 * 
     	 * @brief Command motors to go to a torque
     	 * @param _motor Motors to command torque
-    	 * @param _torques Desired motor torques (mNm) note, double gets converted to short for current in (mA)
+    	 * @param _torque Desired motor torques (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_torques(std::vector<std::string> _motors, double _torques);
+        int go_to_torques(std::vector<std::string> _motors, double _torque);
 
         /**
     	 * 

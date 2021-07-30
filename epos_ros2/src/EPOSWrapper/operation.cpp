@@ -26,13 +26,29 @@ namespace epos2
     ///
     int EPOSWrapper::go_to_velocities(std::vector<std::string> _motors, std::vector<double> _velocities, bool _rpm = true)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITIES");
+
+        for (std::vector<std::string>::size_type i = 0; i < _motors.size(); ++i)
+        {
+            if (!this->go_to_velocity(_motors[i], _velocities[i], _rpm))
+                return RETURN_FAILED;
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocities(std::vector<std::string> _motors, double _velocities, bool _rpm = true)
+    int EPOSWrapper::go_to_velocities(std::vector<std::string> _motors, double _velocity, bool _rpm = true)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITIES");
+
+        for (auto &motor : _motors)
+        {
+            if (!this->go_to_velocity(motor, _velocity, _rpm))
+                return RETURN_FAILED;
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
@@ -47,6 +63,18 @@ namespace epos2
     ///
     int EPOSWrapper::get_velocities(std::vector<std::string> _motors, std::vector<double> &_velocities, bool _rpm = true)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GET VELOCITIES");
+
+        _velocities.clear();
+        double temp;
+
+        for (auto &motor : _motors)
+        {
+            if (!this->get_velocity(motor, temp, _rpm))
+                return RETURN_FAILED;
+            _velocities.push_back(temp);
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
@@ -61,13 +89,29 @@ namespace epos2
     ///
     int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, std::vector<double> _positions, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITIONS");
+
+        for (std::vector<std::string>::size_type i = 0; i < _motors.size(); ++i)
+        {
+            if (!this->go_to_position(_motors[i], _positions[i], _count, _absolute, _immediate))
+                return RETURN_FAILED;
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, double _positions, bool _count = true, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITIONS");
+
+        for (auto &motor : _motors)
+        {
+            if (!this->go_to_position(motor, _position, _count, _absolute, _immediate))
+                return RETURN_FAILED;
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
@@ -82,6 +126,18 @@ namespace epos2
     ///
     int EPOSWrapper::get_positions(std::vector<std::string> _motors, std::vector<double> &_positions, bool _count = true)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GET POSITIONS");
+
+        _positions.clear();
+        double temp;
+
+        for (auto &motor : _motors)
+        {
+            if (!this->get_position(motor, temp, _count))
+                return RETURN_FAILED;
+            _positions.push_back(temp);
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
@@ -96,13 +152,29 @@ namespace epos2
     ///
     int EPOSWrapper::go_to_torques(std::vector<std::string> _motors, std::vector<double> _torques)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO TORQUES");
+
+        for (std::vector<std::string>::size_type i = 0; i < _motors.size(); ++i)
+        {
+            if (!this->go_to_torque(_motors[i], _torques[i]))
+                return RETURN_FAILED;
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_torques(std::vector<std::string> _motors, double _torques)
+    int EPOSWrapper::go_to_torques(std::vector<std::string> _motors, double _torque)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO TORQUES");
+
+        for (auto &motor : _motors)
+        {
+            if (!this->go_to_torque(motor, _torque))
+                return RETURN_FAILED;
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
@@ -117,6 +189,18 @@ namespace epos2
     ///
     int EPOSWrapper::get_torques(std::vector<std::string> _motors, std::vector<double> &_torques)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GET TORQUES");
+
+        _torques.clear();
+        double temp;
+
+        for (auto &motor : _motors)
+        {
+            if (!this->get_torque(motor, temp))
+                return RETURN_FAILED;
+            _torques.push_back(temp);
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
