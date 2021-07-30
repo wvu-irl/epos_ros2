@@ -128,7 +128,7 @@ namespace epos2
          * @param _mode operation mode to be set
          * @return Success(1)/Failure(0) of command
     	*/
-        int set_modes(std::vector<std::string> _motor, std::vector<OperationMode> _modes);
+        int set_modes(const std::vector<std::string> &_motors,const std::vector<OperationMode> &_modes);
 
         /**
          * All motors will be set to the same mode
@@ -138,7 +138,7 @@ namespace epos2
          * @param _mode operation mode to be set
          * @return Success(1)/Failure(0) of command
     	*/
-        int set_modes(std::vector<std::string> _motor, OperationMode _mode);
+        int set_modes(const std::vector<std::string> &_motors, OperationMode _mode);
 
         /**
          * 
@@ -147,7 +147,7 @@ namespace epos2
          * @param _mode operation mode to be set
          * @return Success(1)/Failure(0) of command
     	*/
-        int set_mode(std::string _motor, OperationMode _mode);
+        int set_mode(const std::string &_motor, OperationMode _mode);
 
         /**
          *
@@ -155,7 +155,7 @@ namespace epos2
          * @param _motors motor to have operation mode reset
          * @return Success(1)/Failure(0) of command
     	*/
-        int reset_devices(std::vector<std::string> _motors);
+        int reset_devices(const std::vector<std::string> &_motors);
 
         /**
          *
@@ -163,7 +163,7 @@ namespace epos2
          * @param _motors motor to have operation mode reset
          * @return Success(1)/Failure(0) of command
     	*/
-        int reset_device(std::string _motor);
+        int reset_device(const std::string &_motor);
 
         /**
     	 * 
@@ -172,7 +172,7 @@ namespace epos2
     	 * @param _state Desired states of state machines
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int set_states(std::vector<std::string> _motors, std::vector<DeviceState> _states);
+        int set_states(const std::vector<std::string> &_motors, const std::vector<DeviceState> &_states);
 
         /**
     	 * 
@@ -181,7 +181,7 @@ namespace epos2
     	 * @param _state Desired state of state machines
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int set_states(std::vector<std::string> _motors, DeviceState _state);
+        int set_states(const std::vector<std::string> &_motors, DeviceState _state);
 
         /**
     	 * 
@@ -190,7 +190,7 @@ namespace epos2
     	 * @param _state Desired state of state machine
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int set_state(std::string _motor, DeviceState _state);
+        int set_state(const std::string &_motor, DeviceState _state);
 
         /**
     	 * 
@@ -199,7 +199,7 @@ namespace epos2
     	 * @param _states State of state machine
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_states(std::vector<std::string> _motors, std::vector<DeviceState> &_states);
+        int get_states(const std::vector<std::string> &_motors, std::vector<DeviceState> &_states);
 
         /**
     	 * 
@@ -208,7 +208,7 @@ namespace epos2
     	 * @param _state State of state machine
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_state(std::string _motor, DeviceState &_state);
+        int get_state(const std::string &_motor, DeviceState &_state);
 
         /**
          * 
@@ -216,7 +216,7 @@ namespace epos2
          * @param _motors names of motors to clear faults for
          * @return Success(1)/Failure(0) of command
     	*/
-        int clear_faults(std::vector<std::string> _motors);
+        int clear_faults(const std::vector<std::string> &_motors);
 
         /**
          * 
@@ -224,7 +224,7 @@ namespace epos2
          * @param _motors name of motor to clear fault for
          * @return Success(1)/Failure(0) of command
     	*/
-        int clear_fault(std::string _motor);
+        int clear_fault(const std::string &_motor);
 
         /////////////////////////////////////////////////////////////////////
         /***************************OPERATION*******************************/
@@ -238,7 +238,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocities(std::vector<std::string> _motors, std::vector<double> _velocities, bool _rpm);
+        int go_to_velocities(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm);
 
         /**
     	 * 
@@ -248,7 +248,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocities(std::vector<std::string> _motors, double _velocity, bool _rpm);
+        int go_to_velocities(const std::vector<std::string> &_motors, double _velocity, bool _rpm);
 
         /**
     	 * 
@@ -258,7 +258,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocity(std::string _motor, double _velocity, bool _rpm);
+        int go_to_velocity(const std::string &_motor, double _velocity, bool _rpm);
 
         /**
     	 * 
@@ -268,7 +268,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_velocities(std::vector<std::string> _motors, std::vector<double> &_velocities, bool _rpm);
+        int get_velocities(const std::vector<std::string> &_motors, std::vector<double> &_velocities, bool _rpm);
 
         /**
     	 * 
@@ -278,7 +278,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_velocity(std::string _motor, double &_velocity, bool _rpm);
+        int get_velocity(const std::string &_motor, double &_velocity, bool _rpm);
 
         /**
     	 * 
@@ -290,7 +290,7 @@ namespace epos2
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions(std::vector<std::string> _motors, std::vector<double> _positions, bool _counts, bool _absolute, bool _immediate);
+        int go_to_positions(const std::vector<std::string> &_motors, const std::vector<double> &_positions, bool _counts, bool _absolute, bool _immediate);
 
         /**
     	 * 
@@ -302,7 +302,7 @@ namespace epos2
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions(std::vector<std::string> _motors, double _position, bool _counts, bool _absolute, bool _immediate);
+        int go_to_positions(const std::vector<std::string> &_motors, double _position, bool _counts, bool _absolute, bool _immediate);
 
         /**
     	 * 
@@ -314,7 +314,7 @@ namespace epos2
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_position(std::string _motor, double _position, bool _counts, bool _absolute, bool _immediate);
+        int go_to_position(const std::string &_motor, double _position, bool _counts, bool _absolute, bool _immediate);
 
         /**
     	 * 
@@ -324,7 +324,7 @@ namespace epos2
          * @param _counts if true, units are in encoder counts else m (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_positions(std::vector<std::string> _motors, std::vector<double> &_positions, bool _counts);
+        int get_positions(const std::vector<std::string> &_motors, std::vector<double> &_positions, bool _counts);
 
         /**
     	 * 
@@ -334,7 +334,7 @@ namespace epos2
          * @param _counts if true, units are in encoder counts else m (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_position(std::string _motor, double &_position, bool _counts);
+        int get_position(const std::string &_motor, double &_position, bool _counts);
 
         /**
     	 * 
@@ -343,7 +343,7 @@ namespace epos2
     	 * @param _torques Desired motor torques (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_torques(std::vector<std::string> _motors, std::vector<double> _torques);
+        int go_to_torques(const std::vector<std::string> &_motors, const std::vector<double> &_torques);
 
         /**
     	 * 
@@ -352,7 +352,7 @@ namespace epos2
     	 * @param _torque Desired motor torques (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_torques(std::vector<std::string> _motors, double _torque);
+        int go_to_torques(const std::vector<std::string> &_motors, double _torque);
 
         /**
     	 * 
@@ -361,7 +361,7 @@ namespace epos2
     	 * @param _torque Desired motor torque (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_torque(std::string _motor, double _torque);
+        int go_to_torque(const std::string &_motor, double _torque);
 
         /**
     	 * 
@@ -370,7 +370,7 @@ namespace epos2
     	 * @param _torques Current motor torques (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_torques(std::vector<std::string> _motors, std::vector<double> &_torques);
+        int get_torques(const std::vector<std::string> &_motors, std::vector<double> &_torques);
 
         /**
     	 * 
@@ -379,7 +379,7 @@ namespace epos2
     	 * @param _torque Current motor torque (mNm) note, double gets converted to short for current in (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_torque(std::string _motor, double &_torque);
+        int get_torque(const std::string &_motor, double &_torque);
 
         /**
     	 * 
@@ -388,7 +388,7 @@ namespace epos2
     	 * @param _currents Currents (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_currents(std::vector<std::string> _motors, std::vector<double> &_currents);
+        int get_currents(const std::vector<std::string> &_motors, std::vector<double> &_currents);
 
         /**
     	 * 
@@ -397,7 +397,7 @@ namespace epos2
     	 * @param _current Current (mA)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_current(std::string _motor, double &_current);
+        int get_current(const std::string &_motor, double &_current);
 
         /////////////////////////////////////////////////////////////////////
         /**************************ERRORS and LOGGING***********************/
@@ -463,7 +463,7 @@ namespace epos2
     	 * @param _motor Motor to stop
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int halt_velocity(std::string _motor);
+        int halt_velocity(const std::string &_motor);
 
         /**
     	 * 
@@ -471,7 +471,7 @@ namespace epos2
     	 * @param _motor Motor to stop
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int halt_position(std::string _motor);
+        int halt_position(const std::string &_motor);
 
         /////////////////////////////////////////////////////////////////////
         /**************************ERRORS and LOGGING***********************/
@@ -480,6 +480,24 @@ namespace epos2
         /////////////////////////////////////////////////////////////////////
         /**************************UTILS************************************/
         /////////////////////////////////////////////////////////////////////
+
+        /**
+    	 * 
+    	 * @brief Convert motor velcoty from RPM to m/s
+    	 * @param _motor Motor to convert velocities
+    	 * @param _velocities Motor velocity (RPM)
+    	 * @return Motor velocity (m/s)
+   		*/
+        double rpm_2_mps(MaxonMotor &_motor, double _velocity);
+
+        /**
+    	 * 
+    	 * @brief Convert motor velcoty from RPM to m/s
+    	 * @param _motor Motor to convert velocities
+    	 * @param _velocities Motor velocity (m/s)
+    	 * @return Motor velocity (RPM)
+   		*/
+        double mps_2_rpm(MaxonMotor &_motor, double _velocity);
     };
 }
 #endif

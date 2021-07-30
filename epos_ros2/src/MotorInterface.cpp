@@ -97,7 +97,7 @@ epos2::EPOSParams MotorInterface::get_params()
 	for (std::vector<int>::size_type i = 0; i < ids.size(); ++i)
 	{
 		params.motor_ids.insert(std::make_pair(motors[i], ids[i]));
-		params.motor_inds.insert(std::make_pair(ids[i], i));
+		params.motor_inds.insert(std::make_pair(motors[i], i));
 	}
 
 	// Maxon Motors

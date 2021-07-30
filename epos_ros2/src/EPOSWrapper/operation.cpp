@@ -25,7 +25,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocities(std::vector<std::string> _motors, std::vector<double> _velocities, bool _rpm = true)
+    int EPOSWrapper::go_to_velocities(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm = true)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITIES");
 
@@ -40,7 +40,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocities(std::vector<std::string> _motors, double _velocity, bool _rpm = true)
+    int EPOSWrapper::go_to_velocities(const std::vector<std::string> &_motors, double _velocity, bool _rpm = true)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITIES");
 
@@ -55,7 +55,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocity(std::string _motor, double _velocity, bool _rpm = true)
+    int EPOSWrapper::go_to_velocity(const std::string &_motor, double _velocity, bool _rpm = true)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITY");
 
@@ -69,7 +69,7 @@ namespace epos2
         }
         else
         {
-            //velocity = rpm_2_mps(_velocity);
+            //velocity = rpm_2_mps(params_.motors[params_.motors_inds[_motor]], _velocity);
         }
 
         // 				if (abs(_velocities[i]) > 0)
@@ -94,7 +94,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_velocities(std::vector<std::string> _motors, std::vector<double> &_velocities, bool _rpm = true)
+    int EPOSWrapper::get_velocities(const std::vector<std::string> &_motors, std::vector<double> &_velocities, bool _rpm = true)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GET VELOCITIES");
 
@@ -113,14 +113,14 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_velocity(std::string _motor, double &_velocity, bool _rpm = true)
+    int EPOSWrapper::get_velocity(const std::string &_motor, double &_velocity, bool _rpm = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, std::vector<double> _positions, bool _count = true, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_positions(const std::vector<std::string> &_motors, const std::vector<double> &_positions, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITIONS");
 
@@ -135,7 +135,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_positions(const std::vector<std::string> &_motors, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITIONS");
 
@@ -150,14 +150,14 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_position(std::string _motor, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_position(const std::string &_motor, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::get_positions(std::vector<std::string> _motors, std::vector<double> &_positions, bool _count = true)
+    int EPOSWrapper::get_positions(const std::vector<std::string> &_motors, std::vector<double> &_positions, bool _count = true)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GET POSITIONS");
 
@@ -176,7 +176,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_position(std::string _motor, double &_position, bool _count = true)
+    int EPOSWrapper::get_position(const std::string &_motor, double &_position, bool _count = true)
     {
         // /**
         //     Gets position for a list of motors
@@ -214,7 +214,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_torques(std::vector<std::string> _motors, std::vector<double> _torques)
+    int EPOSWrapper::go_to_torques(const std::vector<std::string> &_motors, const std::vector<double> &_torques)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO TORQUES");
 
@@ -229,7 +229,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_torques(std::vector<std::string> _motors, double _torque)
+    int EPOSWrapper::go_to_torques(const std::vector<std::string> &_motors, double _torque)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO TORQUES");
 
@@ -244,7 +244,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_torque(std::string _motor, double _torque)
+    int EPOSWrapper::go_to_torque(const std::string &_motor, double _torque)
     {
         //    int EPOSWrapper::go_to_torque(std::vector<int> _ids, std::vector<long> _torques, double _gr)
         //    {
@@ -269,7 +269,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_torques(std::vector<std::string> _motors, std::vector<double> &_torques)
+    int EPOSWrapper::get_torques(const std::vector<std::string> &_motors, std::vector<double> &_torques)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GET TORQUES");
 
@@ -288,7 +288,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_torque(std::string _motor, double &_torque)
+    int EPOSWrapper::get_torque(const std::string &_motor, double &_torque)
     {
         // int EPOSWrapper::getCurrent(std::vector<int> _ids, std::vector<short> &_currents)
         // {
@@ -319,7 +319,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_currents(std::vector<std::string> _motors, std::vector<double> &_currents)
+    int EPOSWrapper::get_currents(const std::vector<std::string> &_motors, std::vector<double> &_currents)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GET CURRENTS");
 
@@ -338,7 +338,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_current(std::string _motor, double &_current)
+    int EPOSWrapper::get_current(const std::string &_motor, double &_current)
     {
         // int EPOSWrapper::getCurrent(std::vector<int> _ids, std::vector<short> &_currents)
         // {
@@ -369,14 +369,14 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::halt_velocity(std::string _motor)
+    int EPOSWrapper::halt_velocity(const std::string &_motor)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::halt_position(std::string _motor)
+    int EPOSWrapper::halt_position(const std::string &_motor)
     {
     }
 

@@ -24,7 +24,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::set_modes(std::vector<std::string> _motors, std::vector<OperationMode> _modes)
+    int EPOSWrapper::set_modes(const std::vector<std::string> &_motors, const std::vector<OperationMode> &_modes)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "SET MODES");
 
@@ -39,7 +39,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::set_modes(std::vector<std::string> _motors, OperationMode _mode)
+    int EPOSWrapper::set_modes(const std::vector<std::string> &_motors, OperationMode _mode)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "SET MODES");
 
@@ -54,7 +54,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::set_mode(std::string _motor, OperationMode _mode)
+    int EPOSWrapper::set_mode(const std::string &_motor, OperationMode _mode)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "SET MODE");
 
@@ -84,7 +84,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::reset_devices(std::vector<std::string> _motors)
+    int EPOSWrapper::reset_devices(const std::vector<std::string> &_motors)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "RESET DEVICES");
 
@@ -97,7 +97,7 @@ namespace epos2
     }
 
     ///
-    int EPOSWrapper::reset_device(std::string _motor)
+    int EPOSWrapper::reset_device(const std::string &_motor)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "RESET DEVICE");
 
@@ -121,7 +121,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::set_states(std::vector<std::string> _motors, std::vector<DeviceState> _states)
+    int EPOSWrapper::set_states(const std::vector<std::string> &_motors, const std::vector<DeviceState> &_states)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "SET STATES");
 
@@ -136,7 +136,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::set_states(std::vector<std::string> _motors, DeviceState _state)
+    int EPOSWrapper::set_states(const std::vector<std::string> &_motors, DeviceState _state)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "SET STATES");
 
@@ -151,7 +151,7 @@ namespace epos2
     /// Just sets state. Because this could have been changed onboard, have to assume
     /// that the current state value may be out of data. Manually checking would just be
     /// slower and require another function call to the system.
-    int EPOSWrapper::set_state(std::string _motor, DeviceState _state)
+    int EPOSWrapper::set_state(const std::string &_motor, DeviceState _state)
     {
 
         RCLCPP_DEBUG(node_ptr_->get_logger(), "SET STATE");
@@ -176,7 +176,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_states(std::vector<std::string> _motors, std::vector<DeviceState> &_states)
+    int EPOSWrapper::get_states(const std::vector<std::string> &_motors, std::vector<DeviceState> &_states)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GET STATES");
 
@@ -195,7 +195,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_state(std::string _motor, DeviceState &_state)
+    int EPOSWrapper::get_state(const std::string &_motor, DeviceState &_state)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GET STATE");
 
@@ -220,7 +220,7 @@ namespace epos2
         ///
     ///
     ///
-    int EPOSWrapper::clear_faults(std::vector<std::string> _motors)
+    int EPOSWrapper::clear_faults(const std::vector<std::string> &_motors)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "CLEAR FAULTS");
 
@@ -235,7 +235,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::clear_fault(std::string _motor)
+    int EPOSWrapper::clear_fault(const std::string &_motor)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "CLEAR FAULT");
 
