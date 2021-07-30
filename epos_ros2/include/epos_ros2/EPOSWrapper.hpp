@@ -1,10 +1,12 @@
-/*
-   Maxon Motor Controller eposCommand
-   epos_command.h
-   Purpose: Wrap EPOS commands and integrate with ROS for general purpose motor control
-
-   @author Jared Beard
-   @version 1.0 11/13/18
+/**
+ * @file EPOSWrapper.hpp
+ * @author  Jared J Beard <jbeard6@mix.wvu.edu>
+ * @version 1.0
+ *
+ * @section DESCRIPTION
+ *
+ * Wraps core EPOS functionalities, does not explicity handle faults
+ * and communicate with core system
  */
 #ifndef EPOS_WRAPPER_HPP
 #define EPOS_WRAPPER_HPP
@@ -208,9 +210,160 @@ namespace epos2
    		*/
         int get_state(std::string _motor, DeviceState &_state);
 
+        /**
+		 * 
+		 * @brief Clears faults of selected motors
+       	 * @param _motors names of motors to clear faults for
+         * @return Success(1)/Failure(0) of command
+    	*/
+        int clear_faults(std::vector<std::string> _motors);
+
+        /**
+		 * 
+		 * @brief Clears faults of selected motor
+       	 * @param _motors name of motor to clear fault for
+         * @return Success(1)/Failure(0) of command
+    	*/
+        int clear_fault(std::string _motor);
+
         /////////////////////////////////////////////////////////////////////
         /***************************OPERATION*******************************/
         /////////////////////////////////////////////////////////////////////
+
+        /**
+    	 * 
+    	 * @brief Command motors to go to a list of velocities
+    	 * @param _motor Motors to command velocities
+    	 * @param _state Desired motor velocities ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int go_to_velocities(std::vector<std::string> _motors, std::vector<long> _velocities);
+
+        /**
+    	 * 
+    	 * @brief Command motors to go to a velocity
+    	 * @param _motor Motors to command velocity
+    	 * @param _state Desired motor velocities ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int go_to_velocities(std::vector<std::string> _motors, long _velocities);
+
+        /**
+    	 * 
+    	 * @brief Command motor to go to a velocity
+    	 * @param _motor Motor to command velocity
+    	 * @param _state Desired motor velocity ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int go_to_velocity(std::string _motor, long _velocity);
+
+        /**
+    	 * 
+    	 * @brief Get velocities of motors
+    	 * @param _motor Motors to get velocities
+    	 * @param _state Current motor velocities ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int get_velocities(std::vector<std::string> _motors, std::vector<long> &_velocities);
+
+        /**
+    	 * 
+    	 * @brief Get velocity of motors
+    	 * @param _motor Motors to velocity
+    	 * @param _state Current motor velocity ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int get_velocity(std::string _motor, long &_velocity);
+
+        /**
+    	 * 
+    	 * @brief Command motors to go to a list of positions
+    	 * @param _motor Motors to command positions
+    	 * @param _state Desired motor positions ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int go_to_positions(std::vector<std::string> _motors, std::vector<long> _positions);
+
+        /**
+    	 * 
+    	 * @brief Command motors to go to a position
+    	 * @param _motor Motors to command position
+    	 * @param _state Desired motor positions ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int go_to_positions(std::vector<std::string> _motors, long _positions);
+
+        /**
+    	 * 
+    	 * @brief Command motor to go to a position
+    	 * @param _motor Motor to command position
+    	 * @param _state Desired motor position ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int go_to_position(std::string _motor, long _position);
+
+        /**
+    	 * 
+    	 * @brief Get positions of motors
+    	 * @param _motor Motors to get positions
+    	 * @param _state Current motor positions ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int get_positions(std::vector<std::string> _motors, std::vector<long> &_positions);
+
+        /**
+    	 * 
+    	 * @brief Get position of motors
+    	 * @param _motor Motors to position
+    	 * @param _state Current motor position ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int get_position(std::string _motor, long &_position);
+
+        /**
+    	 * 
+    	 * @brief Command motors to go to a list of torques
+    	 * @param _motor Motors to command torques
+    	 * @param _state Desired motor torques ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int go_to_torques(std::vector<std::string> _motors, std::vector<long> _torques);
+
+        /**
+    	 * 
+    	 * @brief Command motors to go to a torque
+    	 * @param _motor Motors to command torque
+    	 * @param _state Desired motor torques ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int go_to_torques(std::vector<std::string> _motors, long _torques);
+
+        /**
+    	 * 
+    	 * @brief Command motor to go to a torque
+    	 * @param _motor Motor to command torque
+    	 * @param _state Desired motor torque ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int go_to_torque(std::string _motor, long _torque);
+
+        /**
+    	 * 
+    	 * @brief Get torques of motors
+    	 * @param _motor Motors to get torques
+    	 * @param _state Current motor torques ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int get_torques(std::vector<std::string> _motors, std::vector<long> &_torques);
+
+        /**
+    	 * 
+    	 * @brief Get torque of motors
+    	 * @param _motor Motors to torque
+    	 * @param _state Current motor torque ()
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int get_torque(std::string _motor, long &_torque);
 
         /////////////////////////////////////////////////////////////////////
         /**************************ERRORS and LOGGING***********************/
@@ -311,8 +464,7 @@ namespace epos2
 // /***********************OPERATION*******************************/
 // virtual bool checkFault();
 // int handleFault(int _id);
-// int enableMotors(std::vector<int> _ids);
-// int goToVel(std::vector<int> _ids, std::vector<long> _velocities);
+// int goToVel(std::vector<int> _ids, std::vector<long> _positions);
 // //int stopVel(std::vector<int> IDs);
 // int getPosition(std::vector<int> _ids, std::vector<int> &_positions); //put in check that mode is correct
 // int getCurrent(std::vector<int> _ids, std::vector<short> &_currents);

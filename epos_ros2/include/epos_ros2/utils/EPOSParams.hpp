@@ -1,10 +1,12 @@
-/*
-   Maxon Motor Controller EPOSWrapper Parameters
-   EPOSParams.hpp
-   Purpose: Link together various parameters for the EPOSWrapper
-
-   @author Jared Beard
-   @version 1.0 11/13/18
+/**
+ * @file EPOSParams.hpp
+ * @author  Jared J Beard <jbeard6@mix.wvu.edu>
+ * @version 1.0
+ *
+ * @section DESCRIPTION
+ *
+ * Contains related parameters and variables necessary for running EPOS
+ * devies
  */
 
 #ifndef EPOS_PARAMS_HPP

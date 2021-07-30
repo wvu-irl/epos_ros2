@@ -1,3 +1,17 @@
+/**
+ * @file configuration.cpp
+ * @author  Jared J Beard <jbeard6@mix.wvu.edu>
+ * @version 1.0
+ *
+ * @section DESCRIPTION
+ *
+ * Functions related to configuration of EPOS devices
+ * TODO: (in reset_device) check what state reset goes to
+ * TODO: Add get modes/state functions that just use internal variables so 
+ *          users can decide whether or not its worth the risk to actually 
+ *          probe device or have some trust, can affect comms if bandwidth 
+ *          is too low
+ */
 #include <epos_ros2/EPOSWrapper.hpp>
 
 namespace epos2
@@ -56,6 +70,7 @@ namespace epos2
         {
             msg = "Motor " + _motor + " set mode to " + get_mode_string(_mode);
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+            epos_params_.motors[epos_params_.motor_name_map[_motor]].mode = _mode;
             return RETURN_SUCCESS;
         }
         else
@@ -92,6 +107,7 @@ namespace epos2
         {
             msg = "Motor " + _motor + " reset";
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+            //TODO check what state of reset is and set that to internal variable
             return RETURN_SUCCESS;
         }
         else
@@ -146,6 +162,7 @@ namespace epos2
         {
             msg = "Motor " + _motor + " state set to " + get_state_string(_state);
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+            epos_params_.motors[epos_params_.motor_name_map[_motor]].state == _state;
             return RETURN_SUCCESS;
         }
         else
@@ -195,6 +212,44 @@ namespace epos2
         else
         {
             RCLCPP_WARN(node_ptr_->get_logger(),this->get_error(error_code).c_str());
+            return RETURN_FAILED;
+        }
+    }
+
+        ///
+    ///
+    ///
+    int EPOSWrapper::clear_faults(std::vector<std::string> _motors)
+    {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "CLEAR FAULTS");
+
+        for (auto &motor : _motors)
+        {
+            if (!this->clear_fault(motor))
+                return RETURN_FAILED;
+        }
+        return RETURN_SUCCESS;
+    }
+
+    ///
+    ///
+    ///
+    int EPOSWrapper::clear_fault(std::string _motor)
+    {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "CLEAR FAULT");
+
+        std::string msg;
+        DWORD error_code;
+
+        if (VCS_ClearFault(key_handle_, epos_params_.motor_name_map[_motor], &error_code))
+        {
+            msg = "Motor " + _motor + " fault cleared ";
+            RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+            return RETURN_SUCCESS;
+        }
+        else
+        {
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
             return RETURN_FAILED;
         }
     }

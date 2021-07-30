@@ -1,3 +1,12 @@
+/**
+ * @file error_log.cpp
+ * @author  Jared J Beard <jbeard6@mix.wvu.edu>
+ * @version 1.0
+ *
+ * @section DESCRIPTION
+ *
+ * Functions related to logging and error messages
+ */
 #include <epos_ros2/EPOSWrapper.hpp>
 
 namespace epos2

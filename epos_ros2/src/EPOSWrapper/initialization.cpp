@@ -1,3 +1,12 @@
+/**
+ * @file initialization.cpp
+ * @author  Jared J Beard <jbeard6@mix.wvu.edu>
+ * @version 1.0
+ *
+ * @section DESCRIPTION
+ *
+ * Functions related to startup and shutdown of devices/wrapper
+ */
 #include <epos_ros2/EPOSWrapper.hpp>
 
 namespace epos2
