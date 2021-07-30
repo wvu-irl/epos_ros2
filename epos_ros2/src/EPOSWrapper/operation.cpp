@@ -7,6 +7,11 @@
  *
  * Functions related to I/O for Maxon Motor devices
  * TODO: GET VELOCITY/POSITION/TORQUE UNITS AND CHECK CONVERSION
+ * TODO: I believe vel is in RPM and Position in encoder counts, and Torque is A or mA
+ *          as such, should make additional functions for m/s and m. Also should add a relative 
+ *          position movement since MoveToPosition allows for this
+ *          Additionally, there are some features fo position such as to wait until previous position met
+ *          or just go right on ahead
  */
 #include <epos_ros2/EPOSWrapper.hpp>
 
@@ -54,21 +59,21 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, std::vector<long> _positions)
+    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, std::vector<long> _positions, bool _absolute = true, bool _immediate = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, long _positions)
+    int EPOSWrapper::go_to_positions(std::vector<std::string> _motors, long _positions, bool _absolute = true, bool _immediate = true)
     {
     }
 
     ///
     ///
     ///
-    int EPOSWrapper::go_to_position(std::string _motor, long _position)
+    int EPOSWrapper::go_to_position(std::string _motor, long _position, bool _absolute = true, bool _immediate = true)
     {
     }
 
@@ -119,6 +124,22 @@ namespace epos2
     ///
     int EPOSWrapper::get_torque(std::string _motor, long &_torque)
     {
+    }
+
+    ///
+    ///
+    ///
+    int EPOSWrapper::halt_velocity(std::string _motor)
+    {
+
+    }
+
+    ///
+    ///
+    ///
+    int EPOSWrapper::halt_position(std::string _motor)
+    {
+        
     }
 
     ///

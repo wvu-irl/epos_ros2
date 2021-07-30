@@ -234,7 +234,7 @@ namespace epos2
     	 * 
     	 * @brief Command motors to go to a list of velocities
     	 * @param _motor Motors to command velocities
-    	 * @param _state Desired motor velocities ()
+    	 * @param _velocities Desired motor velocities ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int go_to_velocities(std::vector<std::string> _motors, std::vector<long> _velocities);
@@ -243,7 +243,7 @@ namespace epos2
     	 * 
     	 * @brief Command motors to go to a velocity
     	 * @param _motor Motors to command velocity
-    	 * @param _state Desired motor velocities ()
+    	 * @param _velocities Desired motor velocities ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int go_to_velocities(std::vector<std::string> _motors, long _velocities);
@@ -252,7 +252,7 @@ namespace epos2
     	 * 
     	 * @brief Command motor to go to a velocity
     	 * @param _motor Motor to command velocity
-    	 * @param _state Desired motor velocity ()
+    	 * @param _velocity Desired motor velocity ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int go_to_velocity(std::string _motor, long _velocity);
@@ -261,7 +261,7 @@ namespace epos2
     	 * 
     	 * @brief Get velocities of motors
     	 * @param _motor Motors to get velocities
-    	 * @param _state Current motor velocities ()
+    	 * @param _velocities Current motor velocities ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int get_velocities(std::vector<std::string> _motors, std::vector<long> &_velocities);
@@ -270,7 +270,7 @@ namespace epos2
     	 * 
     	 * @brief Get velocity of motors
     	 * @param _motor Motors to velocity
-    	 * @param _state Current motor velocity ()
+    	 * @param _velocity Current motor velocity ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int get_velocity(std::string _motor, long &_velocity);
@@ -279,34 +279,40 @@ namespace epos2
     	 * 
     	 * @brief Command motors to go to a list of positions
     	 * @param _motor Motors to command positions
-    	 * @param _state Desired motor positions ()
+    	 * @param _positions Desired motor positions ()
+         * @param _absolute if true uses absolute position command, else relative (default: true)
+         * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions(std::vector<std::string> _motors, std::vector<long> _positions);
+        int go_to_positions(std::vector<std::string> _motors, std::vector<long> _positions, bool _absolute, bool _immediate);
 
         /**
     	 * 
     	 * @brief Command motors to go to a position
     	 * @param _motor Motors to command position
-    	 * @param _state Desired motor positions ()
+    	 * @param _positions Desired motor positions ()
+         * @param _absolute if true uses absolute position command, else relative (default: true)
+         * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions(std::vector<std::string> _motors, long _positions);
+        int go_to_positions(std::vector<std::string> _motors, long _positions, bool _absolute, bool _immediate);
 
         /**
     	 * 
     	 * @brief Command motor to go to a position
     	 * @param _motor Motor to command position
-    	 * @param _state Desired motor position ()
+    	 * @param _position Desired motor position ()
+         * @param _absolute if true uses absolute position command, else relative (default: true)
+         * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_position(std::string _motor, long _position);
+        int go_to_position(std::string _motor, long _position, bool _absolute, bool _immediate);
 
         /**
     	 * 
     	 * @brief Get positions of motors
     	 * @param _motor Motors to get positions
-    	 * @param _state Current motor positions ()
+    	 * @param _positions Current motor positions ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int get_positions(std::vector<std::string> _motors, std::vector<long> &_positions);
@@ -315,7 +321,7 @@ namespace epos2
     	 * 
     	 * @brief Get position of motors
     	 * @param _motor Motors to position
-    	 * @param _state Current motor position ()
+    	 * @param _position Current motor position ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int get_position(std::string _motor, long &_position);
@@ -324,7 +330,7 @@ namespace epos2
     	 * 
     	 * @brief Command motors to go to a list of torques
     	 * @param _motor Motors to command torques
-    	 * @param _state Desired motor torques ()
+    	 * @param _torques Desired motor torques ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int go_to_torques(std::vector<std::string> _motors, std::vector<long> _torques);
@@ -333,7 +339,7 @@ namespace epos2
     	 * 
     	 * @brief Command motors to go to a torque
     	 * @param _motor Motors to command torque
-    	 * @param _state Desired motor torques ()
+    	 * @param _torques Desired motor torques ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int go_to_torques(std::vector<std::string> _motors, long _torques);
@@ -342,7 +348,7 @@ namespace epos2
     	 * 
     	 * @brief Command motor to go to a torque
     	 * @param _motor Motor to command torque
-    	 * @param _state Desired motor torque ()
+    	 * @param _torque Desired motor torque ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int go_to_torque(std::string _motor, long _torque);
@@ -351,7 +357,7 @@ namespace epos2
     	 * 
     	 * @brief Get torques of motors
     	 * @param _motor Motors to get torques
-    	 * @param _state Current motor torques ()
+    	 * @param _torques Current motor torques ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int get_torques(std::vector<std::string> _motors, std::vector<long> &_torques);
@@ -360,7 +366,7 @@ namespace epos2
     	 * 
     	 * @brief Get torque of motors
     	 * @param _motor Motors to torque
-    	 * @param _state Current motor torque ()
+    	 * @param _torque Current motor torque ()
     	 * @return Success(1)/Failure(0) of command
    		*/
         int get_torque(std::string _motor, long &_torque);
@@ -423,49 +429,25 @@ namespace epos2
         /***************************OPERATION*******************************/
         /////////////////////////////////////////////////////////////////////
 
+        /**
+    	 * 
+    	 * @brief Stops motor velocity
+    	 * @param _motor Motor to stop
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int halt_velocity(std::string _motor);
+
+        /**
+    	 * 
+    	 * @brief Stops motor at position
+    	 * @param _motor Motor to stop
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int halt_position(std::string _motor);
+
         /////////////////////////////////////////////////////////////////////
         /**************************ERRORS and LOGGING***********************/
         /////////////////////////////////////////////////////////////////////
     };
 }
 #endif
-
-//  int   PrepareMotor(unsigned int* pErrorCode, unsigned short int nodeId);
-
-// /***********************OPERATION*****************************/
-//  int   DemoProfilePositionMode(HANDLE p_DeviceHandle, unsigned short p_usNodeId, unsigned int & p_rlErrorCode);
-//  int   Demo(unsigned int* pErrorCode);
-//  int   PrepareDemo(unsigned int* pErrorCode);
-
-//  void cmdReceived(const geometry_msgs::Twist& msg);
-//  void clearFaultCallback(const sensor_msgs::Joy& msg);
-
-/**   // get
-   int   setPosProfile();
-   int   goToPos();
-   int   stopPos();
-   int   setVelProfile();
-   int   startHomingMode();
-   int   setHome();
-   int   goToHome();
-   int   stopHome();
-   int   waitForHome();
-   int   setCurrentMust();
-   int   getCurrentMust();*/
-// getpositionis -> encoder?? try to find something that decouples these from the hall sensors
-//getvelocityis
-//get currentis
-//waitfortargetreached
-
-// /***********************CONFIGURATION***************************/
-// int resetDevice(unsigned short _node_id);
-// int getState(unsigned short _node_id, DevState &_state);
-
-// /***********************OPERATION*******************************/
-// virtual bool checkFault();
-// int handleFault(int _id);
-// int goToVel(std::vector<int> _ids, std::vector<long> _positions);
-// //int stopVel(std::vector<int> IDs);
-// int getPosition(std::vector<int> _ids, std::vector<int> &_positions); //put in check that mode is correct
-// int getCurrent(std::vector<int> _ids, std::vector<short> &_currents);
-// int goToTorque(std::vector<int> _ids, std::vector<long> _torques, double _gr);
