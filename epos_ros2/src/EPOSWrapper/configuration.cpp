@@ -61,7 +61,7 @@ namespace epos2
         std::string msg;
         DWORD error_code;
 
-        if (params_.motors[params_.motor_ids[_motor]].mode == _mode)
+        if (params_.motors[params_.motor_inds[_motor]].mode == _mode)
         {
             msg = "Motor " + _motor + " set mode already " + std::to_string(_mode);
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
@@ -71,7 +71,7 @@ namespace epos2
         {
             msg = "Motor " + _motor + " set mode to " + get_mode_string(_mode);
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
-            params_.motors[params_.motor_ids[_motor]].mode = _mode;
+            params_.motors[params_.motor_inds[_motor]].mode = _mode;
             return RETURN_SUCCESS;
         }
         else
@@ -163,7 +163,7 @@ namespace epos2
         {
             msg = "Motor " + _motor + " state set to " + get_state_string(_state);
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
-            params_.motors[params_.motor_ids[_motor]].state == _state;
+            params_.motors[params_.motor_inds[_motor]].state = _state;
             return RETURN_SUCCESS;
         }
         else

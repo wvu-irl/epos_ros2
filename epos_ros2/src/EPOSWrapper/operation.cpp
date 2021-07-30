@@ -13,6 +13,8 @@
  *          Additionally, there are some features fo position such as to wait until previous position met
  *          or just go right on ahead
  * TODO: Come back and throttle high frequency output
+ * TODO: See if the movewith vel/toPos/currentmust functions convert the mode
+ *          if so then those lines can be taken out and the code will be more efficient
  */
 #include <epos_ros2/EPOSWrapper.hpp>
 
@@ -59,9 +61,14 @@ namespace epos2
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITY");
 
-        if (params_.motors[params_.motor_ids[_motor]].mode != PROFILE_VELOCITY_MODE) 
+        std::string msg;
+        DWORD error_code;
+
+        //check motor is in correct mode
+        if (params_.motors[params_.motor_inds[_motor]].mode != PROFILE_VELOCITY_MODE)
             set_mode(_motor, PROFILE_VELOCITY_MODE);
 
+        // convert velocity if need be
         long velocity;
         if (_rpm)
         {
@@ -69,26 +76,30 @@ namespace epos2
         }
         else
         {
-            //velocity = rpm_2_mps(params_.motors[params_.motors_inds[_motor]], _velocity);
+            velocity = rpm_2_mps(params_.motors[params_.motor_inds[_motor]], _velocity);
         }
 
-        // 				if (abs(_velocities[i]) > 0)
-        // 				{
-        // 						if (!VCS_MoveWithVelocity(key_handle_, _ids[i], _velocities[i],&error_code_))
-        // 						{
-        // 								logError("VCS_MoveWithVelocity");
-        // 								return RETURN_FAILED;
-        // 						} else {
-        // 								ROS_INFO("Running");
-        // 						}
-        // 				} else
-        // 				{
-        // 						if (!VCS_HaltVelocityMovement(key_handle_, _ids[i],&error_code_))
-        // 						{
-        // 								return RETURN_FAILED;
-        // 						}
-        // 				}
-        // 		return RETURN_SUCCESS;
+        //command velocity or halt
+        if (abs(_velocity) > 0)
+        {
+            if (VCS_MoveWithVelocity(key_handle_, params_.motor_ids[_motor], velocity, &error_code))
+            {
+                msg = "Motor " + _motor + " commanded to velocity of " + std::to_string(velocity) + " RPM";
+                RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+                return RETURN_SUCCESS;
+            }
+            else
+            {
+                RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
+                return RETURN_FAILED;
+            }
+        }
+        else
+        {
+            if (!halt_velocity(_motor))
+                return RETURN_FAILED;
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
@@ -371,6 +382,22 @@ namespace epos2
     ///
     int EPOSWrapper::halt_velocity(const std::string &_motor)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "HALT VELOCITY");
+
+        std::string msg;
+        DWORD error_code;
+
+        if (VCS_HaltVelocityMovement(key_handle_, params_.motor_ids[_motor], &error_code))
+        {
+            msg = "Motor " + _motor + " halted";
+            RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+            return RETURN_SUCCESS;
+        }
+        else
+        {
+            RCLCPP_WARN(node_ptr_->get_logger(),this->get_error(error_code).c_str());
+            return RETURN_FAILED;
+        }
     }
 
     ///
@@ -378,6 +405,22 @@ namespace epos2
     ///
     int EPOSWrapper::halt_position(const std::string &_motor)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "HALT POSITION");
+
+        std::string msg;
+        DWORD error_code;
+
+        if (VCS_HaltPositionMovement(key_handle_, params_.motor_ids[_motor], &error_code))
+        {
+            msg = "Motor " + _motor + " halted";
+            RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+            return RETURN_SUCCESS;
+        }
+        else
+        {
+            RCLCPP_WARN(node_ptr_->get_logger(),this->get_error(error_code).c_str());
+            return RETURN_FAILED;
+        }
     }
 
 }
