@@ -123,6 +123,10 @@ std::string get_mode_string(OperationMode _mode);
 **UTILS**
 
 ```
+double rpm_2_mps(MaxonMotor &_motor, double _velocity);
+
+double mps_2_rpm(MaxonMotor &_motor, int _velocity);
+
 double count_2_m(MaxonMotor &_motor, double _distance);
 
 double m_2_count(MaxonMotor &_motor, double _distance);
