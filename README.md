@@ -17,18 +17,18 @@ Link with Read the Docs
 
 Verify Functionality of the Following code (to be done the week of Aug 1):
 
-`EPOSWrapper();
+```EPOSWrapper();
 
 EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _params);
 
-~EPOSWrapper();`
+~EPOSWrapper();```
 
 
 **INITIALIZATION**
 
-`int open_devices();
+`int open_devices();`
 
-int close_devices();`
+`int close_devices();`
 
 
 **CONFIGURATION**
