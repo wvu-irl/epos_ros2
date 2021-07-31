@@ -332,37 +332,20 @@ namespace epos2
         if (params_.motors[params_.motor_inds[_motor]].mode != CURRENT_MODE)
             set_mode(_motor, CURRENT_MODE);
 
-        // //command velocity
-        // if (VCS_SetCurrentMust(key_handle_, params_.motor_ids[_motor], velocity, &error_code))
-        // {
-        //     msg = "Motor " + _motor + " commanded to velocity of " + std::to_string(velocity) + " RPM";
-        //     RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
-        //     return RETURN_SUCCESS;
-        // }
-        // else
-        // {
-        //     RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
-        //     return RETURN_FAILED;
-        // }
+        short current = mNm_2_ma(params_.motors[params_.motor_inds[_motor]], _torque);
 
-        //    int EPOSWrapper::go_to_torque(std::vector<int> _ids, std::vector<long> _torques, double _gr)
-        //    {
-        //    		if (current_mode_ != OMD_CURRENT_MODE) setMode(_ids, OMD_CURRENT_MODE);
-
-        //    		for (int i = 0; i < _ids.size(); ++i)
-        //    		{
-        //    				short current_amps = floor(_torques[i]/(kT_*_gr));
-        //    				if (VCS_SetCurrentMust(key_handle_, _ids[i], current_amps,&error_code_))
-        //    				{
-        //    						RCLCPP_INFO("Running Current");
-        //    				} else {
-        //    						logError("VCS_SetCurrentMust");
-        //    						return RETURN_FAILED;
-        //    				}
-
-        //    		}
-        //    		return RETURN_SUCCESS;
-        //    }
+        //command current
+        if (VCS_SetCurrentMust(key_handle_, params_.motor_ids[_motor], current, &error_code))
+        {
+            msg = "Motor " + _motor + " commanded to current of " + std::to_string(current) + " mA";
+            RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+            return RETURN_SUCCESS;
+        }
+        else
+        {
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
+            return RETURN_FAILED;
+        }
     }
 
     ///
@@ -389,30 +372,25 @@ namespace epos2
     ///
     int EPOSWrapper::get_torque(const std::string &_motor, double &_torque)
     {
-        // int EPOSWrapper::getCurrent(std::vector<int> _ids, std::vector<short> &_currents)
-        // {
-        //     	short current = 0;
-        // 		//RCLCPP_WARN("---------------------------------------------------%d", pos);
-        // 		//*pos = 1;
-        // 		//RCLCPP_WARN("---------------------------------------------------%d", *pos);
-        // 		for (int i = 0; i < _ids.size(); ++i)
-        // 		{
-        // 				RCLCPP_WARN("current %d",  _ids[i]);
-        // 				if (VCS_GetCurrentIs(key_handle_, _ids[i], &current, &error_code_))
-        // 				{
-        // 						RCLCPP_WARN(" is %d", current);
-        // 						_currents.push_back(current);
-        // 						std::cout << " is " << current << std::endl;
-        // 				}
-        // 				else
-        // 				{
-        // 						std::cout << " FAILED CURRENT. " << std::endl;
-        // 						return RETURN_FAILED;
-        // 				}
-        // 		}
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GET TORQUE");
 
-        // 		return RETURN_SUCCESS;
-        // }
+        std::string msg;
+        DWORD error_code;
+        double current;
+
+        if (get_current(_motor, current))
+        {
+            _torque = mNm_2_ma(params_.motors[params_.motor_inds[_motor]], current);
+            ;
+            msg = "Motor Torque is " + std::to_string(current) + " mNm";
+            RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+            return RETURN_SUCCESS;
+        }
+        else
+        {
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
+            return RETURN_FAILED;
+        }
     }
 
     ///

@@ -87,8 +87,11 @@ namespace epos2
     ///
     double EPOSWrapper::mNm_2_ma(MaxonMotor &_motor, double _torque)
     {
-
-        _torques[i]/(kT_*_gr)
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "mNm to mA");
+        double current = _torque / (_motor.kT * _motor.gear_ratio);
+        std::string msg;
+        msg = "Torque converted from " + std::to_string(_torque) + " mNm to " + std::to_string(current) + " mA";
+        return current;
     }
 
     ///
@@ -96,5 +99,10 @@ namespace epos2
     ///
     double EPOSWrapper::ma_2_mNm(MaxonMotor &_motor, double _current)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "mA to mNm");
+        double torque = _current * _motor.kT * _motor.gear_ratio;
+        std::string msg;
+        msg = "Current converted from " + std::to_string(_current) + " mA to " + std::to_string(torque) + " mNm";
+        return torque;
     }
 }
