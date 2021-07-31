@@ -238,7 +238,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocities(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm);
+        int go_to_velocities_profile(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm);
 
         /**
     	 * 
@@ -248,7 +248,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocities(const std::vector<std::string> &_motors, double _velocity, bool _rpm);
+        int go_to_velocities_profile(const std::vector<std::string> &_motors, double _velocity, bool _rpm);
 
         /**
     	 * 
@@ -258,7 +258,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocity(const std::string &_motor, double _velocity, bool _rpm);
+        int go_to_velocity_profile(const std::string &_motor, double _velocity, bool _rpm);
 
         /**
     	 * 
@@ -290,7 +290,7 @@ namespace epos2
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions(const std::vector<std::string> &_motors, const std::vector<double> &_positions, bool _counts, bool _absolute, bool _immediate);
+        int go_to_positions_profile(const std::vector<std::string> &_motors, const std::vector<double> &_positions, bool _counts, bool _absolute, bool _immediate);
 
         /**
     	 * 
@@ -302,7 +302,7 @@ namespace epos2
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions(const std::vector<std::string> &_motors, double _position, bool _counts, bool _absolute, bool _immediate);
+        int go_to_positions_profile(const std::vector<std::string> &_motors, double _position, bool _counts, bool _absolute, bool _immediate);
 
         /**
     	 * 
@@ -314,7 +314,7 @@ namespace epos2
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_position(const std::string &_motor, double _position, bool _counts, bool _absolute, bool _immediate);
+        int go_to_position_profile(const std::string &_motor, double _position, bool _counts, bool _absolute, bool _immediate);
 
         /**
     	 * 
@@ -505,19 +505,37 @@ namespace epos2
     	 * 
     	 * @brief Convert motor position from encoder counts to m
     	 * @param _motor Motor to convert position
-    	 * @param _position Motor position (encoder counts)
+    	 * @param _distance Motor position (encoder counts)
     	 * @return Motor position (m)
    		*/
-        double count_2_m(MaxonMotor &_motor, double _position);
+        double count_2_m(MaxonMotor &_motor, double _distance);
 
         /**
     	 * 
-    	 * @brief Convert motor velcoty from encoder counts to m
+    	 * @brief Convert motor position from encoder counts to m
     	 * @param _motor Motor to convert position
-    	 * @param _position Motor position (m)
+    	 * @param _distance Motor position (m)
     	 * @return Motor position (encoder counts)
    		*/
-        double m_2_count(MaxonMotor &_motor, double _position);
+        double m_2_count(MaxonMotor &_motor, double _distance);
+
+         /**
+    	 * 
+    	 * @brief Convert motor torque to current
+    	 * @param _motor Motor to convert output
+    	 * @param _distance Motor torque (mNm)
+    	 * @return Motor current (mA)
+   		*/
+        double mNm_2_ma(MaxonMotor &_motor, double _torque);
+
+        /**
+    	 * 
+    	 * @brief Convert motor current to torque
+    	 * @param _motor Motor to convert output
+    	 * @param _distance Motor current (mA)
+    	 * @return Motor torque (mNm)
+   		*/
+        double ma_2_mNm(MaxonMotor &_motor, double _current);
     };
 }
 #endif

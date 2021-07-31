@@ -27,13 +27,13 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocities(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm = true)
+    int EPOSWrapper::go_to_velocities_profile(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm = true)
     {
-        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITIES");
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITIES PROFILE");
 
         for (std::vector<std::string>::size_type i = 0; i < _motors.size(); ++i)
         {
-            if (!this->go_to_velocity(_motors[i], _velocities[i], _rpm))
+            if (!this->go_to_velocity_profile(_motors[i], _velocities[i], _rpm))
                 return RETURN_FAILED;
         }
         return RETURN_SUCCESS;
@@ -42,13 +42,13 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocities(const std::vector<std::string> &_motors, double _velocity, bool _rpm = true)
+    int EPOSWrapper::go_to_velocities_profile(const std::vector<std::string> &_motors, double _velocity, bool _rpm = true)
     {
-        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITIES");
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITIES PROFILE");
 
         for (auto &motor : _motors)
         {
-            if (!this->go_to_velocity(motor, _velocity, _rpm))
+            if (!this->go_to_velocity_profile(motor, _velocity, _rpm))
                 return RETURN_FAILED;
         }
         return RETURN_SUCCESS;
@@ -57,16 +57,16 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocity(const std::string &_motor, double _velocity, bool _rpm = true)
+    int EPOSWrapper::go_to_velocity_profile(const std::string &_motor, double _velocity, bool _rpm = true)
     {
-        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITY");
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITY PROFILE");
 
         std::string msg;
         DWORD error_code;
 
         //check motor is in correct mode
-        if (params_.motors[params_.motor_inds[_motor]].mode != VELOCITY_MODE)
-            set_mode(_motor, VELOCITY_MODE);
+        if (params_.motors[params_.motor_inds[_motor]].mode != PROFILE_VELOCITY_MODE)
+            set_mode(_motor, PROFILE_VELOCITY_MODE);
 
         // convert velocity if need be
         long velocity;
@@ -76,11 +76,11 @@ namespace epos2
         }
         else
         {
-            velocity = rpm_2_mps(params_.motors[params_.motor_inds[_motor]], _velocity);
+            velocity = mps_2_rpm(params_.motors[params_.motor_inds[_motor]], _velocity);
         }
 
         //command velocity or halt
-        if (abs(_velocity) > 0)
+        if (_velocity != 0)
         {
             if (VCS_MoveWithVelocity(key_handle_, params_.motor_ids[_motor], velocity, &error_code))
             {
@@ -135,8 +135,18 @@ namespace epos2
         if (VCS_GetVelocityIs(key_handle_, params_.motor_ids[_motor], v, &error_code))
         {
             // convert velocity if need be
-            if (!_rpm)
-                _velocity = mps_2_rpm(params_.motors[params_.motor_inds[_motor]], *v);
+            if (_rpm)
+            {
+                _velocity = *v;
+                msg = "Motor " + _motor + " velocity is " + std::to_string(_velocity) + " RPM";
+                RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+            }
+            else
+            {
+                msg = "Motor " + _motor;
+                RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+                _velocity = rpm_2_mps(params_.motors[params_.motor_inds[_motor]], *v);
+            }
             return RETURN_SUCCESS;
         }
         else
@@ -149,13 +159,13 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions(const std::vector<std::string> &_motors, const std::vector<double> &_positions, bool _count = true, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_positions_profile(const std::vector<std::string> &_motors, const std::vector<double> &_positions, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
-        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITIONS");
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITIONS PROFILE");
 
         for (std::vector<std::string>::size_type i = 0; i < _motors.size(); ++i)
         {
-            if (!this->go_to_position(_motors[i], _positions[i], _count, _absolute, _immediate))
+            if (!this->go_to_position_profile(_motors[i], _positions[i], _count, _absolute, _immediate))
                 return RETURN_FAILED;
         }
         return RETURN_SUCCESS;
@@ -164,13 +174,13 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions(const std::vector<std::string> &_motors, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_positions_profile(const std::vector<std::string> &_motors, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
-        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITIONS");
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITIONS PROFILE");
 
         for (auto &motor : _motors)
         {
-            if (!this->go_to_position(motor, _position, _count, _absolute, _immediate))
+            if (!this->go_to_position_profile(motor, _position, _count, _absolute, _immediate))
                 return RETURN_FAILED;
         }
         return RETURN_SUCCESS;
@@ -179,49 +189,49 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_position(const std::string &_motor, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_position_profile(const std::string &_motor, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
     {
-        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITION");
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITION PROFILE");
 
         std::string msg;
         DWORD error_code;
 
         //check motor is in correct mode
-        if (params_.motors[params_.motor_inds[_motor]].mode != POSITION_MODE)
-            set_mode(_motor, POSITION_MODE);
+        if (params_.motors[params_.motor_inds[_motor]].mode != PROFILE_POSITION_MODE)
+            set_mode(_motor, PROFILE_POSITION_MODE);
 
-        // // convert velocity if need be
-        // long position;
-        // if (_count)
-        // {
-        //     position = _position;
-        // }
-        // else
-        // {
-        //     position = rpm_2_mps(params_.motors[params_.motor_inds[_motor]], _position);
-        // }
+        // convert position if need be
+        long position;
+        if (_count)
+        {
+            position = _position;
+        }
+        else
+        {
+            position = m_2_count(params_.motors[params_.motor_inds[_motor]], _position);
+        }
 
-        // //command position or halt
-        // if (abs(_velocity) > 0)
-        // {
-        //     if (VCS_MoveWithVelocity(key_handle_, params_.motor_ids[_motor], velocity, &error_code))
-        //     {
-        //         msg = "Motor " + _motor + " commanded to velocity of " + std::to_string(velocity) + " RPM";
-        //         RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
-        //         return RETURN_SUCCESS;
-        //     }
-        //     else
-        //     {
-        //         RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
-        //         return RETURN_FAILED;
-        //     }
-        // }
-        // else
-        // {
-        //     if (!halt_velocity(_motor))
-        //         return RETURN_FAILED;
-        // }
-        // return RETURN_SUCCESS;
+        //command position or halt
+        if (_position != 0 || (_position == 0 && _absolute))
+        {
+            if (VCS_MoveToPosition(key_handle_, params_.motor_ids[_motor], position, _absolute, _immediate, &error_code))
+            {
+                msg = "Motor " + _motor + " commanded to position of " + std::to_string(position) + " encoder counts";
+                RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+                return RETURN_SUCCESS;
+            }
+            else
+            {
+                RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
+                return RETURN_FAILED;
+            }
+        }
+        else
+        {
+            if (!halt_position(_motor))
+                return RETURN_FAILED;
+        }
+        return RETURN_SUCCESS;
     }
 
     ///
@@ -248,28 +258,34 @@ namespace epos2
     ///
     int EPOSWrapper::get_position(const std::string &_motor, double &_position, bool _count = true)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GET POSITION");
 
-        // 		int pos = 0;
-        // 		//ROS_WARN("---------------------------------------------------%d", pos);
-        // 		//*pos = 1;
-        // 		//ROS_WARN("---------------------------------------------------%d", *pos);
-        // 		for (int i = 0; i < _ids.size(); ++i)
-        // 		{
-        // 				ROS_WARN("pos %d",  _ids[i]);
-        // 				if (VCS_GetPositionIs(key_handle_, _ids[i], &pos, &error_code_))
-        // 				{
-        // 						ROS_WARN(" is %d", pos);
-        // 						_positions.push_back(pos);
-        // 						std::cout << " is " << pos << std::endl;
-        // 				}
-        // 				else
-        // 				{
-        // 						std::cout << " FAILED POSITION. " << std::endl;
-        // 						return RETURN_FAILED;
-        // 				}
-        // 		}
+        std::string msg;
+        DWORD error_code;
+        int *p;
 
-        // 		return RETURN_SUCCESS;
+        if (VCS_GetPositionIs(key_handle_, params_.motor_ids[_motor], p, &error_code))
+        {
+            // convert position if need be
+            if (_count)
+            {
+                _position = *p;
+                msg = "Motor " + _motor + " position is " + std::to_string(_position) + " counts";
+                RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+            }
+            else
+            {
+                msg = "Motor " + _motor;
+                RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+                _position = count_2_m(params_.motors[params_.motor_inds[_motor]], *p);
+            }
+            return RETURN_SUCCESS;
+        }
+        else
+        {
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
+            return RETURN_FAILED;
+        }
     }
 
     ///
@@ -307,6 +323,28 @@ namespace epos2
     ///
     int EPOSWrapper::go_to_torque(const std::string &_motor, double _torque)
     {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO TORQUE");
+
+        std::string msg;
+        DWORD error_code;
+
+        //check motor is in correct mode
+        if (params_.motors[params_.motor_inds[_motor]].mode != CURRENT_MODE)
+            set_mode(_motor, CURRENT_MODE);
+
+        // //command velocity
+        // if (VCS_SetCurrentMust(key_handle_, params_.motor_ids[_motor], velocity, &error_code))
+        // {
+        //     msg = "Motor " + _motor + " commanded to velocity of " + std::to_string(velocity) + " RPM";
+        //     RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+        //     return RETURN_SUCCESS;
+        // }
+        // else
+        // {
+        //     RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
+        //     return RETURN_FAILED;
+        // }
+
         //    int EPOSWrapper::go_to_torque(std::vector<int> _ids, std::vector<long> _torques, double _gr)
         //    {
         //    		if (current_mode_ != OMD_CURRENT_MODE) setMode(_ids, OMD_CURRENT_MODE);
@@ -316,7 +354,7 @@ namespace epos2
         //    				short current_amps = floor(_torques[i]/(kT_*_gr));
         //    				if (VCS_SetCurrentMust(key_handle_, _ids[i], current_amps,&error_code_))
         //    				{
-        //    						ROS_INFO("Running Current");
+        //    						RCLCPP_INFO("Running Current");
         //    				} else {
         //    						logError("VCS_SetCurrentMust");
         //    						return RETURN_FAILED;
@@ -354,15 +392,15 @@ namespace epos2
         // int EPOSWrapper::getCurrent(std::vector<int> _ids, std::vector<short> &_currents)
         // {
         //     	short current = 0;
-        // 		//ROS_WARN("---------------------------------------------------%d", pos);
+        // 		//RCLCPP_WARN("---------------------------------------------------%d", pos);
         // 		//*pos = 1;
-        // 		//ROS_WARN("---------------------------------------------------%d", *pos);
+        // 		//RCLCPP_WARN("---------------------------------------------------%d", *pos);
         // 		for (int i = 0; i < _ids.size(); ++i)
         // 		{
-        // 				ROS_WARN("current %d",  _ids[i]);
+        // 				RCLCPP_WARN("current %d",  _ids[i]);
         // 				if (VCS_GetCurrentIs(key_handle_, _ids[i], &current, &error_code_))
         // 				{
-        // 						ROS_WARN(" is %d", current);
+        // 						RCLCPP_WARN(" is %d", current);
         // 						_currents.push_back(current);
         // 						std::cout << " is " << current << std::endl;
         // 				}
@@ -401,30 +439,25 @@ namespace epos2
     ///
     int EPOSWrapper::get_current(const std::string &_motor, double &_current)
     {
-        // int EPOSWrapper::getCurrent(std::vector<int> _ids, std::vector<short> &_currents)
-        // {
-        //     	short current = 0;
-        // 		//ROS_WARN("---------------------------------------------------%d", pos);
-        // 		//*pos = 1;
-        // 		//ROS_WARN("---------------------------------------------------%d", *pos);
-        // 		for (int i = 0; i < _ids.size(); ++i)
-        // 		{
-        // 				ROS_WARN("current %d",  _ids[i]);
-        // 				if (VCS_GetCurrentIs(key_handle_, _ids[i], &current, &error_code_))
-        // 				{
-        // 						ROS_WARN(" is %d", current);
-        // 						_currents.push_back(current);
-        // 						std::cout << " is " << current << std::endl;
-        // 				}
-        // 				else
-        // 				{
-        // 						std::cout << " FAILED CURRENT. " << std::endl;
-        // 						return RETURN_FAILED;
-        // 				}
-        // 		}
 
-        // 		return RETURN_SUCCESS;
-        // }
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "GET CURRENT");
+
+        std::string msg;
+        DWORD error_code;
+        short *c;
+
+        if (VCS_GetCurrentIs(key_handle_, params_.motor_ids[_motor], c, &error_code))
+        {
+            _current = *c;
+            msg = "Motor Current is " + std::to_string(_current) + " mA";
+            RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+            return RETURN_SUCCESS;
+        }
+        else
+        {
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
+            return RETURN_FAILED;
+        }
     }
 
     ///

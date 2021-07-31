@@ -113,7 +113,7 @@ namespace epos2
         }
         else
         {
-            RCLCPP_WARN(node_ptr_->get_logger(),this->get_error(error_code).c_str());
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
             return RETURN_FAILED;
         }
     }
@@ -168,7 +168,7 @@ namespace epos2
         }
         else
         {
-            RCLCPP_WARN(node_ptr_->get_logger(),this->get_error(error_code).c_str());
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
             return RETURN_FAILED;
         }
     }
@@ -212,12 +212,12 @@ namespace epos2
         }
         else
         {
-            RCLCPP_WARN(node_ptr_->get_logger(),this->get_error(error_code).c_str());
+            RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
             return RETURN_FAILED;
         }
     }
 
-        ///
+    ///
     ///
     ///
     int EPOSWrapper::clear_faults(const std::vector<std::string> &_motors)
@@ -254,4 +254,5 @@ namespace epos2
             return RETURN_FAILED;
         }
     }
+
 }
