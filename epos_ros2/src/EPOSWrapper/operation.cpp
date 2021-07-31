@@ -85,7 +85,7 @@ namespace epos2
             if (VCS_MoveWithVelocity(key_handle_, params_.motor_ids[_motor], velocity, &error_code))
             {
                 msg = "Motor " + _motor + " commanded to velocity of " + std::to_string(velocity) + " RPM";
-                RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+                RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
                 return RETURN_SUCCESS;
             }
             else
@@ -139,12 +139,12 @@ namespace epos2
             {
                 _velocity = *v;
                 msg = "Motor " + _motor + " velocity is " + std::to_string(_velocity) + " RPM";
-                RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+                RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
             }
             else
             {
                 msg = "Motor " + _motor;
-                RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+                RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
                 _velocity = rpm_2_mps(params_.motors[params_.motor_inds[_motor]], *v);
             }
             return RETURN_SUCCESS;
@@ -217,7 +217,7 @@ namespace epos2
             if (VCS_MoveToPosition(key_handle_, params_.motor_ids[_motor], position, _absolute, _immediate, &error_code))
             {
                 msg = "Motor " + _motor + " commanded to position of " + std::to_string(position) + " encoder counts";
-                RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+                RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
                 return RETURN_SUCCESS;
             }
             else
@@ -271,12 +271,11 @@ namespace epos2
             {
                 _position = *p;
                 msg = "Motor " + _motor + " position is " + std::to_string(_position) + " counts";
-                RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
-            }
+                RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());            }
             else
             {
                 msg = "Motor " + _motor;
-                RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+                RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
                 _position = count_2_m(params_.motors[params_.motor_inds[_motor]], *p);
             }
             return RETURN_SUCCESS;
@@ -338,7 +337,7 @@ namespace epos2
         if (VCS_SetCurrentMust(key_handle_, params_.motor_ids[_motor], current, &error_code))
         {
             msg = "Motor " + _motor + " commanded to current of " + std::to_string(current) + " mA";
-            RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+            RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
             return RETURN_SUCCESS;
         }
         else
@@ -383,7 +382,7 @@ namespace epos2
             _torque = mNm_2_ma(params_.motors[params_.motor_inds[_motor]], current);
             ;
             msg = "Motor Torque is " + std::to_string(current) + " mNm";
-            RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+            RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
             return RETURN_SUCCESS;
         }
         else
@@ -428,7 +427,7 @@ namespace epos2
         {
             _current = *c;
             msg = "Motor Current is " + std::to_string(_current) + " mA";
-            RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+            RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
             return RETURN_SUCCESS;
         }
         else
@@ -451,7 +450,7 @@ namespace epos2
         if (VCS_HaltVelocityMovement(key_handle_, params_.motor_ids[_motor], &error_code))
         {
             msg = "Motor " + _motor + " halted";
-            RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+            RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
             return RETURN_SUCCESS;
         }
         else
@@ -474,7 +473,7 @@ namespace epos2
         if (VCS_HaltPositionMovement(key_handle_, params_.motor_ids[_motor], &error_code))
         {
             msg = "Motor " + _motor + " halted";
-            RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
+            RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
             return RETURN_SUCCESS;
         }
         else

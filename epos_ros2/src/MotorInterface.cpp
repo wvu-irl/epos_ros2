@@ -126,11 +126,7 @@ epos2::EPOSParams MotorInterface::get_params()
 	this->get_parameter("epos_modules/baud_rate", params.baud_rate);
 
 	// // Logging
-	this->get_parameter("logging/is_on", params.is_on);
-	this->get_parameter("logging/groups", special_params_[special_param_counter]);
-	params.groups = std::vector<int>(special_params_[special_param_counter].as_integer_array().begin(),
-									 special_params_[special_param_counter].as_integer_array().end());
-	++special_param_counter;
+	this->get_parameter("logging/throttle", params.throttle);
 
 	return params;
 }

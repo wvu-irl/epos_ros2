@@ -27,7 +27,7 @@ namespace epos2
         double v = (_velocity * circumference / 60.0) / _motor.gear_ratio;
         std::string msg;
         msg = "Velocity converted from " + std::to_string(_velocity) + " RPM to " + std::to_string(v) + " m/s";
-        RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+        RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
         return v;
     }
 
@@ -44,7 +44,7 @@ namespace epos2
         double v = (_velocity * _motor.gear_ratio * 60.0) / circumference;
         std::string msg;
         msg = "Velocity converted from " + std::to_string(_velocity) + " m/s to " + std::to_string(v) + " RPM";
-        RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+        RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
         return v;
     }
 
@@ -61,7 +61,7 @@ namespace epos2
         double d = (_distance / _motor.counts_per_rev) * _motor.gear_ratio * circumference;
         std::string msg;
         msg = "Distance converted from " + std::to_string(_distance) + " counts to " + std::to_string(d) + " m";
-        RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+        RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
         return d;
     }
 
@@ -78,7 +78,7 @@ namespace epos2
         double d = _distance / (_motor.gear_ratio * circumference) * _motor.counts_per_rev;
         std::string msg;
         msg = "Distance converted from " + std::to_string(_distance) + " m to " + std::to_string(d) + " counts";
-        RCLCPP_INFO(node_ptr_->get_logger(), msg.c_str());
+        RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
         return d;
     }
 
@@ -91,6 +91,7 @@ namespace epos2
         double current = _torque / (_motor.kT * _motor.gear_ratio);
         std::string msg;
         msg = "Torque converted from " + std::to_string(_torque) + " mNm to " + std::to_string(current) + " mA";
+        RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
         return current;
     }
 
@@ -103,6 +104,7 @@ namespace epos2
         double torque = _current * _motor.kT * _motor.gear_ratio;
         std::string msg;
         msg = "Current converted from " + std::to_string(_current) + " mA to " + std::to_string(torque) + " mNm";
+        RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
         return torque;
     }
 }

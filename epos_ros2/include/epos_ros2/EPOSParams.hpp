@@ -107,10 +107,8 @@ namespace epos2
     std::string port_name = "USB0";
 
     // Logging
-    /// If true sets logging to print
-    bool is_on;
-    /// Groups to log, see epos2::loggingGroup
-    std::vector<int> groups;
+    /// throttle time-step (ms)
+    int throttle = 1000;
   };
 
 }
