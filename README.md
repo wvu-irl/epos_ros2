@@ -17,7 +17,8 @@ Link with Read the Docs
 
 Verify Functionality of the Following code (to be done the week of Aug 1):
 
-```EPOSWrapper();
+```
+EPOSWrapper();
 
 EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _params);
 
@@ -27,7 +28,8 @@ EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _params);
 
 **INITIALIZATION**
 
-```int open_devices();
+```
+int open_devices();
 
 int close_devices();
 ```
@@ -35,7 +37,8 @@ int close_devices();
 
 **CONFIGURATION**
 
-```int set_modes(const std::vector<std::string> &_motors,const std::vector<OperationMode> &_modes);
+```
+int set_modes(const std::vector<std::string> &_motors,const std::vector<OperationMode> &_modes);
 
 int set_modes(const std::vector<std::string> &_motors, OperationMode _mode);
 
@@ -63,7 +66,8 @@ int clear_fault(const std::string &_motor);
 
 **OPERATION**
 
-```int go_to_velocities_profile(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm);
+```
+int go_to_velocities_profile(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm);
 
 int go_to_velocities_profile(const std::vector<std::string> &_motors, double _velocity, bool _rpm);
 
@@ -105,7 +109,8 @@ int halt_position(const std::string &_motor);
 
 **ERRORS and LOGGING**
 
-```static std::string get_error(DWORD _error_code);
+```
+static std::string get_error(DWORD _error_code);
 
 std::string get_error_vcs(DWORD _error_code);
 
@@ -117,7 +122,8 @@ std::string get_mode_string(OperationMode _mode);
 
 **UTILS**
 
-```double count_2_m(MaxonMotor &_motor, double _distance);
+```
+double count_2_m(MaxonMotor &_motor, double _distance);
 
 double m_2_count(MaxonMotor &_motor, double _distance);
 
