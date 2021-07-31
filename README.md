@@ -1,4 +1,4 @@
-# epos_ros
+# epos_ros2
 ROS2 interface for the EPOS controllers/Maxon motors
 
 ## Notes
