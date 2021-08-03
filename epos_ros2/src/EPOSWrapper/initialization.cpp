@@ -172,6 +172,12 @@ namespace epos2
     {
         RCLCPP_WARN(node_ptr_->get_logger(), "Closing EPOS Devices/destructing EPOSWrapper");
 
+        bool sentinel = true;
+        while(sentinel)
+        {
+            sentinel = !halt_all_velocity();
+        }
+
         if (!this->close_devices())
             RCLCPP_FATAL(node_ptr_->get_logger(), "Devices failed to close");
     }

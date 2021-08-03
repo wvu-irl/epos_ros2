@@ -9,38 +9,129 @@
 
 #include <epos_ros2/MotorInterface.hpp>
 
-MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name)
-{
-	// PARAM INITILIZATION ------------------------------------------------------------------------
-	declare_params();
-
-	//Publishers
-	motor_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/epos_motor_state", 10);
-
-	//Subscriptions
-	motor_command_subscription_ = this->create_subscription<sensor_msgs::msg::JointState>(
-		"/epos_motor_command", 1, std::bind(&MotorInterface::motor_callback, this, _1));
-
-	// Spin information
-	main_ = this->create_wall_timer(20ms, std::bind(&MotorInterface::main_callback, this));
-	interface_ptr_ = new epos2::EPOSWrapper(this, get_params());
-}
-
+///
+///
+///
 void MotorInterface::motor_callback(const sensor_msgs::msg::JointState::SharedPtr _msg)
 {
 	motor_commands_ = *_msg;
+
+	drive_motors(*_msg);
 }
 
-void MotorInterface::main_callback()
+///
+///
+///
+void MotorInterface::status_callback()
 {
+	sensor_msgs::msg::JointState temp;
 
-	//for each motor based on control input, execute control command
+	for (std::string motor : params_.motor_names)
+	{
+		motor_state_.name.push_back(motor);
 
-	//get state
+		if (position_status)
+		{
+			double position;
+			interface_ptr_->get_position(motor, position);
+			motor_state_.position.push_back(position);
+		}
+		else
+		{
+			motor_state_.position.push_back(-1);
+		}
 
-	//publish state
+		if (velocity_status)
+		{
+			double velocity;
+			interface_ptr_->get_velocity(motor, velocity);
+			motor_state_.velocity.push_back(velocity);
+		}
+		else
+		{
+			motor_state_.velocity.push_back(-1);
+		}
+
+		if (effort_status)
+		{
+			if (effort_as_current)
+			{
+				double current;
+				interface_ptr_->get_current(motor, current);
+				motor_state_.effort.push_back(current);
+			}
+			else
+			{
+				double torque;
+				interface_ptr_->get_torque(motor, torque);
+				motor_state_.effort.push_back(torque);
+			}
+		}
+		else
+		{
+			motor_state_.effort.push_back(-1);
+		}
+	}
+
+	motor_state_ = temp;
+	motor_state_publisher_->publish(motor_state_);
 }
 
+///
+///
+///
+void MotorInterface::fault_callback()
+{
+	sensor_msgs::msg::JointState temp;
+
+	interface_ptr_->clear_faults(params_.motor_names);
+
+	drive_motors(motor_commands_);
+}
+
+///
+///
+///
+void MotorInterface::drive_motors(sensor_msgs::msg::JointState &_msg)
+{
+	sensor_msgs::msg::JointState temp;
+
+	for (int i = 0; i < _msg.name.size(); ++i)
+	{
+		temp.name[0] = _msg.name[0];
+		temp.position[0] = _msg.position[0];
+		temp.velocity[0] = _msg.velocity[0];
+		temp.effort[0] = _msg.effort[0];
+		drive_motor(temp);
+	}
+}
+
+///
+///
+///
+void MotorInterface::drive_motor(sensor_msgs::msg::JointState &_msg)
+{
+	if (_msg.position[0] != -1)
+	{
+		interface_ptr_->go_to_position_profile(_msg.name[0], _msg.position[0]);
+	}
+	else if (_msg.velocity[0] != -1)
+	{
+		interface_ptr_->go_to_velocity_profile(_msg.name[0], _msg.velocity[0]);
+	}
+	else if (_msg.effort[0] != -1)
+	{
+		interface_ptr_->go_to_torque(_msg.name[0], _msg.effort[0]);
+	}
+	else
+	{
+		RCLCPP_WARN(this->get_logger(), "No motor drive command");
+	}
+}
+
+///
+///
+///
 void MotorInterface::declare_params()
 {
 	// DECLARE PARAMS --------------------------------------------------
@@ -83,9 +174,8 @@ epos2::EPOSParams MotorInterface::get_params()
 	int special_param_counter = 0;
 
 	// Motors
-	std::vector<std::string> motors;
 	this->get_parameter("motors/names", special_params_[special_param_counter]);
-	motors = special_params_[special_param_counter].as_string_array();
+	params.motor_names = special_params_[special_param_counter].as_string_array();
 	++special_param_counter;
 
 	std::vector<int> ids;
@@ -96,8 +186,8 @@ epos2::EPOSParams MotorInterface::get_params()
 
 	for (std::vector<int>::size_type i = 0; i < ids.size(); ++i)
 	{
-		params.motor_ids.insert(std::make_pair(motors[i], ids[i]));
-		params.motor_inds.insert(std::make_pair(motors[i], i));
+		params.motor_ids.insert(std::make_pair(params.motor_names[i], ids[i]));
+		params.motor_inds.insert(std::make_pair(params.motor_names[i], i));
 	}
 
 	// Maxon Motors
@@ -129,4 +219,49 @@ epos2::EPOSParams MotorInterface::get_params()
 	this->get_parameter("logging/throttle", params.throttle);
 
 	return params;
+}
+
+///
+///
+///
+MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name)
+{
+	// PARAM INITILIZATION ------------------------------------------------------------------------
+	declare_params();
+
+	//Publishers
+	motor_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/epos_motor_state", 10);
+
+	//Subscriptions
+	motor_command_subscription_ = this->create_subscription<sensor_msgs::msg::JointState>(
+		"/epos_motor_command", 1, std::bind(&MotorInterface::motor_callback, this, _1));
+
+	// Spin information
+	int rate1, rate2;
+	this->declare_parameter("status_timer", 1000);
+	this->get_parameter("status_timer", rate1);
+	this->declare_parameter("fault_time", 1000);
+	this->get_parameter("fault_time", rate2);
+	status_timer_ = this->create_wall_timer(std::chrono::milliseconds(rate1), std::bind(&MotorInterface::status_callback, this));
+	fault_timer_ = this->create_wall_timer(std::chrono::milliseconds(rate2), std::bind(&MotorInterface::fault_callback, this));
+
+	this->declare_parameter("position_status", false);
+	this->get_parameter("position_status", position_status);
+	this->declare_parameter("velocity_status", false);
+	this->get_parameter("velocity_status", velocity_status);
+	this->declare_parameter("effort_status", false);
+	this->get_parameter("effort_status", effort_status);
+	this->declare_parameter("effort_as_current", false);
+	this->get_parameter("effort_as_current", effort_as_current);
+
+	params_ = get_params();
+	interface_ptr_ = new epos2::EPOSWrapper(this, params_);
+}
+
+///
+///
+///
+MotorInterface::~MotorInterface()
+{
+	interface_ptr_->~EPOSWrapper();
 }

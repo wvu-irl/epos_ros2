@@ -25,3 +25,9 @@ epos_module:
   baud_rate: 1000000
 logging:
   throttle: 1000
+status_timer: 1000
+handling_timer: 1000
+position_status: true
+velocity_status: true
+effort_status: true
+effort_as_current: false

@@ -87,6 +87,8 @@ namespace epos2
   struct EPOSParams
   {
     // Motors
+    /// List of all motor names
+    std::vector<std::string> motor_names;
     /// Assume joints are defined semantically, this defines mapping to ids
     std::map<std::string, int> motor_ids;
     /// Defines mapping from motor id to index in list

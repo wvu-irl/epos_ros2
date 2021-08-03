@@ -27,7 +27,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocities_profile(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm = true)
+    int EPOSWrapper::go_to_velocities_profile(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITIES PROFILE");
 
@@ -42,7 +42,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocities_profile(const std::vector<std::string> &_motors, double _velocity, bool _rpm = true)
+    int EPOSWrapper::go_to_velocities_profile(const std::vector<std::string> &_motors, double _velocity, bool _rpm)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITIES PROFILE");
 
@@ -57,7 +57,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_velocity_profile(const std::string &_motor, double _velocity, bool _rpm = true)
+    int EPOSWrapper::go_to_velocity_profile(const std::string &_motor, double _velocity, bool _rpm)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO VELOCITY PROFILE");
 
@@ -105,7 +105,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_velocities(const std::vector<std::string> &_motors, std::vector<double> &_velocities, bool _rpm = true)
+    int EPOSWrapper::get_velocities(const std::vector<std::string> &_motors, std::vector<double> &_velocities, bool _rpm)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GET VELOCITIES");
 
@@ -124,7 +124,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_velocity(const std::string &_motor, double &_velocity, bool _rpm = true)
+    int EPOSWrapper::get_velocity(const std::string &_motor, double &_velocity, bool _rpm)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GET VELOCITY");
 
@@ -159,13 +159,13 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions_profile(const std::vector<std::string> &_motors, const std::vector<double> &_positions, bool _count = true, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_positions_profile(const std::vector<std::string> &_motors, const std::vector<double> &_positions, bool _counts, bool _absolute, bool _immediate)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITIONS PROFILE");
 
         for (std::vector<std::string>::size_type i = 0; i < _motors.size(); ++i)
         {
-            if (!this->go_to_position_profile(_motors[i], _positions[i], _count, _absolute, _immediate))
+            if (!this->go_to_position_profile(_motors[i], _positions[i], _counts, _absolute, _immediate))
                 return RETURN_FAILED;
         }
         return RETURN_SUCCESS;
@@ -174,13 +174,13 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_positions_profile(const std::vector<std::string> &_motors, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_positions_profile(const std::vector<std::string> &_motors, double _position, bool _counts, bool _absolute, bool _immediate)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITIONS PROFILE");
 
         for (auto &motor : _motors)
         {
-            if (!this->go_to_position_profile(motor, _position, _count, _absolute, _immediate))
+            if (!this->go_to_position_profile(motor, _position, _counts, _absolute, _immediate))
                 return RETURN_FAILED;
         }
         return RETURN_SUCCESS;
@@ -189,7 +189,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::go_to_position_profile(const std::string &_motor, double _position, bool _count = true, bool _absolute = true, bool _immediate = true)
+    int EPOSWrapper::go_to_position_profile(const std::string &_motor, double _position, bool _count, bool _absolute, bool _immediate)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GO TO POSITION PROFILE");
 
@@ -237,7 +237,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_positions(const std::vector<std::string> &_motors, std::vector<double> &_positions, bool _count = true)
+    int EPOSWrapper::get_positions(const std::vector<std::string> &_motors, std::vector<double> &_positions, bool _counts)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GET POSITIONS");
 
@@ -246,7 +246,7 @@ namespace epos2
 
         for (auto &motor : _motors)
         {
-            if (!this->get_position(motor, temp, _count))
+            if (!this->get_position(motor, temp, _counts))
                 return RETURN_FAILED;
             _positions.push_back(temp);
         }
@@ -256,7 +256,7 @@ namespace epos2
     ///
     ///
     ///
-    int EPOSWrapper::get_position(const std::string &_motor, double &_position, bool _count = true)
+    int EPOSWrapper::get_position(const std::string &_motor, double &_position, bool _counts)
     {
         RCLCPP_DEBUG(node_ptr_->get_logger(), "GET POSITION");
 
@@ -267,11 +267,12 @@ namespace epos2
         if (VCS_GetPositionIs(key_handle_, params_.motor_ids[_motor], p, &error_code))
         {
             // convert position if need be
-            if (_count)
+            if (_counts)
             {
                 _position = *p;
                 msg = "Motor " + _motor + " position is " + std::to_string(_position) + " counts";
-                RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());            }
+                RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
+            }
             else
             {
                 msg = "Motor " + _motor;
@@ -457,6 +458,20 @@ namespace epos2
         {
             RCLCPP_WARN(node_ptr_->get_logger(), this->get_error(error_code).c_str());
             return RETURN_FAILED;
+        }
+    }
+
+    ///
+    ///
+    ///
+    int EPOSWrapper::halt_all_velocity()
+    {
+        RCLCPP_DEBUG(node_ptr_->get_logger(), "HALT VELOCITY ALL");
+
+        for (auto &motor : params_.motor_names)
+        {
+            if (!halt_velocity(motor))
+                return RETURN_FAILED;
         }
     }
 
