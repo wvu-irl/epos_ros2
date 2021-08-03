@@ -163,6 +163,8 @@ namespace epos2
             RCLCPP_FATAL(node_ptr_->get_logger(), "Devices failed to open");
             assertm(true, "Killing EPOSWrapper");
         }
+
+        // Enable motors here 
     }
 
     ///
