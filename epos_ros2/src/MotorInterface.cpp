@@ -25,10 +25,11 @@ void MotorInterface::motor_callback(const sensor_msgs::msg::JointState::SharedPt
 void MotorInterface::status_callback()
 {
 	sensor_msgs::msg::JointState temp;
-
+	RCLCPP_WARN(this->get_logger(), params_.motor_names.size());
 	for (std::string motor : params_.motor_names)
 	{
 		motor_state_.name.push_back(motor);
+		RCLCPP_WARN(this->get_logger(), motor.c_str());
 
 		if (position_status)
 		{
@@ -136,23 +137,23 @@ void MotorInterface::declare_params()
 {
 	// DECLARE PARAMS --------------------------------------------------
 
-	this->declare_parameter("motors/names");
-	rclcpp::Parameter motor_names_param("motor/names", std::vector<std::string>{"none"});
-	special_params_.push_back(motor_names_param);
+	this->declare_parameter("motors/names",std::vector<std::string>());
+	//motor_names_param_ =rclcpp::Parameter("motors/names", std::vector<std::string>{"none"});
+	//special_params_.push_back(motor_names_param);
 
-	this->declare_parameter("motors/ids");
-	rclcpp::Parameter motor_ids_param("motor/ids", std::vector<int>{0});
-	special_params_.push_back(motor_ids_param);
+	this->declare_parameter("motors/ids", std::vector<int64_t>());
+	//rclcpp::Parameter motor_ids_param("motor/ids", std::vector<int>{0});
+	//special_params_.push_back(motor_ids_param);
 
-	this->declare_parameter("motors/gear_ratio", 1);
-	this->declare_parameter("motors/counts_per_rev", 1.0);
-	this->declare_parameter("motors/wheel_radius/cm", 1.0);
-	this->declare_parameter("motors/kT", 1.0);
-	this->declare_parameter("motors/user_limits/ang_vel_rpm", 1.0);
-	this->declare_parameter("motors/user_limits/acc_rpm", 1.0);
-	this->declare_parameter("motors/absolute_limits/curr_stall_a", 1.0);
-	this->declare_parameter("motors/user_limits/curr_inst_a", 1.0);
-	this->declare_parameter("motors/user_limits/curr_cont_a", 1.0);
+	this->declare_parameter("motor_params/gear_ratio", 1.0);
+	this->declare_parameter("motor_params/counts_per_rev", 1);
+	this->declare_parameter("motor_params/wheel_radius/cm", 1.0);
+	this->declare_parameter("motor_params/kT", 1.0);
+	this->declare_parameter("motor_params/user_limits/ang_vel_rpm", 1.0);
+	this->declare_parameter("motor_params/user_limits/acc_rpm", 1.0);
+	this->declare_parameter("motor_params/absolute_limits/curr_stall_a", 1.0);
+	this->declare_parameter("motor_params/user_limits/curr_inst_a", 1.0);
+	this->declare_parameter("motor_params/user_limits/curr_cont_a", 1.0);
 
 	// EPOS Modules
 	this->declare_parameter("epos_modules/device", "EPOS4");
@@ -174,15 +175,15 @@ epos2::EPOSParams MotorInterface::get_params()
 	int special_param_counter = 0;
 
 	// Motors
-	this->get_parameter("motors/names", special_params_[special_param_counter]);
-	params.motor_names = special_params_[special_param_counter].as_string_array();
-	++special_param_counter;
+	motor_names_param_ = this->get_parameter("motors/names");
+	params.motor_names = motor_names_param_.as_string_array();
+	//++special_param_counter;
 
 	std::vector<int> ids;
-	this->get_parameter("motors/ids", special_params_[special_param_counter]);
-	ids = std::vector<int>(special_params_[special_param_counter].as_integer_array().begin(),
-						   special_params_[special_param_counter].as_integer_array().end());
-	++special_param_counter;
+	rclcpp::Parameter motor_ids_param = this->get_parameter("motors/ids");
+	ids = std::vector<int>(motor_ids_param.as_integer_array().begin(),
+						   motor_ids_param.as_integer_array().end());
+	//++special_param_counter;
 
 	for (std::vector<int>::size_type i = 0; i < ids.size(); ++i)
 	{
@@ -195,15 +196,15 @@ epos2::EPOSParams MotorInterface::get_params()
 	for (std::vector<int>::size_type i = 0; i < ids.size(); ++i)
 	{
 		temp_motor.index = ids[i];
-		this->get_parameter("motors/gear_ratio", temp_motor.gear_ratio);
-		this->get_parameter("motors/counts_per_rev", temp_motor.counts_per_rev);
-		this->get_parameter("motors/wheel_radius/cm", temp_motor.wheel_radius);
-		this->get_parameter("motors/kT", temp_motor.kT);
-		this->get_parameter("motors/user_limits/ang_vel_rpm", temp_motor.ang_vel_limit);
-		this->get_parameter("motors/user_limits/acc_rpm", temp_motor.acc_limit);
-		this->get_parameter("motors/absolute_limits/curr_stall_a", temp_motor.stall_current);
-		this->get_parameter("motors/user_limits/curr_inst_a", temp_motor.instantaneous_current_limit);
-		this->get_parameter("motors/user_limits/curr_cont_a", temp_motor.continuous_current_limit);
+		this->get_parameter("motor_params/gear_ratio", temp_motor.gear_ratio);
+		this->get_parameter("motor_params/counts_per_rev", temp_motor.counts_per_rev);
+		this->get_parameter("motor_params/wheel_radius/cm", temp_motor.wheel_radius);
+		this->get_parameter("motor_params/kT", temp_motor.kT);
+		this->get_parameter("motor_params/user_limits/ang_vel_rpm", temp_motor.ang_vel_limit);
+		this->get_parameter("motor_params/user_limits/acc_rpm", temp_motor.acc_limit);
+		this->get_parameter("motor_params/absolute_limits/curr_stall_a", temp_motor.stall_current);
+		this->get_parameter("motor_params/user_limits/curr_inst_a", temp_motor.instantaneous_current_limit);
+		this->get_parameter("motor_params/user_limits/curr_cont_a", temp_motor.continuous_current_limit);
 
 		params.motors.push_back(temp_motor);
 	}
@@ -224,10 +225,11 @@ epos2::EPOSParams MotorInterface::get_params()
 ///
 ///
 ///
-MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name)
+MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name, "ftr")
 {
 	// PARAM INITILIZATION ------------------------------------------------------------------------
 	declare_params();
+	params_ = get_params();
 
 	//Publishers
 	motor_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/epos_motor_state", 10);
@@ -254,7 +256,6 @@ MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name)
 	this->declare_parameter("effort_as_current", false);
 	this->get_parameter("effort_as_current", effort_as_current);
 
-	params_ = get_params();
 	interface_ptr_ = new epos2::EPOSWrapper(this, params_);
 }
 

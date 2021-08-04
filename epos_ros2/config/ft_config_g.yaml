@@ -1,9 +1,11 @@
+/**:
+  ros__parameters:
+    motors:
+      names: ['fr_drive', 'fr_ankle', 'fl_drive', 'fl_ankle', 'bl_ankle', 'bl_drive', 'br_drive', 'br_ankle']
+      ids: [1,2,4,5,8,9,16,31]
 /ftr:
   epos_interface_node:
       ros__parameters:
-        motors:
-          names: ['fr_drive', 'fr_ankle', 'fl_drive', 'fl_ankle', 'bl_ankle', 'bl_drive', 'br_drive', 'br_ankle']
-          ids: [1,2,4,5,8,9,16,31]
         motor_params:
           gear_ratio: 126.0
           counts_per_rev: 128
@@ -31,7 +33,7 @@
           throttle: 1000
         status_timer: 1000
         handling_timer: 1000
-        position_status: true
+        position_status: false
         velocity_status: false
         effort_status: false
         effort_as_current: false

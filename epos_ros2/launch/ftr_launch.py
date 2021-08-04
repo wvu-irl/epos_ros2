@@ -12,14 +12,15 @@ def generate_launch_description():
         'ft_config.yaml'
     )
 
-    motor_interface_node = Node(
+    epos_interface_node = Node(
         namespace='/ftr',
         package='epos_ros2',
         executable='epos_interface_node',
         name='epos_interface_node',
-        parameters=[epos2_params]
+        parameters=[epos2_params]#,
+#        prefix=['xterm -e gdb -ex run --args']
     )
 
-    ld.add_action(motor_interface_node)
+    ld.add_action(epos_interface_node)
 
     return ld

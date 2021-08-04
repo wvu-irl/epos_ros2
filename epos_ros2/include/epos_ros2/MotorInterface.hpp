@@ -46,6 +46,7 @@ private:
 	void drive_motor(sensor_msgs::msg::JointState &_msg);
 
 	std::vector<rclcpp::Parameter> special_params_;
+	rclcpp::Parameter motor_names_param_;
 	void declare_params();
 	epos2::EPOSParams get_params();
 };
