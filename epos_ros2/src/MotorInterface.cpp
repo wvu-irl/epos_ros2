@@ -25,7 +25,7 @@ void MotorInterface::motor_callback(const sensor_msgs::msg::JointState::SharedPt
 void MotorInterface::status_callback()
 {
 	sensor_msgs::msg::JointState temp;
-	RCLCPP_WARN(this->get_logger(), params_.motor_names.size());
+	RCLCPP_WARN(this->get_logger(), std::to_string(params_.motor_names.size()).c_str());
 	for (std::string motor : params_.motor_names)
 	{
 		motor_state_.name.push_back(motor);
@@ -137,11 +137,11 @@ void MotorInterface::declare_params()
 {
 	// DECLARE PARAMS --------------------------------------------------
 
-	this->declare_parameter("motors/names",std::vector<std::string>());
-	//motor_names_param_ =rclcpp::Parameter("motors/names", std::vector<std::string>{"none"});
+	this->declare_parameter("motor_names",std::vector<std::string>());
+	//motor_names_param_ =rclcpp::Parameter("motor_names", std::vector<std::string>{"none"});
 	//special_params_.push_back(motor_names_param);
 
-	this->declare_parameter("motors/ids", std::vector<int64_t>());
+	this->declare_parameter("motor_ids", std::vector<int64_t>());
 	//rclcpp::Parameter motor_ids_param("motor/ids", std::vector<int>{0});
 	//special_params_.push_back(motor_ids_param);
 
@@ -156,17 +156,15 @@ void MotorInterface::declare_params()
 	this->declare_parameter("motor_params/user_limits/curr_cont_a", 1.0);
 
 	// EPOS Modules
-	this->declare_parameter("epos_modules/device", "EPOS4");
-	this->declare_parameter("epos_modules/protocol", "MAXON SERIAL V2");
-	this->declare_parameter("epos_modules/com_interface", "USB");
-	this->declare_parameter("epos_modules/port", "USB0");
-	this->declare_parameter("epos_modules/baud_rate", 1000000);
+	
+	this->declare_parameter("epos_module/protocol", "MAXON SERIAL V2");
+	this->declare_parameter("epos_module/com_interface", "USB");
+	this->declare_parameter("epos_module/port", "USB0");
+	this->declare_parameter("epos_module/baud_rate", 1000000);
 
 	// // Logging
-	this->declare_parameter("logging/is_on", false);
-	this->declare_parameter("logging/groups");
-	rclcpp::Parameter log_groups_param("logging/groups", std::vector<int>{0});
-	special_params_.push_back(log_groups_param);
+	this->declare_parameter("logging/throttle", 1000);
+	
 }
 
 epos2::EPOSParams MotorInterface::get_params()
@@ -175,12 +173,12 @@ epos2::EPOSParams MotorInterface::get_params()
 	int special_param_counter = 0;
 
 	// Motors
-	motor_names_param_ = this->get_parameter("motors/names");
+	this->get_parameter("motor_names", motor_names_param_);
 	params.motor_names = motor_names_param_.as_string_array();
 	//++special_param_counter;
 
 	std::vector<int> ids;
-	rclcpp::Parameter motor_ids_param = this->get_parameter("motors/ids");
+	rclcpp::Parameter motor_ids_param = this->get_parameter("motor_ids");
 	ids = std::vector<int>(motor_ids_param.as_integer_array().begin(),
 						   motor_ids_param.as_integer_array().end());
 	//++special_param_counter;
@@ -210,11 +208,10 @@ epos2::EPOSParams MotorInterface::get_params()
 	}
 
 	// EPOS Modules
-	this->get_parameter("epos_modules/device", params.device_name);
-	this->get_parameter("epos_modules/protocol", params.protocol_stack_name);
-	this->get_parameter("epos_modules/com_interface", params.interface_name);
-	this->get_parameter("epos_modules/port", params.port_name);
-	this->get_parameter("epos_modules/baud_rate", params.baud_rate);
+	this->get_parameter("epos_module/protocol", params.protocol_stack_name);
+	this->get_parameter("epos_module/com_interface", params.interface_name);
+	this->get_parameter("epos_module/port", params.port_name);
+	this->get_parameter("epos_module/baud_rate", params.baud_rate);
 
 	// // Logging
 	this->get_parameter("logging/throttle", params.throttle);
@@ -240,8 +237,8 @@ MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name, "ftr")
 
 	// Spin information
 	int rate1, rate2;
-	this->declare_parameter("status_timer", 1000);
-	this->get_parameter("status_timer", rate1);
+	this->declare_parameter("/scope/status_timer", 1000);
+	this->get_parameter("/scope/status_timer", rate1);
 	this->declare_parameter("fault_time", 1000);
 	this->get_parameter("fault_time", rate2);
 	status_timer_ = this->create_wall_timer(std::chrono::milliseconds(rate1), std::bind(&MotorInterface::status_callback, this));
@@ -256,7 +253,13 @@ MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name, "ftr")
 	this->declare_parameter("effort_as_current", false);
 	this->get_parameter("effort_as_current", effort_as_current);
 
+	this->declare_parameter("epos_module/device", "EPOS3");
+	this->get_parameter("epos_module/device", params_.device_name);
+
 	interface_ptr_ = new epos2::EPOSWrapper(this, params_);
+
+	
+
 }
 
 ///
