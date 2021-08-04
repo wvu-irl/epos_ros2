@@ -1,33 +1,37 @@
-motors:
-  names: ["fr_drive", "fr_ankle", "fl_drive", "fl_ankle", "bl_ankle", "bl_drive", "br_drive", "br_ankle"]
-  ids: [1,2,4,5,8,9,16,31]
-  gear_ratio: 126.0
-  counts_per_rev: 128.0
-  wheel_radius:
-    in: 11.8
-    cm: 30.0
-  absolute_limits:
-    ang_vel_rpm: 8000.0
-    acc_rpm: 100.0
-    curr_stall_a: 46.3
-    curr_inst_a: 15.0
-  user_limit:
-    ang_vel_rpm: 3000.0
-    acc_rpm: 10.0
-    curr_inst_a: 15.0
-    curr_cont_a: 2.0
-  kT: 31.5
-epos_module:
-  device: "EPOS4"
-  protocol: "MAXON SERIAL V2"
-  com_interface: "USB"
-  port: "USB0" 
-  baud_rate: 1000000
-logging:
-  throttle: 1000
-status_timer: 1000
-handling_timer: 1000
-position_status: true
-velocity_status: true
-effort_status: true
-effort_as_current: false
+/**:
+  motors:
+    names: ['fr_drive', 'fr_ankle', 'fl_drive', 'fl_ankle', 'bl_ankle', 'bl_drive', 'br_drive', 'br_ankle']
+    ids: [1,2,4,5,8,9,16,31]
+/ftr:
+  epos_interface_node:
+    motor_params:
+      gear_ratio: 126.0
+      counts_per_rev: 128.0
+      wheel_radius:
+        in: 11.8
+        cm: 30.0
+      absolute_limits:
+        ang_vel_rpm: 8000.0
+        acc_rpm: 100.0
+        curr_stall_a: 46.3
+        curr_inst_a: 15.0
+      user_limit:
+        ang_vel_rpm: 3000.0
+        acc_rpm: 10.0
+        curr_inst_a: 15.0
+        curr_cont_a: 2.0
+      kT: 31.5
+    epos_module:
+      device: 'EPOS4'
+      protocol: 'MAXON SERIAL V2'
+      com_interface: 'USB'
+      port: 'USB0' 
+      baud_rate: 1000000
+    logging:
+      throttle: 1000
+    status_timer: 1000
+    handling_timer: 1000
+    position_status: true
+    velocity_status: true
+    effort_status: true
+    effort_as_current: false

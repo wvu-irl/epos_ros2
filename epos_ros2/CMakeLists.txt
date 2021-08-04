@@ -98,6 +98,14 @@ ament_target_dependencies(epos_interface_node
 #   rclcpp 
 # )
 
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
+  install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
+
 install (TARGETS
   epos_interface_node
   DESTINATION lib/${PROJECT_NAME}
