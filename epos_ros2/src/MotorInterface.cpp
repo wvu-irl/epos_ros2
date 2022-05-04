@@ -253,7 +253,7 @@ MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name, "ftr")
 	this->declare_parameter("effort_as_current", false);
 	this->get_parameter("effort_as_current", effort_as_current);
 
-	this->declare_parameter("epos_module/device", "EPOS3");
+	this->declare_parameter("epos_module/device", "EPOS4");
 	this->get_parameter("epos_module/device", params_.device_name);
 
 	interface_ptr_ = new epos2::EPOSWrapper(this, params_);
