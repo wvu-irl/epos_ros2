@@ -1,7 +1,7 @@
 /**:
   ros__parameters:
-    motor_names: ['fr_drive', 'fr_ankle', 'fl_drive', 'fl_ankle', 'bl_ankle', 'bl_drive', 'br_drive', 'br_ankle']
-    motor_ids: [1,2,4,5,8,9,16,31]
+    motor_names: ['bl_ankle', 'bl_drive', 'br_drive', 'br_ankle', 'fr_drive', 'fr_ankle', 'fl_drive', 'fl_ankle']
+    motor_ids: [1,2,4,5,8,16,30,31]
 /ftr:
   epos_interface_node:
       ros__parameters:
