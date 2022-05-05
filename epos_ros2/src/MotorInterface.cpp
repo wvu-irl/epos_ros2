@@ -161,6 +161,7 @@ void MotorInterface::declare_params()
 	this->declare_parameter("epos_module/com_interface", "USB");
 	this->declare_parameter("epos_module/port", "USB0");
 	this->declare_parameter("epos_module/baud_rate", 1000000);
+	this->declare_parameter("motor_close_timeout", 30.0);
 
 	// // Logging
 	this->declare_parameter("logging/throttle", 1000);
@@ -212,6 +213,7 @@ epos2::EPOSParams MotorInterface::get_params()
 	this->get_parameter("epos_module/com_interface", params.interface_name);
 	this->get_parameter("epos_module/port", params.port_name);
 	this->get_parameter("epos_module/baud_rate", params.baud_rate);
+	this->get_parameter("motor_close_timeout", params.motor_close_timeout);
 
 	// // Logging
 	this->get_parameter("logging/throttle", params.throttle);

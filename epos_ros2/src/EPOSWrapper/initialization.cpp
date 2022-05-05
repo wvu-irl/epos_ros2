@@ -173,11 +173,17 @@ namespace epos2
     EPOSWrapper::~EPOSWrapper()
     {
         RCLCPP_WARN(node_ptr_->get_logger(), "Closing EPOS Devices/destructing EPOSWrapper");
+        
+        rclcpp::Time t = this->clock_.now();
 
         bool sentinel = true;
         while(sentinel)
         {
             sentinel = !halt_all_velocity();
+            if ( (this->clock_.now() - t).seconds() > (this->params_.motor_close_timeout * 1e3) )
+            {
+                sentinel = false;
+            }
         }
 
         if (!this->close_devices())
