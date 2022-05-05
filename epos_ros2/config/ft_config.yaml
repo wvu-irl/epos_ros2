@@ -36,4 +36,4 @@
         velocity_status: false
         effort_status: false
         effort_as_current: false
-        motor_close_timeout: 30
+        motor_close_timeout: 30.0

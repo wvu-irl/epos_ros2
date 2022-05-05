@@ -45,8 +45,12 @@ namespace epos2
 
         //Opens device
         key_handle_ = VCS_OpenDevice(device_name, protocol_stack_name, interface_name, port_name, &error_code);
-        //msg = "Key handle: " + (int)key_handle_;
-        //log_msg(msg, LOG_DEBUG, GROUP_PROGRESS);
+
+        // std::cout << "Keyhandle " << key_handle_ << " | " << error_code << std::endl;
+        // msg = "Device: " + params_.device_name + " | Protocol Stack: " + params_.protocol_stack_name +
+        //       " | Interface: " + params_.interface_name + " | Port: " + params_.port_name;
+        // RCLCPP_WARN(node_ptr_->get_logger(), msg.c_str());
+
 
         if (error_code != 0)
             RCLCPP_ERROR(node_ptr_->get_logger(), this->get_error(error_code).c_str());
@@ -175,19 +179,29 @@ namespace epos2
         RCLCPP_WARN(node_ptr_->get_logger(), "Closing EPOS Devices/destructing EPOSWrapper");
         
         rclcpp::Time t = this->clock_.now();
+        std::string msg;
+        double dt = 0;
 
         bool sentinel = true;
         while(sentinel)
-        {
+        {   
+            
             sentinel = !halt_all_velocity();
-            if ( (this->clock_.now() - t).seconds() > (this->params_.motor_close_timeout * 1e3) )
+
+            dt = (this->clock_.now() - t).seconds();
+            if ( dt > (this->params_.motor_close_timeout * 1e3) )
             {
                 sentinel = false;
+                RCLCPP_WARN(node_ptr_->get_logger(), "Too much time elapsed, device closed timeout");
             }
+            msg = "Time elapsed " + std::to_string(dt);
+            RCLCPP_WARN(node_ptr_->get_logger(), msg.c_str());
         }
 
         if (!this->close_devices())
+        {
             RCLCPP_FATAL(node_ptr_->get_logger(), "Devices failed to close");
+        }
     }
 
 }
