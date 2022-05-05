@@ -16,7 +16,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # EPOS Package from Maxon
-set(EPOS_CMD_LIB_VER "6.6.1.0")
+set(EPOS_CMD_LIB_VER "6.7.1.0")
 
 #find_package(ament_cmake REQUIRED COMPONENTS
 

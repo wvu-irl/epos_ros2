@@ -3,7 +3,7 @@
 cd ~/
 mkdir epos_temp
 cd epos_temp
-wget https://www.maxongroup.com/medias/sys_master/root/8837358518302/EPOS-Linux-Library-En.zip
+wget https://www.maxongroup.us/medias/sys_master/root/8884354678814/EPOS-Linux-Library-En.zip
 unzip EPOS-Linux-Library-En.zip
 cd EPOS_Linux_Library
 chmod +x install.sh
