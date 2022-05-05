@@ -87,6 +87,8 @@ namespace epos2
   struct EPOSParams
   {
     // Motors
+    /// List of all motor names
+    std::vector<std::string> motor_names;
     /// Assume joints are defined semantically, this defines mapping to ids
     std::map<std::string, int> motor_ids;
     /// Defines mapping from motor id to index in list
@@ -105,6 +107,8 @@ namespace epos2
     std::string interface_name = "USB";
     /// Port of interface
     std::string port_name = "USB0";
+    /// Time limit to try closing motors
+    double motor_close_timeout = 30.0;
 
     // Logging
     /// throttle time-step (ms)

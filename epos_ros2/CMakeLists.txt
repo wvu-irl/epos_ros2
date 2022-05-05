@@ -12,11 +12,11 @@ if(NOT CMAKE_CXX_STANDARD)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
+  add_compile_options(-Wall -Wextra -Wpedantic -g)
 endif()
 
 # EPOS Package from Maxon
-set(EPOS_CMD_LIB_VER "6.6.1.0")
+set(EPOS_CMD_LIB_VER "6.7.1.0")
 
 #find_package(ament_cmake REQUIRED COMPONENTS
 
@@ -84,7 +84,7 @@ target_link_libraries(epos_interface_node
   #ftd2xx
   ${rclcpp_LIBRARIES}
 )
-#add_dependencies(epos_interface_node ${PROJECT_NAME})
+# add_dependencies(epos_interface_node ${PROJECT_NAME}/src/epos_interface_node.cpp)
 ament_target_dependencies(epos_interface_node 
   rclcpp 
 )
@@ -98,20 +98,18 @@ ament_target_dependencies(epos_interface_node
 #   rclcpp 
 # )
 
-#add_dependencies(epos_fsm_node epos_ros_generate_messages_cpp)
-#target_link_libraries(epos_fsm_node
-#  ${catkin_LIBRARIES}
-  #epos_cmd
-#)
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
+  install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
 
 install (TARGETS
   epos_interface_node
   DESTINATION lib/${PROJECT_NAME}
 )
-# install (TARGETS
-#   epos_parameters
-#   DESTINATION lib/${PROJECT_NAME}
-# )
 
 ament_export_dependencies(rosidl_default_runtime)
 

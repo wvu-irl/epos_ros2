@@ -238,7 +238,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocities_profile(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm);
+        int go_to_velocities_profile(const std::vector<std::string> &_motors, const std::vector<double> &_velocities, bool _rpm = true);
 
         /**
     	 * 
@@ -248,7 +248,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocities_profile(const std::vector<std::string> &_motors, double _velocity, bool _rpm);
+        int go_to_velocities_profile(const std::vector<std::string> &_motors, double _velocity, bool _rpm = true);
 
         /**
     	 * 
@@ -258,7 +258,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_velocity_profile(const std::string &_motor, double _velocity, bool _rpm);
+        int go_to_velocity_profile(const std::string &_motor, double _velocity, bool _rpm = true);
 
         /**
     	 * 
@@ -268,7 +268,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_velocities(const std::vector<std::string> &_motors, std::vector<double> &_velocities, bool _rpm);
+        int get_velocities(const std::vector<std::string> &_motors, std::vector<double> &_velocities, bool _rpm = true);
 
         /**
     	 * 
@@ -278,7 +278,7 @@ namespace epos2
          * @param _rpm if true, units are in RPM else m/s (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_velocity(const std::string &_motor, double &_velocity, bool _rpm);
+        int get_velocity(const std::string &_motor, double &_velocity, bool _rpm = true);
 
         /**
     	 * 
@@ -290,7 +290,7 @@ namespace epos2
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions_profile(const std::vector<std::string> &_motors, const std::vector<double> &_positions, bool _counts, bool _absolute, bool _immediate);
+        int go_to_positions_profile(const std::vector<std::string> &_motors, const std::vector<double> &_positions, bool _count = true, bool _absolute = true, bool _immediate = true);
 
         /**
     	 * 
@@ -302,7 +302,7 @@ namespace epos2
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_positions_profile(const std::vector<std::string> &_motors, double _position, bool _counts, bool _absolute, bool _immediate);
+        int go_to_positions_profile(const std::vector<std::string> &_motors, double _position, bool _count = true, bool _absolute = true, bool _immediate = true);
 
         /**
     	 * 
@@ -314,7 +314,7 @@ namespace epos2
          * @param _immediate if true starts command immediately, else waits until last position command met (default: true)
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int go_to_position_profile(const std::string &_motor, double _position, bool _counts, bool _absolute, bool _immediate);
+        int go_to_position_profile(const std::string &_motor, double _position, bool _count = true, bool _absolute = true, bool _immediate = true);
 
         /**
     	 * 
@@ -324,7 +324,7 @@ namespace epos2
          * @param _counts if true, units are in encoder counts else m (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_positions(const std::vector<std::string> &_motors, std::vector<double> &_positions, bool _counts);
+        int get_positions(const std::vector<std::string> &_motors, std::vector<double> &_positions, bool _counts  = true);
 
         /**
     	 * 
@@ -334,7 +334,7 @@ namespace epos2
          * @param _counts if true, units are in encoder counts else m (default: true) note, double gets casted to long
     	 * @return Success(1)/Failure(0) of command
    		*/
-        int get_position(const std::string &_motor, double &_position, bool _counts);
+        int get_position(const std::string &_motor, double &_position, bool _counts = true);
 
         /**
     	 * 
@@ -466,6 +466,13 @@ namespace epos2
     	 * @return Success(1)/Failure(0) of command
    		*/
         int halt_velocity(const std::string &_motor);
+
+        /**
+    	 * 
+    	 * @brief Stops all motor velocities
+    	 * @return Success(1)/Failure(0) of command
+   		*/
+        int halt_all_velocity();
 
         /**
     	 * 

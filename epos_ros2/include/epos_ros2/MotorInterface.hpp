@@ -23,23 +23,32 @@ class MotorInterface : public rclcpp::Node
 {
 public:
 	epos2::EPOSWrapper *interface_ptr_;
-	//epos2::EPOSBasicInterface interface_;
 	sensor_msgs::msg::JointState motor_commands_, motor_state_;
 
 	MotorInterface(std::string _node_name);
+	~MotorInterface();
 
 private:
-	rclcpp::TimerBase::SharedPtr main_;
+	epos2::EPOSParams params_;
+
+	rclcpp::TimerBase::SharedPtr status_timer_, fault_timer_;
 	rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr motor_state_publisher_;
+	// rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr error_monitor_publisher_;
 	rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr motor_command_subscription_;
 
-	void motor_callback(const sensor_msgs::msg::JointState::SharedPtr msg);
-	void main_callback();
+	void motor_callback(const sensor_msgs::msg::JointState::SharedPtr _msg);
+	bool position_status = false, velocity_status = false, effort_status = false;
+	bool effort_as_current = false;
+	void status_callback();
+	void fault_callback();
+
+	void drive_motors(sensor_msgs::msg::JointState &_msg);
+	void drive_motor(sensor_msgs::msg::JointState &_msg);
 
 	std::vector<rclcpp::Parameter> special_params_;
+	rclcpp::Parameter motor_names_param_;
 	void declare_params();
 	epos2::EPOSParams get_params();
-
 };
 
 #endif
