@@ -9,6 +9,10 @@
 
 #include <epos_ros2/MotorInterface.hpp>
 
+
+// TODO: Try opening with bad motor ids
+
+
 ///
 ///
 ///
