@@ -232,10 +232,10 @@ MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name, "ftr")
 {
 	// PARAM INITILIZATION ------------------------------------------------------------------------
 	declare_params();
-	params_ = get_params();
+	this->params_ = get_params();
 
 	//Publishers
-	motor_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/epos_motor_state", 10);
+	this->motor_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/epos_motor_state", 10);
 
 	//Subscriptions
 	motor_command_subscription_ = this->create_subscription<sensor_msgs::msg::JointState>(
@@ -247,8 +247,8 @@ MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name, "ftr")
 	this->get_parameter("/scope/status_timer", rate1);
 	this->declare_parameter("fault_time", 1000);
 	this->get_parameter("fault_time", rate2);
-	status_timer_ = this->create_wall_timer(std::chrono::milliseconds(rate1), std::bind(&MotorInterface::status_callback, this));
-	fault_timer_ = this->create_wall_timer(std::chrono::milliseconds(rate2), std::bind(&MotorInterface::fault_callback, this));
+	this->status_timer_ = this->create_wall_timer(std::chrono::milliseconds(rate1), std::bind(&MotorInterface::status_callback, this));
+	this->fault_timer_ = this->create_wall_timer(std::chrono::milliseconds(rate2), std::bind(&MotorInterface::fault_callback, this));
 
 	this->declare_parameter("position_status", false);
 	this->get_parameter("position_status", position_status);
