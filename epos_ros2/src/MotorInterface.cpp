@@ -32,29 +32,29 @@ void MotorInterface::status_callback()
 	RCLCPP_WARN(this->get_logger(), std::to_string(params_.motor_names.size()).c_str());
 	for (std::string motor : params_.motor_names)
 	{
-		motor_state_.name.push_back(motor);
+		temp.name.push_back(motor);
 		RCLCPP_WARN(this->get_logger(), motor.c_str());
 
 		if (position_status)
 		{
 			double position;
 			interface_ptr_->get_position(motor, position);
-			motor_state_.position.push_back(position);
+			temp.position.push_back(position);
 		}
 		else
 		{
-			motor_state_.position.push_back(-1);
+			temp.position.push_back(-1);
 		}
 
 		if (velocity_status)
 		{
 			double velocity;
 			interface_ptr_->get_velocity(motor, velocity);
-			motor_state_.velocity.push_back(velocity);
+			temp.velocity.push_back(velocity);
 		}
 		else
 		{
-			motor_state_.velocity.push_back(-1);
+			temp.velocity.push_back(-1);
 		}
 
 		if (effort_status)
@@ -63,23 +63,23 @@ void MotorInterface::status_callback()
 			{
 				double current;
 				interface_ptr_->get_current(motor, current);
-				motor_state_.effort.push_back(current);
+				temp.effort.push_back(current);
 			}
 			else
 			{
 				double torque;
 				interface_ptr_->get_torque(motor, torque);
-				motor_state_.effort.push_back(torque);
+				temp.effort.push_back(torque);
 			}
 		}
 		else
 		{
-			motor_state_.effort.push_back(-1);
+			temp.effort.push_back(-1);
 		}
 	}
 
-	motor_state_ = temp;
-	motor_state_publisher_->publish(motor_state_);
+	this->motor_state_ = temp;
+	motor_state_publisher_->publish(this->motor_state_);
 }
 
 ///

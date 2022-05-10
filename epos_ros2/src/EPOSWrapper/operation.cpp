@@ -130,14 +130,14 @@ namespace epos2
 
         std::string msg;
         DWORD error_code;
-        int *v;
+        int v;
 
-        if (VCS_GetVelocityIs(key_handle_, params_.motor_ids[_motor], v, &error_code))
+        if (VCS_GetVelocityIs(key_handle_, params_.motor_ids[_motor], &v, &error_code))
         {
             // convert velocity if need be
             if (_rpm)
             {
-                _velocity = *v;
+                _velocity = v;
                 msg = "Motor " + _motor + " velocity is " + std::to_string(_velocity) + " RPM";
                 RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
             }
@@ -145,7 +145,7 @@ namespace epos2
             {
                 msg = "Motor " + _motor;
                 RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
-                _velocity = rpm_2_mps(params_.motors[params_.motor_inds[_motor]], *v);
+                _velocity = rpm_2_mps(params_.motors[params_.motor_inds[_motor]], v);
             }
             return RETURN_SUCCESS;
         }
@@ -262,22 +262,22 @@ namespace epos2
 
         std::string msg;
         DWORD error_code;
-        int *p;
+        int p;
 
-        if (VCS_GetPositionIs(key_handle_, params_.motor_ids[_motor], p, &error_code))
+        if (VCS_GetPositionIs(key_handle_, params_.motor_ids[_motor], &p, &error_code))
         {
             // convert position if need be
             if (_counts)
             {
-                _position = *p;
-                msg = "Motor " + _motor + " position is " + std::to_string(_position) + " counts";
+                _position = p;
+                msg = "Motor " + _motor + " position is " + std::to_string(p) + " counts";
                 RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
             }
             else
             {
                 msg = "Motor " + _motor;
                 RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
-                _position = count_2_m(params_.motors[params_.motor_inds[_motor]], *p);
+                _position = count_2_m(params_.motors[params_.motor_inds[_motor]], p);
             }
             return RETURN_SUCCESS;
         }
@@ -422,11 +422,11 @@ namespace epos2
 
         std::string msg;
         DWORD error_code;
-        short *c;
+        short c;
 
-        if (VCS_GetCurrentIs(key_handle_, params_.motor_ids[_motor], c, &error_code))
+        if (VCS_GetCurrentIs(key_handle_, params_.motor_ids[_motor], &c, &error_code))
         {
-            _current = *c;
+            _current = c;
             msg = "Motor Current is " + std::to_string(_current) + " mA";
             RCLCPP_INFO_THROTTLE(node_ptr_->get_logger(), clock_, params_.throttle, msg.c_str());
             return RETURN_SUCCESS;

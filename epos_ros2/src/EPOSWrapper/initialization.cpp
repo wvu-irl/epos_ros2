@@ -109,6 +109,10 @@ namespace epos2
             {
                 RCLCPP_ERROR(node_ptr_->get_logger(), "VCS_GetProtocolStackSettings failed");
             }
+        } 
+        else
+        {
+            RCLCPP_ERROR(node_ptr_->get_logger(), "VCS_OpenDevice failed");
         }
 
         // remove temporary device std::strings
