@@ -12,6 +12,7 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include <sensor_msgs/msg/joint_state.hpp>
+#include <std_msgs/msg/string.hpp>
 
 #include <epos_ros2/EPOSWrapper.hpp>
 #include <epos_ros2/EPOSParams.hpp>
@@ -32,7 +33,9 @@ private:
 	epos2::EPOSParams params_;
 
 	rclcpp::TimerBase::SharedPtr status_timer_, fault_timer_;
-	rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr motor_state_publisher_;
+	// rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr motor_state_publisher_;
+	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr motor_state_publisher_;
+
 	// rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr error_monitor_publisher_;
 	rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr motor_command_subscription_;
 

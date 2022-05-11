@@ -74,7 +74,7 @@ src/MotorInterface.cpp
 #   "rclcpp"
 # )
 target_link_libraries(motor_interface_lib epos_wrapper_lib)
-ament_target_dependencies(motor_interface_lib sensor_msgs rclcpp)
+ament_target_dependencies(motor_interface_lib std_msgs sensor_msgs rclcpp)
 
 
 add_executable(epos_interface_node $ENV{EPOS_LIB_DIR} src/epos_interface_node.cpp)
@@ -102,7 +102,7 @@ install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
 )
 
-  install(DIRECTORY config
+install(DIRECTORY config
   DESTINATION share/${PROJECT_NAME}
 )
 

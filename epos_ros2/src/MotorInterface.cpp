@@ -28,58 +28,60 @@ void MotorInterface::motor_callback(const sensor_msgs::msg::JointState::SharedPt
 ///
 void MotorInterface::status_callback()
 {
-	sensor_msgs::msg::JointState temp;
-	RCLCPP_WARN(this->get_logger(), std::to_string(params_.motor_names.size()).c_str());
-	for (std::string motor : params_.motor_names)
-	{
-		temp.name.push_back(motor);
-		RCLCPP_WARN(this->get_logger(), motor.c_str());
+	// sensor_msgs::msg::JointState temp;
+	// RCLCPP_WARN(this->get_logger(), std::to_string(params_.motor_names.size()).c_str());
+	// for (std::string motor : params_.motor_names)
+	// {
+	// 	temp.name.push_back(motor);
+	// 	RCLCPP_WARN(this->get_logger(), motor.c_str());
 
-		if (position_status)
-		{
-			double position;
-			interface_ptr_->get_position(motor, position);
-			temp.position.push_back(position);
-		}
-		else
-		{
-			temp.position.push_back(-1);
-		}
+	// 	if (position_status)
+	// 	{
+	// 		double position;
+	// 		interface_ptr_->get_position(motor, position);
+	// 		temp.position.push_back(position);
+	// 	}
+	// 	else
+	// 	{
+	// 		temp.position.push_back(-1);
+	// 	}
 
-		if (velocity_status)
-		{
-			double velocity;
-			interface_ptr_->get_velocity(motor, velocity);
-			temp.velocity.push_back(velocity);
-		}
-		else
-		{
-			temp.velocity.push_back(-1);
-		}
+	// 	if (velocity_status)
+	// 	{
+	// 		double velocity;
+	// 		interface_ptr_->get_velocity(motor, velocity);
+	// 		temp.velocity.push_back(velocity);
+	// 	}
+	// 	else
+	// 	{
+	// 		temp.velocity.push_back(-1);
+	// 	}
 
-		if (effort_status)
-		{
-			if (effort_as_current)
-			{
-				double current;
-				interface_ptr_->get_current(motor, current);
-				temp.effort.push_back(current);
-			}
-			else
-			{
-				double torque;
-				interface_ptr_->get_torque(motor, torque);
-				temp.effort.push_back(torque);
-			}
-		}
-		else
-		{
-			temp.effort.push_back(-1);
-		}
-	}
+	// 	if (effort_status)
+	// 	{
+	// 		if (effort_as_current)
+	// 		{
+	// 			double current;
+	// 			interface_ptr_->get_current(motor, current);
+	// 			temp.effort.push_back(current);
+	// 		}
+	// 		else
+	// 		{
+	// 			double torque;
+	// 			interface_ptr_->get_torque(motor, torque);
+	// 			temp.effort.push_back(torque);
+	// 		}
+	// 	}
+	// 	else
+	// 	{
+	// 		temp.effort.push_back(-1);
+	// 	}
+	// }
 
-	this->motor_state_ = temp;
-	motor_state_publisher_->publish(this->motor_state_);
+	// this->motor_state_ = temp;
+	auto message = std_msgs::msg::String();
+	message.data = "Hai";
+	this->motor_state_publisher_->publish(message);//this->motor_state_);
 }
 
 ///
@@ -235,7 +237,8 @@ MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name, "ftr")
 	this->params_ = get_params();
 
 	//Publishers
-	this->motor_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/epos_motor_state", 10);
+	this->motor_state_publisher_ = this->create_publisher<std_msgs::msg::String>("/epos_motor_state", 10);
+	// this->motor_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/epos_motor_state", 10);
 
 	//Subscriptions
 	motor_command_subscription_ = this->create_subscription<sensor_msgs::msg::JointState>(
