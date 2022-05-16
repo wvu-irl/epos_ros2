@@ -45,7 +45,6 @@ private:
 	void fault_callback();
 
 	void drive_motors(sensor_msgs::msg::JointState &_msg);
-	void drive_motor(sensor_msgs::msg::JointState &_msg);
 
 	std::vector<rclcpp::Parameter> special_params_;
 	rclcpp::Parameter motor_names_param_;

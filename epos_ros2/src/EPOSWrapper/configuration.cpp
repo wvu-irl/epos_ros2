@@ -201,11 +201,11 @@ namespace epos2
 
         std::string msg;
         DWORD error_code;
-        WORD *state;
+        WORD state;
 
-        if (VCS_GetState(key_handle_, params_.motor_ids[_motor], state, &error_code))
+        if (VCS_GetState(key_handle_, params_.motor_ids[_motor], &state, &error_code))
         {
-            _state = device_state_map_[*state];
+            _state = device_state_map_[state];
             msg = "Motor " + _motor + " state is " + get_state_string(_state);
             RCLCPP_DEBUG(node_ptr_->get_logger(), msg.c_str());
             return RETURN_SUCCESS;

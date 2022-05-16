@@ -66,6 +66,7 @@ namespace epos2
 
         //check motor is in correct mode
         if (params_.motors[params_.motor_inds[_motor]].mode != PROFILE_VELOCITY_MODE)
+            RCLCPP_DEBUG(node_ptr_->get_logger(), "RESETTING MODE TO VELOCITY PROFILE");
             set_mode(_motor, PROFILE_VELOCITY_MODE);
 
         // convert velocity if need be

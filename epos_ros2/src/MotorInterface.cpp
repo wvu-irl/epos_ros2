@@ -9,9 +9,7 @@
 
 #include <epos_ros2/MotorInterface.hpp>
 
-
 // TODO: Try opening with bad motor ids
-
 
 ///
 ///
@@ -89,7 +87,7 @@ void MotorInterface::fault_callback()
 {
 	sensor_msgs::msg::JointState temp;
 
-	interface_ptr_->clear_faults(params_.motor_names);
+	// interface_ptr_->clear_faults(params_.motor_names);
 
 	drive_motors(motor_commands_);
 }
@@ -99,38 +97,27 @@ void MotorInterface::fault_callback()
 ///
 void MotorInterface::drive_motors(sensor_msgs::msg::JointState &_msg)
 {
-	sensor_msgs::msg::JointState temp;
-
 	for (int i = 0; i < _msg.name.size(); ++i)
 	{
-		temp.name[0] = _msg.name[0];
-		temp.position[0] = _msg.position[0];
-		temp.velocity[0] = _msg.velocity[0];
-		temp.effort[0] = _msg.effort[0];
-		drive_motor(temp);
-	}
-}
-
-///
-///
-///
-void MotorInterface::drive_motor(sensor_msgs::msg::JointState &_msg)
-{
-	if (_msg.position[0] != -1)
-	{
-		interface_ptr_->go_to_position_profile(_msg.name[0], _msg.position[0]);
-	}
-	else if (_msg.velocity[0] != -1)
-	{
-		interface_ptr_->go_to_velocity_profile(_msg.name[0], _msg.velocity[0]);
-	}
-	else if (_msg.effort[0] != -1)
-	{
-		interface_ptr_->go_to_torque(_msg.name[0], _msg.effort[0]);
-	}
-	else
-	{
-		RCLCPP_WARN(this->get_logger(), "No motor drive command");
+		if (_msg.position[i] != -1)
+		{
+			interface_ptr_->go_to_position_profile(_msg.name[i], _msg.position[i]);
+		}
+		else if (_msg.velocity[i] != -1)
+		{
+			interface_ptr_->go_to_velocity_profile(_msg.name[i], _msg.velocity[i]);
+		}
+		else if (_msg.effort[i] != -1)
+		{
+			interface_ptr_->go_to_torque(_msg.name[i], _msg.effort[i]);
+		}
+		else
+		{
+			RCLCPP_WARN(this->get_logger(), "No motor drive command");
+		}
+		epos2::DeviceState dstate;
+		interface_ptr_->get_state(_msg.name[i], dstate);
+		std::cout << dstate << std::endl;
 	}
 }
 
@@ -141,13 +128,13 @@ void MotorInterface::declare_params()
 {
 	// DECLARE PARAMS --------------------------------------------------
 
-	this->declare_parameter("motor_names",std::vector<std::string>());
-	//motor_names_param_ =rclcpp::Parameter("motor_names", std::vector<std::string>{"none"});
-	//special_params_.push_back(motor_names_param);
+	this->declare_parameter("motor_names", std::vector<std::string>());
+	// motor_names_param_ =rclcpp::Parameter("motor_names", std::vector<std::string>{"none"});
+	// special_params_.push_back(motor_names_param);
 
 	this->declare_parameter("motor_ids", std::vector<int64_t>());
-	//rclcpp::Parameter motor_ids_param("motor/ids", std::vector<int>{0});
-	//special_params_.push_back(motor_ids_param);
+	// rclcpp::Parameter motor_ids_param("motor/ids", std::vector<int>{0});
+	// special_params_.push_back(motor_ids_param);
 
 	this->declare_parameter("motor_params/gear_ratio", 1.0);
 	this->declare_parameter("motor_params/counts_per_rev", 1);
@@ -160,7 +147,7 @@ void MotorInterface::declare_params()
 	this->declare_parameter("motor_params/user_limits/curr_cont_a", 1.0);
 
 	// EPOS Modules
-	
+
 	this->declare_parameter("epos_module/protocol", "MAXON SERIAL V2");
 	this->declare_parameter("epos_module/com_interface", "USB");
 	this->declare_parameter("epos_module/port", "USB0");
@@ -169,7 +156,6 @@ void MotorInterface::declare_params()
 
 	// // Logging
 	this->declare_parameter("logging/throttle", 1000);
-	
 }
 
 epos2::EPOSParams MotorInterface::get_params()
@@ -234,10 +220,10 @@ MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name, "ftr")
 	declare_params();
 	this->params_ = get_params();
 
-	//Publishers
+	// Publishers
 	this->motor_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/epos_motor_state", 10);
 
-	//Subscriptions
+	// Subscriptions
 	motor_command_subscription_ = this->create_subscription<sensor_msgs::msg::JointState>(
 		"/epos_motor_command", 1, std::bind(&MotorInterface::motor_callback, this, _1));
 
@@ -264,8 +250,12 @@ MotorInterface::MotorInterface(std::string _node_name) : Node(_node_name, "ftr")
 
 	interface_ptr_ = new epos2::EPOSWrapper(this, params_);
 
-	
-
+	std::vector<epos2::DeviceState> d_state;
+	for (int i = 0; i < this->params_.motor_names.size(); ++i)
+	{
+		d_state.push_back(epos2::DeviceState::ENABLED);
+	}
+	interface_ptr_->set_states(this->params_.motor_names, d_state);
 }
 
 ///
