@@ -164,6 +164,7 @@ namespace epos2
     ///
     EPOSWrapper::EPOSWrapper(rclcpp::Node *_node_ptr, EPOSParams _params) : node_ptr_(_node_ptr), params_(_params)
     {
+        this->clock_ = rclcpp::Clock();
         RCLCPP_WARN(node_ptr_->get_logger(), "Initializing EPOS Wrapper");
         // Open devices
         if (!this->open_devices())
@@ -193,7 +194,7 @@ namespace epos2
             sentinel = !halt_all_velocity();
 
             dt = (this->clock_.now() - t).seconds();
-            if ( dt > (this->params_.motor_close_timeout * 1e3) )
+            if ( dt > (this->params_.motor_close_timeout * 1000) )
             {
                 sentinel = false;
                 RCLCPP_WARN(node_ptr_->get_logger(), "Too much time elapsed, device closed timeout");
