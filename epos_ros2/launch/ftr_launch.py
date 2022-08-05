@@ -18,8 +18,9 @@ def generate_launch_description():
         executable='epos_interface_node',
         name='epos_interface_node',
         parameters=[epos2_params],
-        arguments=['--ros-args', '--log-level', ["debug"]]#,
-        #prefix=['gdb -ex run --args']
+        arguments=['--ros-args', '--log-level', ["debug"]],
+        prefix='gnome-terminal -- gdb -ex run --args',
+        # prefix=['gdb -ex run --args'],
         #prefix=['xterm -e gdb -ex run --args']
         #prefix=['gnome-terminal -x gdb -ex run --args']
     )

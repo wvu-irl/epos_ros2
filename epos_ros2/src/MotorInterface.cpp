@@ -87,7 +87,10 @@ void MotorInterface::fault_callback()
 {
 	sensor_msgs::msg::JointState temp;
 
-	// interface_ptr_->clear_faults(params_.motor_names);
+	interface_ptr_->clear_faults(params_.motor_names);
+	std::vector<epos2::DeviceState> s(params_.motor_names.size(),epos2::ENABLED);
+
+	interface_ptr_->set_states(params_.motor_names, s);
 
 	drive_motors(motor_commands_);
 }
